@@ -7,7 +7,8 @@
   font-family: 'Raleway';
 }
 body{
-  background-color: #F3F4F7
+  background-color: #F3F4F7;
+  margin-top: 70px;
 }
 
 .navbar-brand {
