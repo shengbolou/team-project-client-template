@@ -1,0 +1,41 @@
+.bell {
+    font-size: 20px;
+}
+
+.notification h4 span{
+  margin-right: 10px;
+}
+
+.notification ul li a span{
+  margin-right: 5px;
+}
+
+.notification-panel{
+  box-shadow: 0 10px 28px 0 rgba(137,157,197,.12);
+  margin-top: 20px;
+}
+
+.notification .panel{
+  background-color: #FDFDFD;
+  border-top: 0px transparent;
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
+}
+
+.nav-tabs.nav-justified>.active>a,
+.nav-tabs.nav-justified>.active>a:hover,
+.nav-tabs.nav-justified>.active>a:focus{
+  background-color: #FDFDFD;
+  border-bottom-color: transparent;
+}
+
+.notification-panel ul li a{
+  padding-top: 20px;
+  padding-bottom: 20px;
+  font-size: 15px;
+}
+
+.friend-request .col-md-3 button{
+  margin-top: 10px;
+  margin-right: 5px;
+}
