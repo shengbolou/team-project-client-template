@@ -1,0 +1,28 @@
+##### If you are using the following elements, please use corresponding css #####
+
+#panels#
+
+.panel{
+  box-shadow: 0 10px 28px 0 rgba(137,157,197,.12);
+  border: none;
+}
+.panel .panel-heading{
+  background-color: #FDFDFD;
+  border-bottom-color: #FDFDFD
+}
+.panel .panel-body{
+  background-color: #F7F7F7;
+}
+.panel .panel-footer{
+  background-color: #FDFDFD;
+  border-top-color: #FDFDFD
+}
+
+#panels#
+
+
+#shadow for panels#
+
+  box-shadow: 0 10px 28px 0 rgba(137,157,197,.12);
+
+#shadow for panels#
