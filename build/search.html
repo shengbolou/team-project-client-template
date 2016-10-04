@@ -5,7 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-  <title>We Meet</title>
+  <title>We Meet -search</title>
 
   <!-- Bootstrap -->
   <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -43,18 +43,12 @@
 
       <!-- Collect the nav links, forms, and other content for toggling -->
       <div class="collapse navbar-collapse" id="navbar">
-        <form class="navbar-form navbar-left" role="search">
-          <!-- Left-aligned items. -->
-          <a href="index.html"><span class="glyphicon glyphicon-arrow-left"></span></a>
-          <div class="input-group search-form">
-            <input type="text" class="form-control" placeholder="Welcome to We Meet,please search friends">
-            <span class="input-group-btn">
-              <button type="submit" class="btn btn-default btn-search">
-                <span class="fa fa-search"aria-hidden="true"></span>
-              </button>
-            </span>
-          </div>
-        </form>
+        <ul class="nav navbar-nav nav-left">
+          <li><a href="#">Trend</a></li>
+          <li><a href="#">Activity</a></li>
+          <li><a href="#">Chat</a></li>
+        </ul>
+
         <ul class="nav navbar-nav navbar-right">
           <div class="dropdown pull-left">
             <a href="#" class="dropdown-toggle" type="button" id="user-options" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
@@ -69,8 +63,9 @@
               <li><a href="#">Separated link</a></li>
             </ul>
           </div>
+          <li class="active"><a href="#"><i class="fa fa-search" aria-hidden="true"></i></a></li>
           <li><a href="#"><i class="fa fa-bell-o" aria-hidden="true"></i></i></a></li>
-        </div>
+        </ul>
       </div>
       <!-- /.navbar-collapse -->
     </div>
@@ -81,6 +76,27 @@
   <div class="container">
     <div class="row">
       <div class="col-md-9 col-md-offset-2 main-feed">
+        <!-- search panel-->
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <div class="media">
+              <div class="media-body">
+                <form class="search-form" role="search">
+                  <!-- Left-aligned items. -->
+                  <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Welcome to We Meet,please search friends">
+                    <span class="input-group-btn">
+                      <button type="submit" class="btn btn-default btn-search">
+                        <span class="fa fa-search"aria-hidden="true"></span>
+                      </button>
+                    </span>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--friends panel-->
         <div class="panel panel-default">
           <div class="panel-heading">
             <div class="media">
