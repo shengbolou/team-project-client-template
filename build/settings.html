@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-  <title>We Meet - Profile</title>
+  <title>We Meet - Settings</title>
 
   <!-- Bootstrap -->
   <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -21,8 +21,8 @@
   <!-- css only for navbar -->
   <link rel="stylesheet" href="css/navbar.css">
 
-  <!-- css for profile page only -->
-  <link rel="stylesheet" href="css/profile.css">
+  <!-- css for settings page only -->
+  <link rel="stylesheet" href="css/settings.css">
 
 </head>
 
@@ -73,16 +73,16 @@
   </nav>
 
   <!--content-->
-  <div class="container profile">
+  <div class="container settings">
     <div class = "row">
       <div class="col-md-7 col-md-offset-1">
-        <!--head of profile page-->
+        <!--head of  page-->
         <div class="row user-icon">
           <div class="col-md-1">
-            <span class="glyphicon glyphicon-user"></span>
+            <span class="glyphicon glyphicon-cog"></span>
           </div>
           <div class="col-md-1">
-            <b>Profile</b>
+            <b>Settings</b>
           </div>
         </div>
         <!--main panel-->
@@ -98,47 +98,19 @@
               </div>
             </div>
             <hr>
-            <!--personal description-->
-            <div class="row personal-description">
-              I'm excited to take CS326.
-              <br>
-              <div class="col-md-8">
+
+            <!--change password-->
+            <ul class="nav nav-pills nav-stacked password">
+              <li role="presentation">
+                <b><font size="4">Change Password</font></b>
+              </li>
+              <li role="presentation">
                 <div class="input-group">
-                  <input type="text" class="form-control input" placeholder="Descriibe yourself...">
-                  <span class="input-group-btn">
-                    <button type="submit" class="btn btn-default input-button">
-                      <span class="glyphicon glyphicon-upload"></span>
-                    </button>
-                  </span>
+                  <p class="intended-front">Current Password:</p>
+                  <input type="text" class="form-control input">
                 </div>
-              </div>
-            </div>
-            <hr>
-            <!--post history-->
-            <div class="row">
-              <div class="panel-body">
-                <div class="media">
-                  <div class="media-body">
-                    20hr
-                    <hr>
-                    <p>
-                      Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div class="panel-body">
-                <img src="img/tmp.jpg" width="100%" height="100%"alt="" />
-              </div>
-              <div class="panel-footer">
-                <div class="row">
-                  <div class="col-md-12">
-                    <a href="#"><span class="glyphicon glyphicon-heart"></span>11</a>
-                    <a href="#"><span class="glyphicon glyphicon-comment"></span>12</a>
-                  </div>
-                </div>
-              </div>
-            </div>
+              </li>
+            </ul>
           </div>
         </div>
       </div>
@@ -149,23 +121,17 @@
           <div class="panel panel-default">
             <div class="panel-body">
               <ul class="nav nav-pills nav-stacked">
-                <li role="presentation">
-                  <span class="glyphicon glyphicon-user"></span>
-                  Email
+                <li>
+                  <a href="profile.html">
+                    <span class="glyphicon glyphicon-user"></span>
+                    Profile
+                  </a>
                 </li>
                 <li>
-                  <div class="col-md-offset-1">
-                    david@umass.edu
-                  </div>
-                </li>
-                <li role="presentation">
-                  <span class="glyphicon glyphicon-calendar"></span>
-                  Birthday
-                </li>
-                <li>
-                  <div class="col-md-offset-1">
-                    <time>1995-5-21</time>
-                  </div>
+                  <a href="#">
+                    <span class="glyphicon glyphicon-log-out"></span>
+                    Log Out
+                  </a>
                 </li>
               </ul>
             </div>

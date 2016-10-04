@@ -1,0 +1,44 @@
+.settings .user-icon{
+  color: darkgrey;
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+
+.settings .user-name{
+  font-size: 20px;
+  line-height: 60px;
+}
+
+.settings .intended-front{
+  margin-left: 20px;
+}
+
+.settings .password .input{
+  width: 200px;
+}
+
+.settings .sidebar{
+  margin-top: 50px;
+}
+
+.settings .sidebar .nav >li{
+  font-weight: bold;
+  font-size: 20px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.settings .sidebar .nav > li > a {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  color: #61B4E4;
+  font-weight: normal;
+  font-size: 20px;
+}
+
+.settings .sidebar .nav > li > a:hover,
+.settings .sidebar .nav > li.active > a:hover {
+  background-color: #61B4E4;
+  color: black;
+}
