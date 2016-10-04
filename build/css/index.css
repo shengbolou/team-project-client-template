@@ -1,5 +1,6 @@
 .main-feed .panel{
   box-shadow: 0 10px 28px 0 rgba(137,157,197,.12);
+  border-radius: 5px;
   border: none;
 }
 .main-feed .panel .panel-heading{
@@ -32,6 +33,7 @@
   margin-right: 5px;
 }
 .main-feed .panel textarea{
+  resize: none;
   margin-top: 10px;
   border-color: #F7F7F7;
   background-color: #F7F7F7;
@@ -40,7 +42,7 @@
   width: 100%;
 }
 .main-feed .panel textarea:focus{
-  border-color: rgba(97, 180, 228, 0.86);
+  border-color: rgba(97, 180, 228, 0.4);
   outline: 0 none;
 }
 
