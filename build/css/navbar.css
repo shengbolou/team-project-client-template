@@ -25,8 +25,13 @@ body{
   background-color: #FDFDFD;
   box-shadow: 0 2px 4px 0 rgba(0,0,0,.1);
 }
+
 .navbar-nav li a{
   font-size: 16px;
+}
+
+.navbar .dropdown-menu li a span{
+  margin-right: 10px;
 }
 
 .navbar-nav .dropdown a{
