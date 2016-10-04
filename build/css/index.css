@@ -31,7 +31,7 @@
 .main-feed .panel .panel-footer .col-md-12 a span{
   margin-right: 5px;
 }
-.main-feed .panel .panel-footer textarea{
+.main-feed .panel textarea{
   margin-top: 10px;
   border-color: #F7F7F7;
   background-color: #F7F7F7;
@@ -39,7 +39,23 @@
   height: 100px;
   width: 100%;
 }
-.main-feed .panel .panel-footer textarea:focus{
+.main-feed .panel textarea:focus{
   border-color: rgba(97, 180, 228, 0.86);
   outline: 0 none;
+}
+
+.media .media-object{
+  box-shadow: none !important;
+}
+
+.post-send .media .media-body .btn-group a{
+  margin-right: 20px;
+  color: grey;
+}
+.post-send .media .media-body .btn-group{
+  margin-top: 10px;
+}
+
+.comments .media .media-body p{
+  font-size: 12px;
 }
