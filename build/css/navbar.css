@@ -34,11 +34,12 @@ body{
   margin-right: 10px;
 }
 
-.navbar-nav .dropdown a{
+.navbar-nav .dropdown .dropdown-toggle{
     margin-right: 50px;
     text-decoration: none;
     background: none !important;
 }
+
 
 .nav-left li a{
   margin-right: 30px;
