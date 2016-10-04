@@ -1,0 +1,46 @@
+.profile .user-icon{
+  color: darkgrey;
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+
+.profile .user-name{
+  font-size: 20px;
+  line-height: 60px;
+}
+
+.profile .personal-description{
+  margin-top: 20px;
+  margin-left: 20px;
+}
+
+.profile .personal-description .input{
+  width: 400px;
+}
+
+.profile .personal-description .input-button{
+  background-color: #61B4E4;
+}
+
+.profile .panel .panel-footer{
+  background-color: #FDFDFD;
+  border-top-color: #FDFDFD
+}
+
+.profile .panel .panel-footer .col-md-12 a{
+  color: grey;
+  margin-right: 50px;
+  font-size: 15px;
+}
+
+.profile .panel .panel-footer .col-md-12 a:first-child:hover{
+  color:rgb(223, 61, 71);
+}
+
+.profile .panel .panel-footer .col-md-12 a:nth-child(2):hover{
+  color:rgb(50, 37, 153);
+}
+
+.profile .sidebar{
+  margin-top: 50px;
+}

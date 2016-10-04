@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -10,16 +11,22 @@
 
   <!-- Bootstrap -->
   <link href="css/bootstrap.min.css" rel="stylesheet">
+
   <!-- Custom CSS goes here -->
-  <!-- font awesome css library for using icons (please check website http://fontawesome.io/ for useages) -->
+  <!-- font awesome css library for using icons (check website http://fontawesome.io/ for useages) -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
-  <link rel="stylesheet" href="css/index.css">
+
+  <!-- css only for navbar -->
+  <link rel="stylesheet" href="css/navbar.css">
+
+  <!-- css for index page only, change this to your own css file -->
+  <link rel="stylesheet" href="css/profile.css">
 
 </head>
 
 <body>
-
-  <nav class="navbar navbar-default" role="navigation">
+  <!-- navbar -->
+  <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
     <div class="container-fluid">
       <div class="navbar-header">
         <button type="button" class="navbar-toggle">
@@ -28,7 +35,7 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="#">
+        <a class="navbar-brand" href="index.html">
           <img src="./img/logo/mipmap-xxhdpi/ic_launcher.png" width="50px" height="50px" alt="" />
         </a>
       </div>
@@ -36,7 +43,7 @@
       <!-- Collect the nav links, forms, and other content for toggling -->
       <div class="collapse navbar-collapse" id="navbar">
         <ul class="nav navbar-nav nav-left">
-          <li class="active"><a href="#">Post</a></li>
+          <li><a href="index.html">Trend</a></li>
           <li><a href="#">Activity</a></li>
           <li><a href="#">Chat</a></li>
         </ul>
@@ -44,12 +51,11 @@
         <ul class="nav navbar-nav navbar-right">
           <div class="dropdown pull-left">
             <a href="#" class="dropdown-toggle" type="button" id="user-options" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-              <img src="img/user.png" width="50px" height="50px"alt="" />
-              User
+              <img src="img/user.png" width="50px" height="50px" alt="" /> User
               <span class="caret"></span>
             </a>
             <ul class="dropdown-menu" aria-labelledby="user-options">
-              <li><a href="#">Action</a></li>
+              <li><a href="profile.html">Profile</a></li>
               <li><a href="#">Another action</a></li>
               <li><a href="#">Something else here</a></li>
               <li role="separator" class="divider"></li>
@@ -57,7 +63,7 @@
             </ul>
           </div>
           <li class="active"><a href="#"><i class="fa fa-search" aria-hidden="true"></i></a></li>
-          <li><a href="#"><i class="fa fa-bell-o" aria-hidden="true"></i></i></a></li>
+          <li><a href="#"><i class="fa fa-bell-o" aria-hidden="true"></i></a></li>
         </ul>
       </div>
       <!-- /.navbar-collapse -->
@@ -65,11 +71,120 @@
     <!-- /.container-fluid -->
   </nav>
 
+  <!--content-->
+  <div class="container profile">
+    <div class = "row">
+      <div class="col-md-7 col-md-offset-1">
+        <!--head of profile page-->
+        <div class="row user-icon">
+          <div class="col-md-1">
+            <span class="glyphicon glyphicon-user"></span>
+          </div>
+          <div class="col-md-1">
+            <b>Profile</b>
+          </div>
+        </div>
+        <!--main panel-->
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <!--icon and username-->
+            <div class="row user-name">
+              <div class="col-md-2">
+                <img src="img/user.png" width="60px">
+              </div>
+              <div class="col-md-2">
+                David
+              </div>
+            </div>
+            <hr>
+            <!--personal description-->
+            <div class="row personal-description">
+              I'm excited to take CS326.
+              <br>
+              <div class="col-md-8">
+                <div class="input-group">
+                  <input type="text" class="form-control input" placeholder="Descriibe yourself...">
+                  <span class="input-group-btn">
+                    <button type="submit" class="btn btn-default input-button">
+                      <span class="glyphicon glyphicon-upload"></span>
+                    </button>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <hr>
+            <!--post history-->
+            <div class="row">
+              <div class="panel-body">
+                <div class="media">
+                  <div class="media-body">
+                    20hr
+                    <hr>
+                    <p>
+                      Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="panel-body">
+                <img src="img/tmp.jpg" width="100%" height="100%"alt="" />
+              </div>
+              <div class="panel-footer">
+                <div class="row">
+                  <div class="col-md-12">
+                    <a href="#"><span class="glyphicon glyphicon-heart"></span>11</a>
+                    <a href="#"><span class="glyphicon glyphicon-comment"></span>12</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!--sidebar-->
+      <div class="col-md-4">
+        <div class="row sidebar">
+          <div class="panel panel-default">
+            <div class="panel-body">
+              <ul class="nav nav-pills nav-stacked">
+                <li role="presentation">
+                  <span class="glyphicon glyphicon-user"></span>
+                  Email
+                </li>
+                <li>
+                  <div class="col-md-offset-1">
+                    david@umass.edu
+                  </div>
+                </li>
+                <li role="presentation">
+                  <a href="#">
+                    Change Password
+                  </a>
+                </li>
+                <li>
+                  <a href="#">
+                    Settings
+                  </a>
+                </li>
+                <li>
+                  <a href="#">
+                    Log Out
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
   <script src="js/jquery.min.js"></script>
   <!-- Include all compiled plugins (below), or include individual files as needed -->
   <script src="js/bootstrap.min.js"></script>
+  <script src="js/mdb.min.js"></script>
   <!-- App code -->
   <script src="js/bundle.js"></script>
 </body>
