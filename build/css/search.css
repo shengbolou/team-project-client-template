@@ -1,5 +1,16 @@
-
 .symbol{
   font-size:20px;
   align-items: center;
+}
+.parties-pic{
+  height: 165px;
+  width: 200px;
+}
+.parties-title{
+  margin-top: 0px;
+}
+.parties-map{
+  font-size:20px;
+  align-items: center;
+  margin-top: 5px;
 }
