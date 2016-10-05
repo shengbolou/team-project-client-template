@@ -1,27 +1,3 @@
-.profile .user-icon{
-  color: darkgrey;
-  font-size: 20px;
-  margin-bottom: 20px;
-}
-
-.profile .user-name{
-  font-size: 20px;
-  line-height: 60px;
-}
-
-.profile .personal-description{
-  margin-top: 20px;
-  margin-left: 20px;
-}
-
-.profile .personal-description .input{
-  width: 400px;
-}
-
-.profile .personal-description .input-button{
-  background-color: #61B4E4;
-}
-
 .profile .panel{
   box-shadow: 0 10px 28px 0 rgba(137,157,197,.12);
   border-radius: 5px;
@@ -32,7 +8,7 @@
 
 .profile .panel .panel-footer{
   background-color: #FDFDFD;
-  border-top-color: #FDFDFD
+  border-top-color: #FDFDFD;
 }
 
 .profile .panel .panel-footer .col-md-12 a{
@@ -47,4 +23,55 @@
 
 .profile .panel .panel-footer .col-md-12 a:nth-child(2):hover{
   color:rgb(50, 37, 153);
+}
+
+.profile .main-panel{
+  height: 250px;
+}
+
+.profile .main-panel img{
+  margin-top: 30px;
+  width: 150px;
+  height: 150px;
+}
+
+.profile .main-panel .media{
+  margin-top: 30px;
+}
+
+.profile .main-panel .media .location{
+  background-color: lightgrey;
+  width: 160px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.profile .main-panel .media .location span{
+  color: #61B4E4;
+}
+
+.profile progress{
+  -webkit-appearance: none;
+  margin-top: 5px;
+}
+
+.profile progress::-webkit-progress-bar {
+  width: 600px;
+  color: lightblue;
+  background-color: lightgrey;
+  height: 10px;
+  border-radius: 5px;
+}
+.profile progress::-webkit-progress-value {
+  background-color: #61B4E4;
+  border-radius: 5px;
+}
+
+.profile .sidebar .row{
+  margin-top: 5px;
+  margin-bottom: 10px;
+}
+
+.profile .sidebar .content{
+  background-color: #F7F7F7;
 }
