@@ -74,18 +74,30 @@
 
   <!--content-->
   <div class="container profile">
-    <div class = "row">
-      <div class="col-md-7 col-md-offset-1">
+    <div class="row">
+      <div class="col-md-11 col-md-offset-1">
         <!--head of profile page-->
-        <div class="row user-icon">
-          <div class="col-md-1">
-            <span class="glyphicon glyphicon-user"></span>
-          </div>
-          <div class="col-md-1">
-            <b>Profile</b>
+        <div class="row">
+          <div class="col-md-7">
+            <h4>
+              <span class="glyphicon glyphicon-user"></span>
+              Profile
+            </h4>
           </div>
         </div>
         <!--main panel-->
+        <div class="panel panel-default">
+          <div class="panel-body">
+            a
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-7 col-md-offset-1">
+        Personal Info
+        <!--profile panel-->
         <div class="panel panel-default">
           <div class="panel-body">
             <!--icon and username-->
@@ -98,76 +110,42 @@
               </div>
             </div>
             <hr>
-            <!--personal description-->
-            <div class="row personal-description">
-              I'm excited to take CS326.
-              <br>
-              <div class="col-md-8">
-                <div class="input-group">
-                  <input type="text" class="form-control input" placeholder="Descriibe yourself...">
-                  <span class="input-group-btn">
-                    <button type="submit" class="btn btn-default input-button">
-                      <span class="glyphicon glyphicon-upload"></span>
-                    </button>
-                  </span>
-                </div>
-              </div>
-            </div>
-            <hr>
             <!--post history-->
-            <div class="row">
-              <div class="panel-body">
-                <div class="media">
-                  <div class="media-body">
-                    20hr
-                    <hr>
-                    <p>
-                      Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div class="panel-body">
-                <img src="img/tmp.jpg" width="100%" height="100%"alt="" />
-              </div>
-              <div class="panel-footer">
-                <div class="row">
-                  <div class="col-md-12">
-                    <a href="#"><span class="glyphicon glyphicon-heart"></span>11</a>
-                    <a href="#"><span class="glyphicon glyphicon-comment"></span>12</a>
-                  </div>
-                </div>
-              </div>
-            </div>
+
           </div>
         </div>
       </div>
 
       <!--sidebar-->
       <div class="col-md-4">
+        Recent Activities
         <div class="row sidebar">
           <div class="panel panel-default">
             <div class="panel-body">
-              <ul class="nav nav-pills nav-stacked">
-                <li role="presentation">
-                  <span class="glyphicon glyphicon-user"></span>
-                  Email
-                </li>
-                <li>
-                  <div class="col-md-offset-1">
-                    david@umass.edu
+              <div class="row">
+                <div class="panel-body">
+                  <div class="media">
+                    <div class="media-body">
+                      20hr
+                      <hr>
+                      <p>
+                        Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
+                      </p>
+                    </div>
                   </div>
-                </li>
-                <li role="presentation">
-                  <span class="glyphicon glyphicon-calendar"></span>
-                  Birthday
-                </li>
-                <li>
-                  <div class="col-md-offset-1">
-                    <time>1995-5-21</time>
+                </div>
+                <div class="panel-body">
+                  <img src="img/tmp.jpg" width="100%" height="100%"alt="" />
+                </div>
+                <div class="panel-footer">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <a href="#"><span class="glyphicon glyphicon-heart"></span>11</a>
+                      <a href="#"><span class="glyphicon glyphicon-comment"></span>12</a>
+                    </div>
                   </div>
-                </li>
-              </ul>
+                </div>
+              </div>
             </div>
           </div>
         </div>

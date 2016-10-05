@@ -22,6 +22,14 @@
   background-color: #61B4E4;
 }
 
+.profile .panel{
+  box-shadow: 0 10px 28px 0 rgba(137,157,197,.12);
+  border-radius: 5px;
+  border: none;
+  margin-top: 15px;
+  margin-bottom: 30px;
+}
+
 .profile .panel .panel-footer{
   background-color: #FDFDFD;
   border-top-color: #FDFDFD
@@ -39,30 +47,4 @@
 
 .profile .panel .panel-footer .col-md-12 a:nth-child(2):hover{
   color:rgb(50, 37, 153);
-}
-
-.profile .sidebar{
-  margin-top: 50px;
-}
-
-.profile .sidebar .nav >li{
-  font-weight: bold;
-  font-size: 20px;
-  margin-top: 5px;
-  margin-bottom: 5px;
-}
-
-.profile .sidebar .nav > li > a {
-  padding-top: 5px;
-  padding-bottom: 5px;
-  padding-left: 5px;
-  color: #61B4E4;
-  font-weight: normal;
-  font-size: 20px;
-}
-
-.profile .sidebar .nav > li > a:hover,
-.profile .sidebar .nav > li.active > a:hover {
-  background-color: #61B4E4;
-  color: black;
 }
