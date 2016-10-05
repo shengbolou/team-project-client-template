@@ -72,74 +72,89 @@
     <!-- /.container-fluid -->
   </nav>
 
-  <!--content-->
-  <div class="container settings">
-    <div class = "row">
+  <div class="container">
+
+    <div class="row">
       <div class="col-md-7 col-md-offset-1">
-        <!--head of  page-->
-        <div class="row user-icon">
-          <div class="col-md-1">
-            <span class="glyphicon glyphicon-cog"></span>
-          </div>
-          <div class="col-md-1">
-            <b>Settings</b>
-          </div>
-        </div>
-        <!--main panel-->
-        <div class="panel panel-default">
-          <div class="panel-body">
-            <!--icon and username-->
-            <div class="row user-name">
-              <div class="col-md-2">
-                <img src="img/user.png" width="60px">
-              </div>
-              <div class="col-md-2">
-                David
+        <h4><span><i class="fa fa-cog" aria-hidden="true"></i></span> Settings</h4>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-7 col-md-offset-1 infos">
+        <div class="panel panel-default personal-info-1">
+          <div class="panel-heading">
+            <div class="row">
+              <div class="col-md-12">
+                <h4>Personal Info</h4>
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="md-form">
+                        <input type="text" id="" class="form-control">
+                        <label for="form1" class="">LastName</label>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="md-form">
+                        <input type="text" id="" class="form-control">
+                        <label for="form1" class="">FirstName</label>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="md-form">
+                        <input type="text" id="" class="form-control">
+                        <label for="form1" class="">NickName</label>
+                    </div>
+                    <div class="md-form">
+                        <textarea type="text" id="form7" class="md-textarea"></textarea>
+                        <label for="form7">About you</label>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
-            <hr>
 
-            <!--change password-->
-            <ul class="nav nav-pills nav-stacked password">
-              <li role="presentation">
-                <b><font size="4">Change Password</font></b>
-              </li>
-              <li role="presentation">
-                <div class="input-group">
-                  <p class="intended-front">Current Password:</p>
-                  <input type="text" class="form-control input">
+            <div class="row">
+              <div class="col-md-12">
+                <h4>Location</h4>
+                <div class="md-form" style="margin-top:20px;">
+                    <input type="text" id="" class="form-control">
+                    <label for="form1" class="">Country</label>
                 </div>
-              </li>
-            </ul>
+                <div class="md-form">
+                    <input type="text" id="" class="form-control">
+                    <label for="form1" class="">State</label>
+                </div>
+                <div class="md-form">
+                    <input type="text" id="" class="form-control">
+                    <label for="form1" class="">City</label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel-footer">
+            <div class="row">
+              <div class="col-md-12">
+                <button type="button" class="btn btn-blue-grey pull-right" name="button">Save</button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-
-      <!--sidebar-->
-      <div class="col-md-4">
-        <div class="row sidebar">
-          <div class="panel panel-default">
-            <div class="panel-body">
-              <ul class="nav nav-pills nav-stacked">
-                <li>
-                  <a href="profile.html">
-                    <span class="glyphicon glyphicon-user"></span>
-                    Profile
-                  </a>
-                </li>
-                <li>
-                  <a href="#">
-                    <span class="glyphicon glyphicon-log-out"></span>
-                    Log Out
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
+      <div class="col-md-3 system-settings">
+        <div class="list-group">
+          <a href="#" class="list-group-item">Reset Password <span class="pull-right"><i class="fa fa-angle-right" aria-hidden="true"></i></span></a>
+          <a href="#" class="list-group-item">Reset Email<span class="pull-right"><i class="fa fa-angle-right" aria-hidden="true"></i></span></a>
+          <a href="#" class="list-group-item">Blacklist<span class="pull-right"><i class="fa fa-angle-right" aria-hidden="true"></i></span></a>
         </div>
       </div>
     </div>
   </div>
+
+
 
   <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
   <script src="js/jquery.min.js"></script>
