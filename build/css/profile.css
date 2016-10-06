@@ -6,6 +6,10 @@
   margin-bottom: 30px;
 }
 
+.media .media-object{
+  box-shadow: none;
+}
+
 .profile .panel .panel-footer{
   background-color: #FDFDFD;
   border-top-color: #FDFDFD;
@@ -25,12 +29,9 @@
   color:rgb(50, 37, 153);
 }
 
-.profile .main-panel{
-  height: 250px;
-}
-
 .profile .main-panel img{
   margin-top: 30px;
+  margin-bottom: 30px;
   width: 150px;
   height: 150px;
 }
@@ -38,12 +39,17 @@
 .profile .main-panel .media{
   margin-top: 30px;
 }
+.profile .main-panel .row,
+.profile .main-panel .row .col-md-8{
+  height: 100%;
+}
 
 .profile .main-panel .media .location{
-  background-color: lightgrey;
+  background-color: #F3F3F3;
   width: 160px;
   border-radius: 10px;
   text-align: center;
+  margin-top: 40px;
 }
 
 .profile .main-panel .media .location span{

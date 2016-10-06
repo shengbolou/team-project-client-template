@@ -45,7 +45,8 @@
 .chat-left .panel .panel-body {
     padding: 0px;
     height:84vh;
-    overflow:scroll;
+    overflow-y:scroll;
+    overflow-x: hidden;
 }
 
 .friends .list-group-item {
