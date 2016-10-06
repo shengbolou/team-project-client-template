@@ -1,0 +1,24 @@
+.user-icon{
+  color: darkgrey;
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+.padding{
+    padding: 0px;
+    margin: 0px;
+}
+panel-format{
+    height: 200px !important;
+    width: 661px !important;
+}
+.mid {
+    text-align: center;
+}
+.div1 {
+    width: 300px;
+    height: 100px;
+    border: 1px solid blue;
+}
+.left {
+    text-align: left;
+}
