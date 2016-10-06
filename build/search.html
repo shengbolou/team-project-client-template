@@ -19,9 +19,6 @@
   <!-- css only for navbar -->
   <link rel="stylesheet" href="css/navbar.css">
 
-  <!-- css for index page, please fo not copy this line -->
-  <link rel="stylesheet" href="css/index.css">
-
   <link rel="stylesheet" href="css/search.css">
 
 </head>
@@ -36,7 +33,7 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="#">
+        <a class="navbar-brand" href="index.html">
           <img src="./img/logo/mipmap-xxhdpi/ic_launcher.png" width="50px" height="50px" alt="" />
         </a>
       </div>
@@ -44,7 +41,7 @@
       <!-- Collect the nav links, forms, and other content for toggling -->
       <div class="collapse navbar-collapse" id="navbar">
         <ul class="nav navbar-nav nav-left">
-          <li><a href="#">Trend</a></li>
+          <li><a href="index.html">Trend</a></li>
           <li><a href="#">Activity</a></li>
           <li><a href="#">Chat</a></li>
         </ul>
@@ -52,19 +49,18 @@
         <ul class="nav navbar-nav navbar-right">
           <div class="dropdown pull-left">
             <a href="#" class="dropdown-toggle" type="button" id="user-options" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-              <img src="img/user.png" width="50px" height="50px" alt="" /> User
+              <img src="img/user.png" width="50px" height="50px" alt="" /> Upao
               <span class="caret"></span>
             </a>
             <ul class="dropdown-menu" aria-labelledby="user-options">
-              <li><a href="#">Action</a></li>
-              <li><a href="#">Another action</a></li>
-              <li><a href="#">Something else here</a></li>
+              <li><a href="profile.html"><span><i class="fa fa-user" aria-hidden="true"></i></span>Profile</a></li>
+              <li><a href="settings.html"><span><i class="fa fa-cog" aria-hidden="true"></i></span>Settings</a></li>
               <li role="separator" class="divider"></li>
-              <li><a href="#">Separated link</a></li>
+              <li><a href="#"><span><i class="fa fa-sign-out" aria-hidden="true"></i></span>Log out</a></li>
             </ul>
           </div>
           <li class="active"><a href="#"><i class="fa fa-search" aria-hidden="true"></i></a></li>
-          <li><a href="#"><i class="fa fa-bell-o" aria-hidden="true"></i></i></a></li>
+          <li><a href="#"><i class="fa fa-bell-o" aria-hidden="true"></i></a></li>
         </ul>
       </div>
       <!-- /.navbar-collapse -->
@@ -75,29 +71,21 @@
   <!-- main feed-->
   <div class="container">
     <div class="row">
-      <div class="col-md-9 col-md-offset-2 main-feed">
+      <div class="col-md-8 col-md-offset-2 main-feed">
         <!-- search panel-->
         <div class="panel panel-default">
           <div class="panel-heading">
             <div class="media">
               <div class="media-body">
                 <form class="search-form" role="search">
-                  <!-- Left-aligned items. -->
-                  <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Welcome to We Meet,please search friends">
-                    <span class="input-group-btn">
-                      <button type="submit" class="btn btn-default btn-search">
-                        <span class="fa fa-search"aria-hidden="true"></span>
-                      </button>
-                    </span>
-                  </div>
+                    <input type="text" class="form-control xxx" placeholder="Welcome to We Meet, please search">
                 </form>
               </div>
             </div>
           </div>
         </div>
         <!--friends panel-->
-        <div class="panel panel-default">
+        <div class="panel panel-default searching-user">
           <div class="panel-heading">
             <div class="media">
               <div class="media-left">
@@ -107,32 +95,27 @@
               </div>
               <div class="media-body">
                 <div class"row">
-                  <div class="col-md-3">
-                      <h4 class="media-heading">Jack</h4>
-                      <br>
-                      <span>find friends</span>
+                  <div class="col-md-4">
+                    <h4 class="media-heading">Jack</h4>
+                    This is Jack
                   </div>
-                  <div class="col-md-5">
-                  </div>
-                  <div class="col-md-3">
-                    <span class="glyphicon glyphicon-map-marker symbol">USA,MA</span>
-                  </div>
-                  <div class="col-md-1">
-                    <span class="glyphicon glyphicon-plus symbol"</span>
+                  <div class="col-md-8">
+                    <div class="row">
+                      <div class="col-md-12">
+                        <a href="#"><i class="fa fa-user-plus pull-right" aria-hidden="true"></i></a>
+                      </div>
+                    </div>
+                    <div class="location pull-right">
+                      <span class="glyphicon glyphicon-map-marker"></span>
+                      Amherst, MA, USA
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          <div class="panel-footer">
-              <div class="row">
-                <div class="col-md-12">
-                </div>
-              </div>
-          </div>
         </div>
-
-        <div class="panel panel-default">
+        <div class="panel panel-default searching-user">
           <div class="panel-heading">
             <div class="media">
               <div class="media-left">
@@ -142,32 +125,27 @@
               </div>
               <div class="media-body">
                 <div class"row">
-                  <div class="col-md-3">
-                      <h4 class="media-heading">Justin</h4>
-                      <br>
-                      <span>find friends</span>
+                  <div class="col-md-4">
+                    <h4 class="media-heading">Tom</h4>
+                    This is Tom
                   </div>
-                  <div class="col-md-5">
-                  </div>
-                  <div class="col-md-3">
-                    <span class="glyphicon glyphicon-map-marker symbol">USA,CA</span>
-                  </div>
-                  <div class="col-md-1">
-                    <span class="glyphicon glyphicon-plus symbol"</span>
+                  <div class="col-md-8">
+                    <div class="row">
+                      <div class="col-md-12">
+                        <a href="#"><i class="fa fa-user-plus pull-right" aria-hidden="true"></i></a>
+                      </div>
+                    </div>
+                    <div class="location pull-right">
+                      <span class="glyphicon glyphicon-map-marker"></span>
+                      Amherst, MA, USA
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          <div class="panel-footer">
-              <div class="row">
-                <div class="col-md-12">
-                </div>
-              </div>
-          </div>
         </div>
-
-        <div class="panel panel-default">
+        <div class="panel panel-default searching-user">
           <div class="panel-heading">
             <div class="media">
               <div class="media-left">
@@ -177,32 +155,28 @@
               </div>
               <div class="media-body">
                 <div class"row">
-                  <div class="col-md-3">
-                      <h4 class="media-heading">Jamie</h4>
-                      <br>
-                      <span>find friends</span>
+                  <div class="col-md-4">
+                    <h4 class="media-heading">Emily</h4>
+                    This is Emily
                   </div>
-                  <div class="col-md-5">
-                  </div>
-                  <div class="col-md-3">
-                    <span class="glyphicon glyphicon-map-marker symbol">USA,CT</span>
-                  </div>
-                  <div class="col-md-1">
-                    <span class="glyphicon glyphicon-plus symbol"</span>
+                  <div class="col-md-8">
+                    <div class="row">
+                      <div class="col-md-12">
+                        <a href="#"><i class="fa fa-user-plus pull-right" aria-hidden="true"></i></a>
+                      </div>
+                    </div>
+                    <div class="location pull-right">
+                      <span class="glyphicon glyphicon-map-marker"></span>
+                      Amherst, MA, USA
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          <div class="panel-footer">
-              <div class="row">
-                <div class="col-md-12">
-                </div>
-              </div>
-          </div>
         </div>
 
-        <div class="panel panel-default">
+        <div class="panel panel-default searching-event">
           <div class="panel-body">
             <div class="media">
               <div class="media-top">
@@ -217,8 +191,11 @@
                   <div class="col-md-5">
                     <a href="# "><h2 class="parties-title">dancing party</h2></a>
                   </div>
-                  <div class="col-md-2">
-                    <span class="glyphicon glyphicon-map-marker parties-map">MA,Amherst</span>
+                  <div class="col-md-7">
+                    <div class="location pull-right">
+                      <span class="glyphicon glyphicon-map-marker"></span>
+                      Amherst, MA, USA
+                    </div>
                   </div>
                 </div>
               </div>
@@ -233,8 +210,11 @@
                   <div class="col-md-5">
                     <a href="# "><h2 class="parties-title">birthday party</h2></a>
                   </div>
-                  <div class="col-md-2">
-                    <span class="glyphicon glyphicon-map-marker parties-map">MA,Amherst</span>
+                  <div class="col-md-7">
+                    <div class="location pull-right">
+                      <span class="glyphicon glyphicon-map-marker"></span>
+                      Amherst, MA, USA
+                    </div>
                   </div>
                 </div>
               </div>
