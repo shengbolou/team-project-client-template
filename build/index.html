@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -11,17 +10,18 @@
 
   <!-- Bootstrap -->
   <link href="css/bootstrap.min.css" rel="stylesheet">
+
   <!-- Custom CSS goes here -->
-  <!-- font awesome css library for using icons (please check website http://fontawesome.io/ for useages) -->
+  <!-- font awesome css library for using icons (check website http://fontawesome.io/ for useages) -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
 
-  <!-- testing the library -->
+  <!-- testing the library, please comment it out after you copy this-->
   <link rel="stylesheet" href="css/mdb.min.css">
 
   <!-- css only for navbar -->
   <link rel="stylesheet" href="css/navbar.css">
 
-  <!-- css for index page, please fo not copy this line -->
+  <!-- css for index page only, change this to your own css file -->
   <link rel="stylesheet" href="css/index.css">
 
 </head>
@@ -37,7 +37,7 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="#">
+        <a class="navbar-brand" href="index.html">
           <img src="./img/logo/mipmap-xxhdpi/ic_launcher.png" width="50px" height="50px" alt="" />
         </a>
       </div>
@@ -45,7 +45,7 @@
       <!-- Collect the nav links, forms, and other content for toggling -->
       <div class="collapse navbar-collapse" id="navbar">
         <ul class="nav navbar-nav nav-left">
-          <li class="active"><a href="#">Trend</a></li>
+          <li class="active"><a href="index.html">Trend</a></li>
           <li><a href="#">Activity</a></li>
           <li><a href="#">Chat</a></li>
         </ul>
@@ -53,19 +53,18 @@
         <ul class="nav navbar-nav navbar-right">
           <div class="dropdown pull-left">
             <a href="#" class="dropdown-toggle" type="button" id="user-options" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-              <img src="img/user.png" width="50px" height="50px" alt="" /> User
+              <img src="img/user.png" width="50px" height="50px" alt="" /> Upao
               <span class="caret"></span>
             </a>
             <ul class="dropdown-menu" aria-labelledby="user-options">
-              <li><a href="#">Action</a></li>
-              <li><a href="#">Another action</a></li>
-              <li><a href="#">Something else here</a></li>
+              <li><a href="profile.html"><span><i class="fa fa-user" aria-hidden="true"></i></span>Profile</a></li>
+              <li><a href="settings.html"><span><i class="fa fa-cog" aria-hidden="true"></i></span>Settings</a></li>
               <li role="separator" class="divider"></li>
-              <li><a href="#">Separated link</a></li>
+              <li><a href="#"><span><i class="fa fa-sign-out" aria-hidden="true"></i></span>Log out</a></li>
             </ul>
           </div>
           <li class="active"><a href="#"><i class="fa fa-search" aria-hidden="true"></i></a></li>
-          <li><a href="#"><i class="fa fa-bell-o" aria-hidden="true"></i></i></a></li>
+          <li><a href="#"><i class="fa fa-bell-o" aria-hidden="true"></i></a></li>
         </ul>
       </div>
       <!-- /.navbar-collapse -->
@@ -77,13 +76,36 @@
   <div class="container">
     <div class="row">
       <div class="col-md-7 col-md-offset-2 main-feed">
+
+        <!--send post-->
+        <div class="panel panel-default post-send">
+          <div class="panel-heading">
+            <div class="media">
+              <div class="media-left">
+                <a href="#">
+                  <img class="media-object" src="img/user.png" width="50px" height="50px" alt="...">
+                </a>
+              </div>
+              <div class="media-body">
+                <textarea name="name" rows="8" cols="40" placeholder="What's on your mind"></textarea>
+                <div class="btn-group" role="group" aria-label="...">
+                  <a href="#"><i class="fa fa-camera" aria-hidden="true"></i></a>
+                  <a href="#"><i class="fa fa-link" aria-hidden="true"></i></a>
+                </div>
+                <button type="button" class="btn btn-blue-grey pull-right"name="button">Submit</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
         <!-- trend content -->
         <div class="panel panel-default">
           <div class="panel-heading">
             <div class="media">
               <div class="media-left">
                 <a href="#">
-                  <img class="media-object" src="img/user.png" width="50px" height="50px"alt="..." style="box-shadow:none !important">
+                  <img class="media-object" src="img/user.png" width="50px" height="50px" alt="...">
                 </a>
               </div>
               <div class="media-body">
@@ -95,17 +117,46 @@
             </div>
           </div>
           <div class="panel-body">
-            <img src="img/tmp.jpg" width="100%" height="100%"alt="" />
+            <img src="img/tmp.jpg" width="100%" height="100%" alt="" />
           </div>
           <div class="panel-footer">
-              <div class="row">
-                <div class="col-md-12">
-                  <a href="#"><span class="glyphicon glyphicon-heart"></span>11</a>
-                  <a href="#"><span class="glyphicon glyphicon-comment"></span>12</a>
-                  <textarea name="name" rows="8" cols="40" placeholder="Write a comment"></textarea>
-                  <button class="btn btn-blue-grey pull-right"type="button" name="button">Submit</button>
-                </div>
+            <div class="row">
+              <div class="col-md-12">
+                <a href="#"><span class="glyphicon glyphicon-heart"></span>11</a>
+                <a href="#"><span class="glyphicon glyphicon-comment"></span>12</a>
+                <ul class="media-list comments" style="margin-top:30px">
+                  <li class="media">
+                    <div class="media-left">
+                      <a href="#">
+                        <img class="media-object" src="img/user.png" width="45px" height="45px" alt="...">
+                      </a>
+                    </div>
+                    <div class="media-body">
+                      <h5 class="media-heading">Louis</h5>
+                      <p>
+                        Nice picture
+                      </p>
+                    </div>
+                  </li>
+                  <hr>
+                  <li class="media">
+                    <div class="media-left">
+                      <a href="#">
+                        <img class="media-object" src="img/user.png" width="45px" height="45px" alt="...">
+                      </a>
+                    </div>
+                    <div class="media-body">
+                      <h5 class="media-heading">Mat</h5>
+                      <p>
+                        Woo!
+                      </p>
+                    </div>
+                  </li>
+                </ul>
+                <textarea name="name" rows="8" cols="40" placeholder="Write a comment"></textarea>
+                <button class="btn btn-blue-grey pull-right" type="button" name="button">Submit</button>
               </div>
+            </div>
           </div>
         </div>
 
@@ -114,7 +165,7 @@
             <div class="media">
               <div class="media-left">
                 <a href="#">
-                  <img class="media-object" src="img/user.png" width="50px" height="50px"alt="..." style="box-shadow:none !important">
+                  <img class="media-object" src="img/user.png" width="50px" height="50px" alt="..." style="box-shadow:none !important">
                 </a>
               </div>
               <div class="media-body">
@@ -126,17 +177,17 @@
             </div>
           </div>
           <div class="panel-body">
-            <img src="img/tmp2.jpg" width="100%" height="100%"alt="" />
+            <img src="img/tmp2.png" width="100%" height="100%" alt="" />
           </div>
           <div class="panel-footer">
-              <div class="row">
-                <div class="col-md-12">
-                  <a href="#"><span class="glyphicon glyphicon-heart"></span>11</a>
-                  <a href="#"><span class="glyphicon glyphicon-comment"></span>12</a>
-                  <textarea name="name" rows="8" cols="40" placeholder="Write a comment"></textarea>
-                  <button class="btn btn-blue-grey pull-right"type="button" name="button">Submit</button>
-                </div>
+            <div class="row">
+              <div class="col-md-12">
+                <a href="#"><span class="glyphicon glyphicon-heart"></span>11</a>
+                <a href="#"><span class="glyphicon glyphicon-comment"></span>12</a>
+                <textarea name="name" rows="8" cols="40" placeholder="Write a comment"></textarea>
+                <button class="btn btn-blue-grey pull-right" type="button" name="button">Submit</button>
               </div>
+            </div>
           </div>
         </div>
 
