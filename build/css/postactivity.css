@@ -46,3 +46,8 @@
 .noboxshadow{
     box-shadow: none !important;
 }
+.nooutline{
+    outline: none !important;
+}
+
+.modal-open .modal { outline: none !important; }
