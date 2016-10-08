@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>We Meet - postactivity</title>
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS goes here -->
+    <!-- font awesome css library for using icons (check website http://fontawesome.io/ for useages) -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
+
+    <!-- testing the library, please comment it out after you copy this-->
+    <link rel="stylesheet" href="css/mdb.min.css">
+
+    <!-- css only for navbar -->
+    <link rel="stylesheet" href="css/navbar.css">
+
+    <!-- css for settings page only -->
+    <link rel="stylesheet" href="css/settings.css">
+
+</head>
+
+<body>
+    <!-- navbar -->
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">
+                    <img src="./img/logo/mipmap-xxhdpi/ic_launcher.png" width="50px" height="50px" alt="" />
+                </a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="navbar">
+                <ul class="nav navbar-nav nav-left">
+                    <li><a href="index.html">Activity</a></li>
+                    <li><a href="post.html">Trend</a></li>
+                    <li><a href="chat.html">Chat</a></li>
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right">
+                    <div class="dropdown pull-left">
+                        <a href="#" class="dropdown-toggle" type="button" id="user-options" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                            <img src="img/user.png" width="50px" height="50px" alt="" /> Upao
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="user-options">
+                            <li><a href="profile.html"><span><i class="fa fa-user" aria-hidden="true"></i></span>Profile</a></li>
+                            <li><a href="settings.html"><span><i class="fa fa-cog" aria-hidden="true"></i></span>Settings</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="#"><span><i class="fa fa-sign-out" aria-hidden="true"></i></span>Log out</a></li>
+                        </ul>
+                    </div>
+                    <li class="active"><a href="search.html"><i class="fa fa-search" aria-hidden="true"></i></a></li>
+                    <li><a href="notification.html"><i class="fa fa-bell-o" aria-hidden="true"></i></a></li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container-fluid -->
+    </nav>
+    <!-- Post Activity -->
+    <div class="container">
+        <!--Activity header-->
+        <div class="row">
+            <div class="col-md-7 col-md-offset-1">
+                <h4><span><i class="glyphicon glyphicon-list-alt" aria-hidden="true"></i></span> Activity</h4>
+            </div>
+        </div>
+        <!--Activity form-->
+        <div class="row">
+            <div class="col-md-7 col-md-offset-1 infos">
+                <div class="panel panel-default personal-info-1">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h4>Activity Info</h4>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="md-form">
+                                            <input type="text" id="" class="form-control">
+                                            <label for="form1" class="">Title</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="md-form">
+                                            <input type="text" id="" class="form-control">
+                                            <label for="form1" class="">Start Time</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="md-form">
+                                            <input type="text" id="" class="form-control">
+                                            <label for="form1" class="">End Time</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="md-form">
+                                            <input type="text" id="" class="form-control">
+                                            <label for="form1" class="">Location</label>
+                                        </div>
+                                        <div class="md-form">
+                                            <textarea type="text" id="" class="md-textarea"></textarea>
+                                            <label for="form7">Description</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="panel-footer">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <button type="button" class="btn btn-blue-grey pull-Left" name="button" data-toggle="modal" data-target="#invitemodal">Invite Friend</button>
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="invitemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                      <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                          <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                            <h4 class="modal-title" id="myModalLabel">Invite friends</h4>
+                                          </div>
+                                          <div class="modal-body">
+                                            ...
+                                          </div>
+                                          <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                            <button type="button" class="btn btn-primary">Confirm</button>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <button type="button" class="btn btn-blue-grey pull-right" name="button">Submit</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+                <!--
+                <div class="col-md-3 system-settings">
+                <div class="list-group">
+                <a class="list-group-item"data-toggle="collapse" data-parent="#accordion" href="#reset-password" aria-expanded="true" aria-controls="reset-password">
+                Reset Password <span class="pull-right"><i class="fa fa-angle-right" aria-hidden="true"></i></span>
+            </a>
+            <div id="reset-password" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+            <div class="panel-body">
+            <div class="md-form" style="margin-top:20px;">
+            <input type="password" id="" class="form-control">
+            <label for="form1" class="">Old password</label>
+        </div>
+        <div class="md-form" style="margin-top:20px;">
+        <input type="password" id="" class="form-control">
+        <label for="form1" class="">New password</label>
+    </div>
+    <div class="md-form" style="margin-top:20px;">
+    <input type="password" id="" class="form-control">
+    <label for="form1" class="">Repeat password</label>
+</div>
+<button type="button" class="btn btn-blue-grey pull-right" name="button">Submit</button>
+</div>
+</div>
+<a class="list-group-item"data-toggle="collapse" data-parent="#accordion" href="#reset-email" aria-expanded="true" aria-controls="reset-password">
+Reset Email <span class="pull-right"><i class="fa fa-angle-right" aria-hidden="true"></i></span>
+</a>
+<div id="reset-email" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+<div class="panel-body">
+<div class="md-form" style="margin-top:20px;">
+<input type="password" id="" class="form-control">
+<label for="form1" class="">Old Email</label>
+</div>
+<div class="md-form" style="margin-top:20px;">
+<input type="password" id="" class="form-control">
+<label for="form1" class="">New Email</label>
+</div>
+<button type="button" class="btn btn-blue-grey pull-right" name="button">Submit</button>
+</div>
+</div>
+</div>
+</div>
+-->
+  </div>
+
+
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="js/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="js/bootstrap.min.js"></script>
+<script src="js/mdb.min.js"></script>
+<!-- App code cd-->
+<script src="js/bundle.js"></script>
+<script type="text/javascript">
+$('.list-group .collapse').collapse()
+</script>
+</body>
+
+</html>
