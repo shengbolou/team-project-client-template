@@ -1,3 +1,7 @@
+body{
+  overflow-x: hidden !important;
+}
+
 .panel-heading-chat .nav li a{
   border-bottom-left-radius: 0px;
   border-bottom-right-radius: 0px;
