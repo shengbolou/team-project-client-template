@@ -1,63 +1,37 @@
-.main-feed .panel{
+.panel{
   box-shadow: 0 10px 28px 0 rgba(137,157,197,.12);
-  border-radius: 5px;
   border: none;
+  color:rgb(92, 92, 92);
 }
-.main-feed .panel .panel-heading{
+.panel .panel-heading{
   background-color: #FDFDFD;
-  border-bottom-color: #FDFDFD
+  border-bottom-color: #FDFDFD;
 }
-.main-feed .panel .panel-heading .media .media-body p{
-  margin-top: 10px;
-  text-align: justify;
+.panel .panel-heading .badge{
+  background-color: #7e929e;
 }
-.main-feed .panel .panel-body{
+.panel .panel-body{
   background-color: #F7F7F7;
 }
-.main-feed .panel .panel-footer{
+.panel .panel-footer{
   background-color: #FDFDFD;
   border-top-color: #FDFDFD
 }
-.main-feed .panel .panel-footer .col-md-12 a{
-  color: grey;
-  margin-right: 50px;
-  font-size: 15px;
-}
-.main-feed .panel .panel-footer .col-md-12 a:first-child:hover{
-  color:rgb(223, 61, 71);
-}
-.main-feed .panel .panel-footer .col-md-12 a:nth-child(2):hover{
-  color:rgb(50, 37, 153);
-}
-.main-feed .panel .panel-footer .col-md-12 a span{
-  margin-right: 5px;
-}
-.main-feed .panel textarea{
-  resize: none;
-  margin-top: 10px;
-  border-color: #F7F7F7;
-  background-color: #F7F7F7;
-  border-radius: 5px;
-  height: 100px;
-  width: 100%;
-}
-.main-feed .panel textarea:focus{
-  border-color: rgba(97, 180, 228, 0.4);
-  outline: 0 none;
-}
 
 .media .media-object{
-  box-shadow: none !important;
+  box-shadow: none;
 }
 
-.post-send .media .media-body .btn-group a{
-  margin-right: 20px;
-  color: grey;
-}
-.post-send .media .media-body .btn-group{
-  margin-top: 10px;
+h4 span,
+h5 span{
+  margin-right: 5px;
 }
 
-.comments .media .media-body p{
-  font-size: 12px;
+.c-btn{
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  border-radius: 50%;
+  padding-top: 12px;
+  padding-bottom: 12px;
 }
