@@ -36,8 +36,8 @@
 
 .personal-info-1 .panel-heading img{
   position: relative;
-  left: 20%;
-  margin-top: 20%;
+  left: 0%;
+  margin-top: 0%;
 }
 .md-form label{
   font-size: 12px;
@@ -50,4 +50,16 @@
     outline: none !important;
 }
 
+
+.media-object{
+  box-shadow: none !important;
+}
+
 .modal-open .modal { outline: none !important; }
+
+.modal-header{
+  padding-top:15px;
+  padding-left:15px;
+  padding-right: 15px;
+  padding-bottom: 0px;
+}
