@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router';
 
 export default class Navbar extends React.Component{
     render(){
@@ -13,16 +14,20 @@ export default class Navbar extends React.Component{
                   <span className="icon-bar"></span>
                   <span className="icon-bar"></span>
                 </button>
-                <a className="navbar-brand" href="index.html">
+                <Link className="navbar-brand" to="/">
                   <img src="./img/logo/mipmap-xxhdpi/ic_launcher.png" width="50px" height="50px" alt="" />
-                </a>
+                </Link>
               </div>
 
               {/* Collect the nav links, forms, and other content for toggling */}
               <div className="collapse navbar-collapse" id="navbar">
                 <ul className="nav navbar-nav nav-left">
-                  <li className="active"><a href="index.html">Activities</a></li>
-                  <li><a href="post.html">Trend</a></li>
+                  <li className={this.props.activity}>
+                    <Link to={"/"}> Activities </Link>
+                  </li>
+                  <li className={this.props.post}>
+                    <Link to={"/post"}>Trend</Link>
+                  </li>
                   <li><a href="chat.html">Chat</a></li>
                 </ul>
 
