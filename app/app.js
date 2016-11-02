@@ -1,8 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Activity from './activity/activity';
-import Post from './post/post'
-import { IndexRoute, Router, Route, browserHistory } from 'react-router'
+import Post from './post/post';
+import Settings from './settings/settings';
+import { IndexRoute, Router, Route, hashHistory } from 'react-router';
+
 
 
 class ActivityPage extends React.Component{
@@ -28,13 +30,21 @@ class App extends React.Component {
   }
 }
 
+class SettingsPage extends React.Component {
+  render() {
+    return (
+      <Settings />
+    );
+  }
+}
+
 //render main
 ReactDOM.render((
-  <Router history={browserHistory}>
+  <Router history={hashHistory}>
     <Route path="/" component={App}>
       <IndexRoute component={ActivityPage} />
       <Route path="post" component={ThrendPage} />
+      <Route path="settings" component={SettingsPage} />
     </Route>
   </Router>
-),document.getElementById('container')
-);
+),document.getElementById('container'));

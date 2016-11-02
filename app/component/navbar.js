@@ -26,7 +26,7 @@ export default class Navbar extends React.Component{
                     <Link to={"/"}> Activities </Link>
                   </li>
                   <li className={this.props.post}>
-                    <Link to={"/post"}>Trend</Link>
+                    <Link to={"post"}>Trend</Link>
                   </li>
                   <li><a href="chat.html">Chat</a></li>
                 </ul>
@@ -39,7 +39,7 @@ export default class Navbar extends React.Component{
                     </a>
                     <ul className="dropdown-menu" aria-labelledby="user-options">
                       <li><a href="profile.html"><span><i className="fa fa-user" aria-hidden="true"></i></span>Profile</a></li>
-                      <li><a href="settings.html"><span><i className="fa fa-cog" aria-hidden="true"></i></span>Settings</a></li>
+                      <li><Link to="settings"><span><i className="fa fa-cog" aria-hidden="true"></i></span>Settings</Link></li>
                       <li><a href="postactivity.html"><span><i className="fa fa-pencil" aria-hidden="true"></i></span>Create Activity</a></li>
                       <li role="separator" className="divider"></li>
                       <li><a href="#"><span><i className="fa fa-sign-out" aria-hidden="true"></i></span>Log out</a></li>

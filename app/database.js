@@ -2,10 +2,71 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 // Modify with your startup's name!
-var startupName = null;
+var startupName = "Upao";
 
 // Put your mock objects here, as in Workshop 4
 var initialData = {
+  //users
+  "users":{
+    "1":{
+      "_id":1,
+      "firstname": "John",
+      "lastname": "norlan",
+      "nickname": "crown",
+      "avatar": "img/user.png",
+      "description": "Hello everyone, I'm a mock user",
+      "country": "US",
+      "state": "MA",
+      "city": "Amherst",
+      "post":1,
+      "activity":1
+    },
+    "2": {
+      "_id":2,
+      "firstname": "Test",
+      "lastname": "Account",
+      "nickname": "None",
+      "avatar": "img/user.png",
+      "description": "Hello everyone, I'm a test account",
+      "country": "US",
+      "state": "MA",
+      "city": "Amherst",
+      "post":2,
+      "activity":2
+    }
+  },
+  // "feeds" collection. Feeds for each user.
+  "postFeeds": {
+    "2": {
+      "_id": 2,
+      "contents": []
+    },
+    "1": {
+      "_id": 1,
+      "contents": []
+    }
+  },
+
+  //post feed items
+  "postFeedItems": {
+    "1": {
+      "_id":1,
+      "likeCounter":[],
+      "type": "general",
+      "contents": {
+        "author": 1,
+        //unix time
+        "postDate": 1478093425,
+        "text": "What's up there",
+        "img": null
+      },
+      "comments": {
+        "author": 2,
+        "text": "what's up",
+        "postDate": 1478094635
+      }
+    }
+  }
 
 };
 
