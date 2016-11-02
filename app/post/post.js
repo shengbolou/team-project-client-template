@@ -1,7 +1,7 @@
 import React from 'react';
 import PostEntry from './postEntry';
 import PostFeed from './postFeed';
-import Navbar from './navbar';
+import Navbar from '../component/navbar';
 
 export default class Post extends React.Component{
   render(){

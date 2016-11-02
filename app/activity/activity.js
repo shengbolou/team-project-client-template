@@ -1,6 +1,6 @@
 import React from 'react';
-import ActivityFeed from './ActivityFeed';
-import Navbar from './navbar';
+import ActivityFeed from './activityFeed';
+import Navbar from '../component/navbar';
 
 export default class Activity extends React.Component{
   render(){

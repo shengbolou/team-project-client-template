@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Activity from './component/activity';
-import Post from './component/post'
+import Activity from './activity/activity';
+import Post from './post/post'
 import { IndexRoute, Router, Route, browserHistory } from 'react-router'
 
 
