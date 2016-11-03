@@ -10,6 +10,33 @@ function emulateServerReturn(data, cb) {
   }, 4);
 }
 
+export function postStatus(user, text, cb){
+  var time = new Date().getTime();
+
+  var post = {
+    "likeCounter":[],
+    "type": "general",
+    "contents": {
+      "author": user,
+      "postDate": time,
+      "text": text,
+      "img": null
+    },
+    "comments":[]
+  };
+
+  post = addDocument('postFeedItems',post);
+
+  var userData = readDocument('users',user);
+  var postFeedData = readDocument('postFeeds',userData.post);
+
+  postFeedData.contents.unshift(post._id);
+
+  writeDocument('postFeeds', postFeedData);
+
+  emulateServerReturn(post,cb);
+}
+
 function getPostFeedItemSync(feedItemId){
   var postFeedItem = readDocument("postFeedItems",feedItemId);
   postFeedItem.likeCounter = postFeedItem.likeCounter.map((id)=>readDocument('users', id));

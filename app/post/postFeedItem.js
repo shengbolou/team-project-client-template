@@ -24,6 +24,11 @@ export default class PostFeedItem extends React.Component{
         throw new Error("Unknown FeedItem: " + data.type);
     }
 
+    var img = <img src={contents.img} width="100%" height="100%" alt="" />;
+
+    if(contents.img === null)
+      img = null;
+
     return(
       <div className="panel panel-default">
         <div className="panel-heading">
@@ -43,7 +48,7 @@ export default class PostFeedItem extends React.Component{
           <p>
             {contents.text}
           </p>
-          <img src={contents.img} width="100%" height="100%" alt="" />
+          {img}
         </div>
         <div className="panel-footer">
           <div className="row">

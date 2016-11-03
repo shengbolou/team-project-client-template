@@ -1,5 +1,4 @@
 import React from 'react';
-import PostEntry from './postEntry';
 import PostFeed from './postFeed';
 import Navbar from '../component/navbar';
 import {getUserData} from '../server';
@@ -24,8 +23,7 @@ export default class Post extends React.Component{
         <div className="container">
           <div className="row">
             <div className="col-md-7 col-md-offset-2 main-feed">
-              <PostEntry user={this.state} />
-              <PostFeed user={this.props.user} />
+              <PostFeed user={this.state} userId={this.props.user}/>
             </div>
           </div>
         </div>
