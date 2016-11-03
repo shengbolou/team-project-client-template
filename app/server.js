@@ -13,21 +13,21 @@ function emulateServerReturn(data, cb) {
 function getPostFeedItemSync(feedItemId){
   var postFeedItem = readDocument("postFeedItems",feedItemId);
   postFeedItem.likeCounter = postFeedItem.likeCounter.map((id)=>readDocument('users', id));
-  postFeedItem.contents.author = readDocument('user', postFeedItem.contents.author);
+  postFeedItem.contents.author = readDocument('users', postFeedItem.contents.author);
 
   postFeedItem.comments.forEach((comment)=>{
-    comment.author = readDocument('user', comment.author);
+    comment.author = readDocument('users', comment.author);
   });
 
   return postFeedItem;
 }
 
 
-function getPostFeedData(user, cb){
+export function getPostFeedData(user, cb){
   var userData = readDocument('users',user);
   var feedData = readDocument('postFeeds',userData.post);
 
-  feedData.contents.map(getPostFeedItemSync);
+  feedData.contents = feedData.contents.map(getPostFeedItemSync);
 
   emulateServerReturn(feedData,cb);
 }

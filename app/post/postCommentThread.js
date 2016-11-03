@@ -11,7 +11,6 @@ export default class PostCommentThread extends React.Component{
             </li>
           );
         })}
-        <hr />
       </ul>
     );
   }

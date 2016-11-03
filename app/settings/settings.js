@@ -1,11 +1,23 @@
 import React from 'react';
 import Navbar from '../component/navbar';
+import {getUserData} from '../server'
 
 export default class Settings extends React.Component{
+  constructor(props){
+    super(props);
+    this.state = {}
+  }
+
+  getData(){
+    getUserData(this.props.user,(userData)=>{
+        this.setState(userData);
+    });
+  }
+
   render(){
     return(
       <div>
-        <Navbar />
+        <Navbar user={this.state}/>
         <div className="container">
           <div className="row">
             <div className="col-md-7 col-md-offset-1 infos">
@@ -116,5 +128,8 @@ export default class Settings extends React.Component{
         </div>
       </div>
     );
+  }
+  componentDidMount(){
+    this.getData();
   }
 }

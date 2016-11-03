@@ -24,8 +24,8 @@ export default class Post extends React.Component{
         <div className="container">
           <div className="row">
             <div className="col-md-7 col-md-offset-2 main-feed">
-              <PostEntry user={this.state}/>
-              <PostFeed />
+              <PostEntry user={this.state} />
+              <PostFeed user={this.props.user} />
             </div>
           </div>
         </div>

@@ -16,7 +16,7 @@ class ActivityPage extends React.Component{
 }
 class ThrendPage extends React.Component{
   render(){
-    return <Post user={1} />;
+    return (<Post user={1} />);
   }
 }
 
@@ -31,7 +31,7 @@ class App extends React.Component {
 class SettingsPage extends React.Component {
   render() {
     return (
-      <Settings />
+      <Settings user={1} />
     );
   }
 }

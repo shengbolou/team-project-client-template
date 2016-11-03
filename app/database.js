@@ -33,6 +33,19 @@ var initialData = {
       "city": "Amherst",
       "post":2,
       "activity":2
+    },
+    "3": {
+      "_id":3,
+      "firstname": "Test",
+      "lastname": "Account2",
+      "nickname": "None",
+      "avatar": "img/user.png",
+      "description": "Hello everyone, I'm a test account",
+      "country": "US",
+      "state": "MA",
+      "city": "Amherst",
+      "post":3,
+      "activity":3
     }
   },
   // "feeds" collection. Feeds for each user.
@@ -56,15 +69,20 @@ var initialData = {
       "contents": {
         "author": 1,
         //unix time
-        "postDate": 1478093425,
+        "postDate": 1478149314000,
         "text": "What's up there",
-        "img": null
+        "img": "img/tmp.jpg"
       },
       "comments": [
         {
           "author": 2,
           "text": "what's up",
-          "postDate": 1478094635
+          "postDate": 1478149440000
+        },
+        {
+          "author": 3,
+          "text": "Hello",
+          "postDate": 1478149540000
         }
       ]
     }
@@ -132,19 +150,19 @@ export function resetDatabase() {
 /**
  * Reset database button.
  */
-// class ResetDatabase extends React.Component {
-//   render() {
-//     return (
-//       <button className="btn btn-default" type="button" onClick={() => {
-//         resetDatabase();
-//         window.alert("Database reset! Refreshing the page now...");
-//         document.location.reload(false);
-//       }}>Reset Mock DB</button>
-//     );
-//   }
-// }
+class ResetDatabase extends React.Component {
+  render() {
+    return (
+      <button className="btn btn-default" type="button" onClick={() => {
+        resetDatabase();
+        window.alert("Database reset! Refreshing the page now...");
+        document.location.reload(false);
+      }}>Reset Mock DB</button>
+    );
+  }
+}
 
-// ReactDOM.render(
-//   <ResetDatabase />,
-//   document.getElementById('db-reset')
-// );
+ReactDOM.render(
+  <ResetDatabase />,
+  document.getElementById('db-reset')
+);
