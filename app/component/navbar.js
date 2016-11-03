@@ -34,7 +34,7 @@ export default class Navbar extends React.Component{
                 <ul className="nav navbar-nav navbar-right">
                   <div className="dropdown pull-left">
                     <a href="#" className="dropdown-toggle" type="button" id="user-options" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                      <img src="img/user.png" width="50px" height="50px" alt="" /> User
+                      <img src={this.props.user.avatar} width="50px" height="50px" alt="" /> {this.props.user.firstname}
                       <span className="caret"></span>
                     </a>
                     <ul className="dropdown-menu" aria-labelledby="user-options">

@@ -43,7 +43,7 @@ var initialData = {
     },
     "1": {
       "_id": 1,
-      "contents": []
+      "contents": [1]
     }
   },
 
@@ -60,11 +60,13 @@ var initialData = {
         "text": "What's up there",
         "img": null
       },
-      "comments": {
-        "author": 2,
-        "text": "what's up",
-        "postDate": 1478094635
-      }
+      "comments": [
+        {
+          "author": 2,
+          "text": "what's up",
+          "postDate": 1478094635
+        }
+      ]
     }
   }
 
@@ -130,19 +132,19 @@ export function resetDatabase() {
 /**
  * Reset database button.
  */
-class ResetDatabase extends React.Component {
-  render() {
-    return (
-      <button className="btn btn-default" type="button" onClick={() => {
-        resetDatabase();
-        window.alert("Database reset! Refreshing the page now...");
-        document.location.reload(false);
-      }}>Reset Mock DB</button>
-    );
-  }
-}
+// class ResetDatabase extends React.Component {
+//   render() {
+//     return (
+//       <button className="btn btn-default" type="button" onClick={() => {
+//         resetDatabase();
+//         window.alert("Database reset! Refreshing the page now...");
+//         document.location.reload(false);
+//       }}>Reset Mock DB</button>
+//     );
+//   }
+// }
 
-ReactDOM.render(
-  <ResetDatabase />,
-  document.getElementById('db-reset')
-);
+// ReactDOM.render(
+//   <ResetDatabase />,
+//   document.getElementById('db-reset')
+// );

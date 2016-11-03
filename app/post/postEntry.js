@@ -8,7 +8,7 @@ export default class PostEntry extends React.Component{
           <div className="media">
             <div className="media-left">
               <a href="#">
-                <img className="media-object" src="img/user.png" width="50px" height="50px" alt="..."></img>
+                <img className="media-object" src={this.props.user.avatar} width="50px" height="50px" alt="..."></img>
               </a>
             </div>
             <div className="media-body">

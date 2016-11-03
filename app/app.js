@@ -10,15 +10,13 @@ import { IndexRoute, Router, Route, hashHistory } from 'react-router';
 class ActivityPage extends React.Component{
   render(){
     return(
-      <Activity />
+      <Activity user={1}/>
     );
   }
 }
 class ThrendPage extends React.Component{
   render(){
-    return(
-      <Post />
-    );
+    return <Post user={1} />;
   }
 }
 
