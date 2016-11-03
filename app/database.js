@@ -10,8 +10,8 @@ var initialData = {
   "users":{
     "1":{
       "_id":1,
-      "firstname": "John",
-      "lastname": "norlan",
+      "firstname": "Vincent",
+      "lastname": "Lou",
       "nickname": "crown",
       "avatar": "img/user.png",
       "description": "Hello everyone, I'm a mock user",

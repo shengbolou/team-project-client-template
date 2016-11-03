@@ -32,7 +32,7 @@ export default class PostFeed extends React.Component{
       <div>
         <PostEntry userAvatar={this.props.user.avatar} onPost={(text)=>this.onPost(text)}/>
         {this.state.contents.map((postFeedItem)=>{
-          return <PostFeedItem key={postFeedItem._id} data={postFeedItem} />
+          return <PostFeedItem key={postFeedItem._id} data={postFeedItem} currentUser={this.props.user._id}/>
         })}
       </div>
     );

@@ -1,8 +1,8 @@
 import React from 'react';
 import PostComment from './postComment';
-import PostCommentEntry from './postCommentEntry';
 import PostCommentThread from './postCommentThread';
 import {unixTimeToString} from '../util'
+import {postComment} from '../server';
 
 export default class PostFeedItem extends React.Component{
 
@@ -11,7 +11,11 @@ export default class PostFeedItem extends React.Component{
     this.state = props.data;
   }
 
-
+  handlePostComment(comment){
+    postComment(this.state._id, this.props.currentUser ,comment, (newFeedItem)=>{
+      this.setState(newFeedItem);
+    })
+  }
 
   render(){
     var data = this.state;
@@ -56,15 +60,13 @@ export default class PostFeedItem extends React.Component{
               <a href="#"><span className="glyphicon glyphicon-heart"></span>{data.likeCounter.length}</a>
               <a href="#"><span className="glyphicon glyphicon-comment"></span>{data.comments.length}</a>
 
-              <PostCommentThread>
+              <PostCommentThread onPostComment={(comment)=>this.handlePostComment(comment)}>
                 {data.comments.map((comment,i)=>{
                   return (
                     <PostComment key={i} data={comment} />
                   )
                 })}
               </PostCommentThread>
-
-              <PostCommentEntry />
             </div>
           </div>
         </div>

@@ -10,6 +10,19 @@ function emulateServerReturn(data, cb) {
   }, 4);
 }
 
+export function postComment(feedItemId, author, comment, cb){
+  var postFeedItem = readDocument('postFeedItems',feedItemId);
+  postFeedItem.comments.push({
+    "author": author,
+    "text": comment,
+    "postDate": (new Date()).getTime()
+  });
+
+  writeDocument('postFeedItems',postFeedItem);
+
+  emulateServerReturn(getPostFeedItemSync(feedItemId),cb);
+}
+
 export function postStatus(user, text, cb){
   var time = new Date().getTime();
 
