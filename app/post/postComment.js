@@ -1,5 +1,5 @@
 import React from 'react';
-import {unixTimeToString} from '../util';
+var moment = require('moment');
 
 export default class PostComment extends React.Component{
 
@@ -9,6 +9,11 @@ export default class PostComment extends React.Component{
   }
 
   render(){
+    var time = moment(this.state.postDate).format('MMMM Do YYYY, h:mm:ss a');
+
+    if((new Date().getTime()) - this.state.postDate <= 86400000)
+      time = moment(this.state.postDate).fromNow();
+
     return(
       <div>
         <div className="media-left">
@@ -17,8 +22,9 @@ export default class PostComment extends React.Component{
           </a>
         </div>
         <div className="media-body">
-          <h5 className="media-heading">{this.state.author.firstname} {this.state.author.lastname} <span className="pull-right">{unixTimeToString(this.state.postDate)}</span></h5>
-          <p>
+          <h5 className="media-heading">{this.state.author.firstname} {this.state.author.lastname}
+            <span className="pull-right">{time}</span></h5>
+          <p style={{"marginTop": '10'}}>
             {this.state.text}
           </p>
         </div>

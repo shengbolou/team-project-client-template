@@ -1,7 +1,6 @@
 import React from 'react';
 import PostComment from './postComment';
 import PostCommentThread from './postCommentThread';
-// import {unixTimeToString} from '../util';
 import {postComment} from '../server';
 import {likePost} from '../server';
 import {unLikePost} from '../server';
