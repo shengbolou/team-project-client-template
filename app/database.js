@@ -48,6 +48,48 @@ var initialData = {
       "activity":3
     }
   },
+  //activity collection
+  "activities": {
+    "1": {
+      "_id":1,
+      "contents": [1]
+    },
+    "2": {
+      "_id":2,
+      "contents": []
+    },
+    "3": {
+      "_id":3,
+      "contents":[]
+    }
+  },
+
+  "activityItems":{
+    "1": {
+      "_id":1,
+      "type": "Event",
+      "author":1,
+      "title": "HackUMass",
+      "img":"img/HackUMass.jpg",
+      "startTime": 1478129314000,
+      "endTime": 1479129314000,
+      "location": "University of Massachusetts Amherst",
+      "participants": [],
+      "likeCounter": [],
+      "comments":[
+        {
+          "author": 1,
+          "postDate": 1478129314000,
+          "text": "iufihishf"
+        }
+      ],
+      "contents": {
+        "img": null,
+        "text": ""
+      }
+    }
+  },
+
   // "feeds" collection. Feeds for each user.
   "postFeeds": {
     "2": {

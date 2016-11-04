@@ -94,6 +94,27 @@ export function getPostFeedData(user, cb){
   emulateServerReturn(feedData,cb);
 }
 
+function getActivityFeedItemSync(feedItemId){
+  var activityFeedItem = readDocument('activityItems',feedItemId);
+
+  activityFeedItem.participants = activityFeedItem.participants.map((id)=>readDocument('users',id));
+  activityFeedItem.likeCounter = activityFeedItem.likeCounter.map((id)=>readDocument('users',id));
+  activityFeedItem.comments.forEach((comment)=>{
+    comment.author = readDocument('users',comment.author);
+  });
+
+  return activityFeedItem;
+}
+
+export function getActivityFeedData(user,cb){
+  var userData = readDocument('users',user);
+  var activityData = readDocument('activities',userData.activity);
+
+  activityData.contents = activityData.contents.map(getActivityFeedItemSync);
+
+  emulateServerReturn(activityData,cb);
+}
+
 export function getUserData(user,cb){
   var userData = readDocument('users',user);
   emulateServerReturn(userData,cb);
