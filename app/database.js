@@ -73,6 +73,7 @@ var initialData = {
       "img":"img/HackUMass.jpg",
       "startTime": 1478129314000,
       "endTime": 1479129314000,
+      "description": "Hack Umass",
       "location": "University of Massachusetts Amherst",
       "participants": [],
       "likeCounter": [],

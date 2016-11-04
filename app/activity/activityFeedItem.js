@@ -1,33 +1,41 @@
 import React from 'react';
+var moment = require('moment');
 
 export default class ActivityFeedItem extends React.Component{
+
+  constructor(props){
+    super(props);
+    this.state = props.data;
+  }
+
   render(){
+    var startTime = moment(this.state.startTime).format('MMMM Do YYYY, h:mm:ss a');
+    var endTime = moment(this.state.endTime).format('MMMM Do YYYY, h:mm:ss a');
     return(
       <div>
         <div className="panel panel-default">
           <a href="activity-detail.html">
             <div className="panel-heading">
-              <h3>Hack Umass <span className="badge pull-right">Event</span></h3>
-              <h5 className="">10/26/2016 7:00pm--9:00pm</h5>
+              <h3>{this.state.title} <span className="badge pull-right">{this.state.type}</span></h3>
+              <h5 className="">{startTime}--{endTime}</h5>
             </div>
           </a>
           <div className="panel-body" style={{'textAlign':'justify'}}>
             <div className="media">
               <div className="media-left media-middle">
                 <a href="#">
-                  <img className="media-object" src="img/HackUMass.jpg" width="200px" height="120px;" alt="..." />
+                  <img className="media-object" src={this.state.img} width="200px" height="120px;" alt="..." />
                 </a>
               </div>
               <div className="media-body">
-                Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis.
-                Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis.
+                {this.state.description}
               </div>
             </div>
           </div>
           <div className="panel-footer">
             <div className="row">
               <div className="col-md-12">
-                <h5 className="pull-left"><span className="glyphicon glyphicon-map-marker"></span>Amherst</h5>
+                <h5 className="pull-left"><span className="glyphicon glyphicon-map-marker"></span>{this.state.location}</h5>
               </div>
             </div>
           </div>

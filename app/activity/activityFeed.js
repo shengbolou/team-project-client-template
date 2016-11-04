@@ -19,9 +19,11 @@ export default class ActivityFeed extends React.Component{
 
   render(){
     return(
-      {this.state.contents.map(activityFeedItem)=>{
-        <ActivityFeedItem />
-      }}
+      <div>
+        {this.state.contents.map((activityFeedItem)=>{
+          return <ActivityFeedItem key={activityFeedItem._id} data={activityFeedItem} currentUser={this.props.user}/>
+        })}
+      </div>
     );
   }
 
