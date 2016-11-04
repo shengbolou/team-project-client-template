@@ -10,6 +10,28 @@ function emulateServerReturn(data, cb) {
   }, 4);
 }
 
+export function likePost(feedItemId, user, cb){
+  var postFeedItem = readDocument('postFeedItems',feedItemId);
+  postFeedItem.likeCounter.push(user);
+
+  writeDocument('postFeedItems',postFeedItem);
+
+  emulateServerReturn(postFeedItem.likeCounter.map((id)=>readDocument('users',id)), cb);
+}
+
+export function unLikePost(feedItemId, user, cb){
+  var postFeedItem = readDocument('postFeedItems',feedItemId);
+  var userindex = postFeedItem.likeCounter.indexOf(user);
+
+  if(userindex !== -1){
+    postFeedItem.likeCounter.splice(userindex,1);
+    writeDocument('postFeedItems', postFeedItem);
+  }
+
+  emulateServerReturn(postFeedItem.likeCounter.map((id)=>readDocument('users',id)), cb);
+}
+
+
 export function postComment(feedItemId, author, comment, cb){
   var postFeedItem = readDocument('postFeedItems',feedItemId);
   postFeedItem.comments.push({

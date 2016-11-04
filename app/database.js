@@ -69,7 +69,7 @@ var initialData = {
       "contents": {
         "author": 1,
         //unix time
-        "postDate": 1478149314000,
+        "postDate": 1478129314000,
         "text": "What's up there",
         "img": "img/tmp.jpg"
       },
