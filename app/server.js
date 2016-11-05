@@ -31,6 +31,22 @@ export function unLikePost(feedItemId, user, cb){
   emulateServerReturn(postFeedItem.likeCounter.map((id)=>readDocument('users',id)), cb);
 }
 
+export function changeUserInfo(user, lastname, firstname, nickname, discription, country, state, city, cb){
+  var userData = readDocument('users', user);
+  userData.lastname = lastname;
+  userData.firstname = firstname;
+  userData.nickname = nickname;
+  userData.discription = discription;
+  userData.country = country;
+  userData.state = state;
+  userData.city = city;
+
+  writeDocument('users', userData);
+
+  emulateServerReturn(userData, cb);
+
+}
+
 
 export function postComment(feedItemId, author, comment, cb){
   var postFeedItem = readDocument('postFeedItems',feedItemId);

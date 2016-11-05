@@ -1,23 +1,108 @@
 import React from 'react';
 import Navbar from '../component/navbar';
-import {getUserData} from '../server'
+import {getUserData} from '../server';
+import {changeUserInfo} from '../server';
+var alert = null;
 
 export default class Settings extends React.Component{
+
   constructor(props){
     super(props);
-    this.state = {}
+    this.state = {
+      userData: {},
+      lastname: "",
+      firstname: "",
+      nickname: "",
+      description: "",
+      country: "",
+      state: "",
+      city: ""
+    }
+  }
+
+  handleChangeUserInfo(e){
+    e.preventDefault();
+
+    changeUserInfo(this.props.user,
+      this.state.lastname,
+      this.state.firstname,
+      this.state.discription,
+      this.state.country,
+      this.state.state,
+      this.state.city,
+      (userData)=>{
+        this.setState({userData: userData});
+      });
+
+      this.setState(
+        {
+          lastname: "",
+          firstname: "",
+          nickname: "",
+          description: "",
+          country: "",
+          state: "",
+          city: ""
+        }
+      );
+
+      alert = (<div className="alert alert-success alert-dismissible" role="alert">
+                    <button type="button" className="close" data-dismiss="alert" aria-label="Close">
+                      <span aria-hidden="true">&times;
+                      </span>
+                    </button>
+                    <strong>Change info succeed!</strong> Please refresh page
+                  </div>);
+
   }
 
   getData(){
     getUserData(this.props.user,(userData)=>{
-        this.setState(userData);
+        this.setState({userData:userData});
     });
   }
+
+  handleLastname(e){
+    e.preventDefault();
+    this.setState({lastname: e.target.value});
+  }
+
+  handleFirstname(e){
+    e.preventDefault();
+    this.setState({firstname: e.target.value});
+  }
+
+  handleNickname(e){
+    e.preventDefault();
+    this.setState({nickname: e.target.value});
+  }
+
+  handleDescription(e){
+    e.preventDefault();
+    this.setState({description: e.target.value});
+  }
+
+  handleState(e){
+    e.preventDefault();
+    this.setState({state: e.target.value});
+  }
+
+  handleCountry(e){
+    e.preventDefault();
+    this.setState({country: e.target.value});
+  }
+
+  handleCity(e){
+    e.preventDefault();
+    this.setState({city: e.target.value});
+  }
+
+
 
   render(){
     return(
       <div>
-        <Navbar user={this.state}/>
+        <Navbar user={this.state.userData}/>
         <div className="container">
           <div className="row">
             <div className="col-md-7 col-md-offset-1 infos">
@@ -27,16 +112,23 @@ export default class Settings extends React.Component{
                   <div className="row">
                     <div className="col-md-12">
                       <h4>Personal Info</h4>
+                      <div>
+                        {alert}
+                      </div>
                       <div className="row">
                         <div className="col-md-6">
                           <div className="md-form">
-                              <input type="text" id="" className="form-control" />
+                              <input type="text" id="" className="form-control"
+                                value={this.state.lastname}
+                                onChange={(e)=>this.handleLastname(e)}/>
                               <label htmlFor="form1" className="">LastName</label>
                           </div>
                         </div>
                         <div className="col-md-6">
                           <div className="md-form">
-                              <input type="text" id="" className="form-control" />
+                              <input type="text" id="" className="form-control"
+                                value={this.state.firstname}
+                                onChange={(e)=>this.handleFirstname(e)}/>
                               <label htmlFor="form1" className="">FirstName</label>
                           </div>
                         </div>
@@ -44,11 +136,15 @@ export default class Settings extends React.Component{
                       <div className="row">
                         <div className="col-md-12">
                           <div className="md-form">
-                              <input type="text" id="" className="form-control" />
+                              <input type="text" id="" className="form-control"
+                                value={this.state.nickname}
+                                onChange={(e)=>this.handleNickname(e)}/>
                               <label htmlFor="form1" className="">NickName</label>
                           </div>
                           <div className="md-form">
-                              <textarea type="text" id="" className="md-textarea"></textarea>
+                              <textarea type="text" className="md-textarea"
+                                value={this.state.description}
+                                onChange={(e)=>this.handleDescription(e)}></textarea>
                               <label htmlFor="form7">About you</label>
                           </div>
                         </div>
@@ -60,15 +156,21 @@ export default class Settings extends React.Component{
                     <div className="col-md-12">
                       <h4>Location</h4>
                       <div className="md-form" style={{"marginTop":'20'}}>
-                          <input type="text" id="" className="form-control"/>
+                          <input type="text" id="" className="form-control"
+                            value={this.state.country}
+                            onChange={(e)=>this.handleCountry(e)}/>
                           <label htmlFor="form1" className="">Country</label>
                       </div>
                       <div className="md-form">
-                          <input type="text" id="" className="form-control"/>
+                          <input type="text" id="" className="form-control"
+                            value={this.state.state}
+                            onChange={(e)=>this.handleState(e)}/>
                           <label htmlFor="form1" className="">State</label>
                       </div>
                       <div className="md-form">
-                          <input type="text" id="" className="form-control"/>
+                          <input type="text" id="" className="form-control"
+                            value={this.state.city}
+                            onChange={(e)=>this.handleCity(e)}/>
                           <label htmlFor="form1" className="">City</label>
                       </div>
                     </div>
@@ -78,7 +180,8 @@ export default class Settings extends React.Component{
                 <div className="panel-footer">
                   <div className="row">
                     <div className="col-md-12">
-                      <button type="button" className="btn btn-blue-grey pull-right" name="button">Save</button>
+                      <button type="button" className="btn btn-blue-grey pull-right" name="button"
+                        onClick={(e)=>this.handleChangeUserInfo(e)}>Save</button>
                     </div>
                   </div>
                 </div>
