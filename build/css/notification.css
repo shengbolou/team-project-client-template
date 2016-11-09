@@ -16,10 +16,12 @@
 }
 
 .notification .panel{
-  background-color: #FDFDFD;
+  background-color: #FDFDFD !important;
   border-top: 0px transparent;
   border-top-left-radius: 0px;
   border-top-right-radius: 0px;
+  box-shadow: none;
+  border: default;
 }
 
 .nav-tabs.nav-justified>.active>a,

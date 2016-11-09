@@ -46,7 +46,7 @@ export default class Navbar extends React.Component{
                     </ul>
                   </div>
                     <li className="active"><a href="search.html"><i className="fa fa-search" aria-hidden="true"></i></a></li>
-                  <li><a href="notification.html"><i className="fa fa-bell-o" aria-hidden="true"></i></a></li>
+                  <li><Link to={"notification/"+1}><i className="fa fa-bell-o" aria-hidden="true"></i></Link></li>
                 </ul>
               </div>
               {/*.navbar-collapse */}

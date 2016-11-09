@@ -18,7 +18,7 @@ export default class Activity extends React.Component{
     return(
       <div>
         <Navbar activity="active" user={this.state}/>
-        <div className="container">
+        <div className="container index">
           <a href="postactivity.html" className="btn btn-lg btn-blue-grey c-btn" name = "button"><span className="glyphicon glyphicon-plus"></span></a>
           <div className="row">
             <div className="col-md-7 col-md-offset-2">

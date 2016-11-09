@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import Activity from './activity/activity';
 import Post from './post/post';
 import Settings from './settings/settings';
+import Notification from './notification/notification'
 import { IndexRoute, Router, Route, hashHistory } from 'react-router';
 
 
@@ -36,6 +37,14 @@ class SettingsPage extends React.Component {
   }
 }
 
+class NotificationPage extends React.Component{
+  render(){
+    return(
+      <Notification user={1} id={this.props.params.id}/>
+    );
+  }
+}
+
 //render main
 ReactDOM.render((
   <Router history={hashHistory}>
@@ -43,6 +52,9 @@ ReactDOM.render((
       <IndexRoute component={ActivityPage} />
       <Route path="post" component={ThrendPage} />
       <Route path="settings" component={SettingsPage} />
+      <Route path="notification" component={NotificationPage}>
+        <Route path="/notification/:id" component={NotificationPage}/>
+      </Route>
     </Route>
   </Router>
 ),document.getElementById('container'));

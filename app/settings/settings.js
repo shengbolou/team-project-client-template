@@ -103,7 +103,7 @@ export default class Settings extends React.Component{
     return(
       <div>
         <Navbar user={this.state.userData}/>
-        <div className="container">
+        <div className="container settings">
           <div className="row">
             <div className="col-md-7 col-md-offset-1 infos">
               <h4><span><i className="fa fa-cog" aria-hidden="true"></i></span> Settings</h4>
