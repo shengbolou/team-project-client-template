@@ -28,7 +28,9 @@ export default class Navbar extends React.Component{
                   <li className={this.props.post}>
                     <Link to={"post"}>Trend</Link>
                   </li>
-                  <li><a href="chat.html">Chat</a></li>
+                  <li className={this.props.chat}>
+                    <Link to={"chat"}>Chat</Link>
+                  </li>
                 </ul>
 
                 <ul className="nav navbar-nav navbar-right">
