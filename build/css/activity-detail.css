@@ -3,13 +3,14 @@ body{
 
 }
 .background {
-    padding-top: 20px;
-    margin-top: -20px;
-    background-image: url('../img/HackUMass.JPG');
-    height: 450px;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: 50%;
+  padding-top: 20px;
+  margin-top: -20px;
+}
+
+.background img {
+  object-fit: cover;
+  width:100%;
+  height:400px;
 }
 
 .body-title {
