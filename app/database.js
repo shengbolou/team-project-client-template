@@ -18,6 +18,7 @@ var initialData = {
       "country": "US",
       "state": "MA",
       "city": "Amherst",
+      "friends":[],
       "post":1,
       "activity":1
     },
@@ -31,6 +32,7 @@ var initialData = {
       "country": "US",
       "state": "MA",
       "city": "Amherst",
+      "friends":[],
       "post":2,
       "activity":2
     },
@@ -44,6 +46,7 @@ var initialData = {
       "country": "US",
       "state": "MA",
       "city": "Amherst",
+      "friends":[],
       "post":3,
       "activity":3
     }
