@@ -4,7 +4,7 @@ import Activity from './activity/activity';
 import Post from './post/post';
 import Settings from './settings/settings';
 import Chat from './chat/chat'
-// import Notification from './notification/notification';
+import Notification from './notification/notification';
 import { IndexRoute, Router, Route, hashHistory } from 'react-router';
 
 
