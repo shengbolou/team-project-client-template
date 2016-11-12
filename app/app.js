@@ -4,7 +4,7 @@ import Activity from './activity/activity';
 import Post from './post/post';
 import Settings from './settings/settings';
 import Chat from './chat/chat'
-// import Notification from './notification/notification';
+import Notification from './notification/notification';
 import { IndexRoute, Router, Route, hashHistory } from 'react-router';
 
 
@@ -46,13 +46,13 @@ class ChatPage extends React.Component{
   }
 }
 
-// class NotificationPage extends React.Component{
-//   render(){
-//     return(
-//       <Notification user={1} id={this.props.params.id}/>
-//     );
-//   }
-// }
+class NotificationPage extends React.Component{
+  render(){
+    return(
+      <Notification user={1} id={this.props.params.id}/>
+    );
+  }
+}
 
 //render main
 ReactDOM.render((
@@ -62,9 +62,9 @@ ReactDOM.render((
       <Route path="post" component={ThrendPage} />
       <Route path="settings" component={SettingsPage} />
       <Route path="chat" component={ChatPage} />
-      {/*<Route path="notification" component=NotificationPage>
-        <Route path="/notification/:id" component=NotificationPage/>
-      </Route>*/}
+      <Route path="notification" component={NotificationPage}>
+        <Route path="/notification/:id" component={NotificationPage}/>
+      </Route>
     </Route>
   </Router>
 ),document.getElementById('container'));
