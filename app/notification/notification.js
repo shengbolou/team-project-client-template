@@ -22,8 +22,6 @@ export default class Notification extends React.Component{
   }
 
   render(){
-    var debug = require('react-debug');
-    debug(this.props);
     var navbar = <NavTab request="active"/>;
     if(this.props.id == 2){
       navbar = <NavTab news="active"/>
