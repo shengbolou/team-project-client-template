@@ -60,6 +60,13 @@ body{
     border: none;
 }
 
+.friends .list-group-item-friend {
+   border-radius: 4px;
+    cursor: pointer;
+    margin-top: 3px;
+    border: none;
+}
+
 .panel-heading-chatwindow {
     background: #fdfdfd;
 }
