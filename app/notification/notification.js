@@ -1,6 +1,6 @@
 import React from 'react';
 import NavTab from './navTabs';
-import NotificationBody from './NotificationBody';
+import NotificationBody from './notificationBody';
 import Navbar from '../component/navbar';
 import {getUserData} from '../server';
 
@@ -24,7 +24,7 @@ export default class Notification extends React.Component{
   render(){
     var navbar = <NavTab request="active"/>;
     if(this.props.id == 2){
-      navbar = <NavTab news="active"/>
+      navbar = <NavTab news="active"/>;
     }
 
     return(
