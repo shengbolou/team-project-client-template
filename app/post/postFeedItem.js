@@ -63,7 +63,7 @@ export default class PostFeedItem extends React.Component{
     if(contents.img === null)
       img = null;
 
-    var time = moment(contents.postDate).format('MMMM Do YYYY, h:mm:ss a');
+    var time = moment(contents.postDate).calendar();
 
     if((new Date().getTime()) - contents.postDate <= 86400000)
       time = moment(contents.postDate).fromNow();

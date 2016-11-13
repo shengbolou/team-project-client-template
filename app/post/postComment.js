@@ -9,8 +9,9 @@ export default class PostComment extends React.Component{
   }
 
   render(){
-    var time = moment(this.state.postDate).format('MMMM Do YYYY, h:mm:ss a');
-
+    //default time format
+    var time = moment(this.state.postDate).calendar();
+    //if less than 24 hours, use relative time
     if((new Date().getTime()) - this.state.postDate <= 86400000)
       time = moment(this.state.postDate).fromNow();
 
