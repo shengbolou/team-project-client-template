@@ -10,6 +10,26 @@ function emulateServerReturn(data, cb) {
   }, 4);
 }
 
+function getNotificationDataSync(notificationId){
+  var notification = readDocument('notificationItems',notificationId);
+  if(notification.type === "FR"){
+    notification.sender = readDocument("users",notification.sender);
+  }
+  else{
+    notification.author = readDocument("users",notification.author);
+  }
+
+  return notification;
+}
+
+export function getNotificationData(user, cb){
+  var userData = readDocument('users',user);
+  var notificationData = readDocument('notifications',userData.notification);
+  notificationData.contents = notificationData.contents.map(getNotificationDataSync);
+
+  emulateServerReturn(notificationData,cb);
+} 
+
 export function likePost(feedItemId, user, cb){
   var postFeedItem = readDocument('postFeedItems',feedItemId);
   postFeedItem.likeCounter.push(user);
