@@ -1,7 +1,7 @@
 import React from 'react';
 import Request from './friendRequest';
 import NewsFeed from './newsFeed'
-import {getNotificationData} from '../server';
+import {getNotificationData, deleteNotification,acceptRequest} from '../server';
 
 export default class NotificationBody extends React.Component{
 
@@ -32,6 +32,18 @@ export default class NotificationBody extends React.Component{
     })
   }
 
+  handleDelete(id){
+    deleteNotification(id,this.props.user,()=>{
+      this.getData();
+    });
+  }
+
+  handleAccept(id){
+    acceptRequest(id,this.props.user,()=>{
+      this.getData();
+    });
+  }
+
   render(){
     if(this.props.id == 1){
       if(this.state.FR.length === 0){
@@ -47,7 +59,7 @@ export default class NotificationBody extends React.Component{
         <div className="panel panel-default">
           <div className="panel-body">
             {this.state.FR.map((fr,i)=>{
-              return <Request key={i} data={fr}/>
+              return <Request key={i} data={fr} onDelete={(id)=>this.handleDelete(id)} onAccept={(id)=>this.handleAccept(id)}/>
             })}
           </div>
         </div>
@@ -67,7 +79,7 @@ export default class NotificationBody extends React.Component{
         <div className="panel panel-default">
           <div className="panel-body">
             {this.state.NF.map((nf,i)=>{
-              return <NewsFeed key={i} data={nf}/>
+              return <NewsFeed key={i} data={nf} onDelete={(id)=>this.handleDelete(id)}/>
             })}
           </div>
         </div>

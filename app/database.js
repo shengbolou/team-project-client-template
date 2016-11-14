@@ -201,6 +201,11 @@ export function writeDocument(collection, changedDocument) {
   localStorage.setItem(startupName, JSON.stringify(data));
 }
 
+export function deleteDocument(collection,id){
+  delete data[collection][id];
+  localStorage.setItem(startupName, JSON.stringify(data));
+}
+
 /**
  * Adds a new document to the NoSQL database.
  */

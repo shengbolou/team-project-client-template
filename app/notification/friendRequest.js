@@ -1,6 +1,14 @@
 import React from 'react';
 
 export default class Request extends React.Component{
+  handleDelete(e){
+    e.preventDefault();
+    this.props.onDelete(this.props.data._id);
+  }
+  handleAccept(e){
+    e.preventDefault();
+    this.props.onAccept(this.props.data._id);
+  }
   render(){
     return(
       <div className="row friend-request">
@@ -19,8 +27,8 @@ export default class Request extends React.Component{
           </div>
 
           <div className="col-md-3 pull-right">
-              <button type="button" className="btn btn-sm btn-blue-grey" name="button">Accept</button>
-              <button type="button" className="btn btn-sm btn-blue-grey pull-right" name="button">Delete</button>
+              <button type="button" className="btn btn-sm btn-blue-grey" name="button" onClick={(e)=>this.handleAccept(e)}>Accept</button>
+              <button type="button" className="btn btn-sm btn-blue-grey pull-right" onClick={(e)=>this.handleDelete(e)} name="button">Delete</button>
           </div>
       </div>
     );
