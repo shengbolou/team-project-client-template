@@ -47,7 +47,9 @@ export default class Navbar extends React.Component{
                       <li><a href="#"><span><i className="fa fa-sign-out" aria-hidden="true"></i></span>Log out</a></li>
                     </ul>
                   </div>
-                    <li className="active"><a href="search.html"><i className="fa fa-search" aria-hidden="true"></i></a></li>
+                    <li className="active">
+                      <Link to={"search"}><i className="fa fa-search" aria-hidden="true"/></Link>                      
+                    </li>
                   <li><Link to={"notification/"+1}><i className="fa fa-bell-o" aria-hidden="true"></i></Link></li>
                 </ul>
               </div>

@@ -3,8 +3,9 @@ import ReactDOM from 'react-dom';
 import Activity from './activity/activity';
 import Post from './post/post';
 import Settings from './settings/settings';
-import Chat from './chat/chat'
+import Chat from './chat/chat';
 import Notification from './notification/notification';
+import Search from './search/search';
 import { IndexRoute, Router, Route, hashHistory } from 'react-router';
 
 
@@ -53,6 +54,13 @@ class NotificationPage extends React.Component{
     );
   }
 }
+class SearchPage extends React.Component{
+  render(){
+    return(
+      <Search/>
+    );
+  }
+}
 
 //render main
 ReactDOM.render((
@@ -65,6 +73,7 @@ ReactDOM.render((
       <Route path="notification" component={NotificationPage}>
         <Route path="/notification/:id" component={NotificationPage}/>
       </Route>
+      <Route path="search" component={SearchPage}/>
     </Route>
   </Router>
 ),document.getElementById('container'));
