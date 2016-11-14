@@ -36,7 +36,7 @@ export default class Notification extends React.Component{
               <h4><span><i className="fa fa-bell-o bell" aria-hidden="true"></i></span>Notifications</h4>
               <div className="notification-panel">
                 {navbar}
-                <NotificationBody id={this.props.id}/>
+                <NotificationBody id={this.props.id} user={this.props.user}/>
               </div>
             </div>
           </div>

@@ -12,14 +12,15 @@ export default class Request extends React.Component{
                       </a>
                   </div>
                   <div className="media-body">
-                      <h4 className="media-heading">Shelley</h4> sent you a friend request
+                      <h4 className="media-heading">{this.props.data.sender.firstname}{this.props.data.sender.lastname}</h4>
+                       sent you a friend request
                   </div>
               </div>
           </div>
 
-          <div className="col-md-4">
-              <button type="button" className="btn btn-info" name="button">Accept</button>
-              <button type="button" className="btn btn-info" name="button">Delete</button>
+          <div className="col-md-3 pull-right">
+              <button type="button" className="btn btn-sm btn-blue-grey" name="button">Accept</button>
+              <button type="button" className="btn btn-sm btn-blue-grey pull-right" name="button">Delete</button>
           </div>
       </div>
     );
