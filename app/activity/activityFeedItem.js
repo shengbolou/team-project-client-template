@@ -9,8 +9,8 @@ export default class ActivityFeedItem extends React.Component{
   }
 
   render(){
-    var startTime = moment(this.state.startTime).format('MMMM Do YYYY, h:mm:ss a');
-    var endTime = moment(this.state.endTime).format('MMMM Do YYYY, h:mm:ss a');
+    var startTime = moment(this.state.startTime).calendar();
+    var endTime = moment(this.state.endTime).calendar();
     return(
       <div>
         <div className="panel panel-default">
