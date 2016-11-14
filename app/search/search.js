@@ -7,7 +7,16 @@ export default class Search extends React.Component{
     super(props);
     this.state = {};
   }
-  
+  getData(){
+    getUserData(this.props.user,(userData)=>{
+      this.setState(userData);
+    });
+  }
+  componentDidMount(){
+    this.getData();
+  }
+
+
   render(){
     return(
       <div>

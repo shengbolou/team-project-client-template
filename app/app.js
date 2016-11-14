@@ -57,7 +57,7 @@ class NotificationPage extends React.Component{
 class SearchPage extends React.Component{
   render(){
     return(
-      <Search/>
+      <Search user={1}/>
     );
   }
 }
