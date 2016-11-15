@@ -104,3 +104,11 @@ background: #f3f3f3;
   background:   #fdfdfd;
     outline: 0 none;
 }
+
+.modal.fade{
+    -webkit-transition: opacity .2s linear, none;
+    -moz-transition: opacity .2s linear, none;
+    -ms-transition: opacity .2s linear, none;
+    -o-transition: opacity .2s linear, none;
+    transition: opacity .2s linear, none;
+}

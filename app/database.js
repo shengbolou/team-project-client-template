@@ -21,11 +21,7 @@ var initialData = {
       "friends":[],
       "post":1,
       "activity":1,
-      "notification":1,
-      "email": "upao@umass.edu",
-      "dob_month": 5,
-      "dob_day": 21,
-      "dob_year": 1995
+      "notification":1
     },
     "2": {
       "_id":2,
@@ -40,11 +36,7 @@ var initialData = {
       "friends":[],
       "post":2,
       "activity":2,
-      "notification":2,
-      "email": "test@umass.edu",
-      "dob_month": 11,
-      "dob_day": 11,
-      "dob_year": 2016
+      "notification":2
     },
     "3": {
       "_id":3,
@@ -59,11 +51,7 @@ var initialData = {
       "friends":[],
       "post":3,
       "activity":3,
-      "notification":3,
-      "email": "test2@umass.edu",
-      "dob_month": 11,
-      "dob_day": 11,
-      "dob_year": 2016
+      "notification":3
     }
   },
   //notification collections
@@ -134,7 +122,7 @@ var initialData = {
       ],
       "contents": {
         "img": "./img/HackUMass-detail-1.png",
-        "text": ""
+        "text": "Friday, October 7th\n6 PM - 9 PM: Check-in at Campus Center first floor, dinner at Blue Wall Cafe\n9 PM - 10 PM: Opening ceremony in Campus Center Auditorium\n 10 PM: Move to Integrative Learning Center (ILC) \n12 Midnight: Hacking begins in the ILC \n"
       }
     },
     "2": {
