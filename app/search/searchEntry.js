@@ -1,6 +1,4 @@
 import React from 'react';
-import SearchFeedUserFeed from './searchFeedUserFeed';
-import SearchFeedPartyFeed from './searchFeedPartyFeed';
 
 export default class SearchEntry extends React.Component{
   constructor(props){
@@ -21,8 +19,6 @@ export default class SearchEntry extends React.Component{
             </div>
           </div>
         </div>
-        <SearchFeedUserFeed/>
-        <SearchFeedPartyFeed/>
       </div>
     );
   }

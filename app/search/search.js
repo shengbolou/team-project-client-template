@@ -18,7 +18,7 @@ export default class Search extends React.Component{
 
   render(){
     return(
-      <div>
+      <div className="search">
         <Navbar search="active" user={this.state}/>
         <div className="container">
           <div className="row">
@@ -30,8 +30,8 @@ export default class Search extends React.Component{
       </div>
     );
   }
+
   componentDidMount(){
     this.getData();
   }
-
 }

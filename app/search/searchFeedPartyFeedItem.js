@@ -1,26 +1,15 @@
 import React from 'react';
-import {getSearchActivityFeedData} from '../server';
-
+import {getActivityDetail} from '../server';
+import {Link} from 'react-router';
 var moment = require('moment');
 
 export default class SearchFeedPartyFeedItem extends React.Component{
   constructor(props){
     super(props);
-    this.state = {
-      "type": "Event",
-      "img":"img/HackUMass.jpg",
-      "description": "Hack Umass",
-      "country": "USA",
-      "state": "MA",
-      "city": "Amherst",
-      "title": "HackUMass",
-      "startTime": 1478129314000,
-      "endTime": 1479940314000
-
-    };
+    this.state = {};
   }
   getData(){
-    getSearchActivityFeedData(this.props.Activity,(activityData)=>{
+    getActivityDetail(this.props.Activity,(activityData)=>{
       this.setState(activityData);
     });
   }
@@ -29,12 +18,12 @@ export default class SearchFeedPartyFeedItem extends React.Component{
     return(
       <div className="media">
         <div className="media-left">
-          <img src={this.state.img} height="165px" width= "200px"/>
+          <Link to={"activity_detail/"+this.state._id}><img src={this.state.img} height="150px" width= "200px"/></Link>
         </div>
         <div className="media-body">
           <div className="row">
             <div className="col-md-5">
-              <a href="# "><h4 className="parties-title">{this.state.title}</h4></a>
+              <Link to={"activity_detail/"+this.state._id}><h4 className="parties-title">{this.state.title}</h4></Link>
             </div>
             <div className="col-md-7">
               <div className="pull-right badge">
@@ -51,7 +40,7 @@ export default class SearchFeedPartyFeedItem extends React.Component{
         <br/>
         <span className="glyphicon glyphicon-map-marker"></span>
           {this.state.city}, {this.state.state}, {this.state.country}
-        <span className="pull-right">start time:{moment(this.state.startTime).calendar()} end time:{moment(this.state.endTime).calendar()}</span>
+        <span className="pull-right">{moment(this.state.startTime).calendar()} - {moment(this.state.endTime).calendar()}</span>
       </div>
 
     );
