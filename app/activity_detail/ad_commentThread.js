@@ -2,6 +2,11 @@ import React from 'react';
 import Ad_commentEntry from './ad_commentEntry';
 
 export default class Ad_commentThread extends React.Component{
+  constructor(props){
+    super(props);
+    this.state = {};
+  }
+  
   render(){
     return(
       <div className = "container">

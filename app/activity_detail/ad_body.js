@@ -1,8 +1,10 @@
 import React from 'React';
 import Ad_comment from './ad_comment';
+import Ad_commentThread from './ad_commentThread';
 import Ad_participates_item from './ad_participates_item';
 import Ad_signeduser from './Ad_signeduser'
 import {getActivityDetail} from '../server';
+import {adpostComment} from '../server';
 var moment = require('moment');
 
 export default class Ad_body extends React.Component{
@@ -11,7 +13,11 @@ export default class Ad_body extends React.Component{
     this.state = {};
   }
 
-
+  handlePostComment(comment){
+    adpostComment(this.state._id, this.props.currentUser ,comment, (newFeedItem)=>{
+      this.setState(newFeedItem);
+    })
+  }
 
   getData(){
     getActivityDetail(this.props.id,(activitydata)=>{
@@ -29,6 +35,21 @@ export default class Ad_body extends React.Component{
 
 
   render(){
+    var data = this.state;
+    var contents;
+    var img;
+    switch(data.type){
+      case "general":
+        contents = data.contents;
+        img = <img src={contents.img} width="100%" alt="" />;
+        break;
+      default:
+        img = null;
+    }
+
+
+
+
     return(
       <div className="activityDetail">
         <div className= "adbackground">
@@ -83,7 +104,7 @@ export default class Ad_body extends React.Component{
                     })}
 
 
-                
+
 
                 </div>
               </div>
@@ -109,8 +130,8 @@ export default class Ad_body extends React.Component{
               <h4 style={{'color': 'grey'}}>Activity Details</h4>
               <div className="row">
                 <div className="col-md-12" style={{'paddingTop':'20px'}}>
-                  <img src="./img/HackUMass-detail-1.png" width="100%" alt=""/>
-                </div>
+
+{img}                </div>
               </div>
               <div className="row">
                 <div className="col-md-12" style={{'paddingTop':'20px'}}>
@@ -134,7 +155,14 @@ export default class Ad_body extends React.Component{
 
 
 </div>
-<Ad_comment id={this.props.id}/>
+<Ad_commentThread onPost={(comment)=>this.handlePostComment(comment)}>
+    {this.state.comments === undefined ? 0:this.state.comments.map((comment,i)=>{
+
+    return (
+      <Ad_comment key={i} data={comment} />
+    )
+  })}
+</Ad_commentThread>
 </div>
 )
 }
