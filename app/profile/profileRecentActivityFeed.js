@@ -12,7 +12,7 @@ export default class ProfileRecentActivityFeed extends React.Component{
   }
 
   getData(){
-    getActivityFeedData(this.props.userId, (activity) => {
+    getActivityFeedData(this.props.user, (activity) => {
         this.setState(activity);
     });
   }
@@ -25,7 +25,7 @@ export default class ProfileRecentActivityFeed extends React.Component{
     return(
       <div>
         {this.state.contents.map((activityItem)=>{
-          return <ProfileRecentActivityItem key={activityItem._id} data={activityItem} currentUser={this.props.user._id}/>
+          return <ProfileRecentActivityItem key={activityItem._id} data={activityItem} currentUser={this.props.user}/>
         })}
       </div>
     );
