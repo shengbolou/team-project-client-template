@@ -5,6 +5,7 @@ import Post from './post/post';
 import Settings from './settings/settings';
 import Chat from './chat/chat'
 import Notification from './notification/notification';
+import Search from './search/search';
 import { IndexRoute, Router, Route, hashHistory } from 'react-router';
 import Activity_detail from './activity_detail/activity_detail';
 
@@ -62,6 +63,13 @@ class Activity_detailPage extends React.Component{
     )
   }
 }
+class SearchPage extends React.Component{
+   render(){
+    return(
+      <Search user={1}/>
+    );
+  }
+}
 
 //render main
 ReactDOM.render((
@@ -77,7 +85,7 @@ ReactDOM.render((
        <Route path="activity_detail" component={Activity_detailPage}>
          <Route path="/activity_detail/:id" component={Activity_detailPage}/>
        </Route>
-
+       <Route path="search" component={SearchPage}/>
      </Route>
    </Router>
 ),document.getElementById('container'));

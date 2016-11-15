@@ -20,6 +20,7 @@
     "react": "^0.14.6",
     "react-dom": "^0.14.6",
     "react-router": "^1.0.3",
+    "react-debug": "^1.0.0",
     "webpack": "^1.12.12",
     "webpack-dev-server": "^1.14.1",
     "moment": "2.16.0"
