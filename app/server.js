@@ -71,6 +71,27 @@ export function unLikePost(feedItemId, user, cb){
   emulateServerReturn(postFeedItem.likeCounter.map((id)=>readDocument('users',id)), cb);
 }
 
+export function likeActivity(activityId, user, cb){
+  var activityItem = readDocument('activityItems', activityId);
+  activityItem.likeCounter.push(user);
+
+  writeDocument('activityItems', activityItem);
+
+  emulateServerReturn(activityItem.likeCounter.map((id)=>readDocument('users',id)), cb);
+}
+
+export function unLikeActivity(activityId, user, cb){
+  var activityItem = readDocument('activityItems', activityId);
+  var userindex = activityItem.likeCounter.indexOf(user);
+
+  if(userindex !== -1){
+    activityItem.likeCounter.splice(userindex,1);
+    writeDocument('activityItems', activityItem);
+  }
+
+  emulateServerReturn(activityItem.likeCounter.map((id)=>readDocument('users',id)), cb);
+}
+
 export function changeUserInfo(user, lastname, firstname, nickname, discription, country, state, city, cb){
   var userData = readDocument('users', user);
   userData.lastname = lastname;

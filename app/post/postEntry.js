@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router';
 
 export default class PostEntry extends React.Component{
 
@@ -31,9 +32,9 @@ export default class PostEntry extends React.Component{
         <div className="panel-heading">
           <div className="media">
             <div className="media-left">
-              <a href="#">
+              <Link to="profile">
                 <img className="media-object" src={this.props.userAvatar} width="50px" height="50px" alt="..."></img>
-              </a>
+              </Link>
             </div>
             <div className="media-body">
               <textarea name="name" rows="8" cols="40" placeholder="What's on your mind"

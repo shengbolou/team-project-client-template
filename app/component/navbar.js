@@ -40,7 +40,7 @@ export default class Navbar extends React.Component{
                       <span className="caret"></span>
                     </a>
                     <ul className="dropdown-menu" aria-labelledby="user-options">
-                      <li><a href="profile.html"><span><i className="fa fa-user" aria-hidden="true"></i></span>Profile</a></li>
+                      <li><Link to="profile"><span><i className="fa fa-user" aria-hidden="true"></i></span>Profile</Link></li>
                       <li><Link to="settings"><span><i className="fa fa-cog" aria-hidden="true"></i></span>Settings</Link></li>
                       <li><a href="postactivity.html"><span><i className="fa fa-pencil" aria-hidden="true"></i></span>Create Activity</a></li>
                       <li role="separator" className="divider"></li>
@@ -48,7 +48,7 @@ export default class Navbar extends React.Component{
                     </ul>
                   </div>
                     <li className="active">
-                      <Link to={"search"}><i className="fa fa-search" aria-hidden="true"/></Link>                      
+                      <Link to={"search"}><i className="fa fa-search" aria-hidden="true"/></Link>
                     </li>
                   <li><Link to={"notification/"+1}><i className="fa fa-bell-o" aria-hidden="true"></i></Link></li>
                 </ul>

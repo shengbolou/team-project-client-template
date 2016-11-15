@@ -4,6 +4,7 @@ import PostCommentThread from './postCommentThread';
 import {postComment} from '../server';
 import {likePost} from '../server';
 import {unLikePost} from '../server';
+import {Link} from 'react-router';
 var moment = require('moment');
 
 export default class PostFeedItem extends React.Component{

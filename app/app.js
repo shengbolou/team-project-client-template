@@ -6,6 +6,7 @@ import Settings from './settings/settings';
 import Chat from './chat/chat';
 import Notification from './notification/notification';
 import Search from './search/search';
+import Profile from './profile/profile';
 import { IndexRoute, Router, Route, hashHistory } from 'react-router';
 
 
@@ -27,7 +28,7 @@ class App extends React.Component {
   render() {
     return (
       <div>{this.props.children}</div>
-    )
+    );
   }
 }
 
@@ -43,7 +44,7 @@ class ChatPage extends React.Component{
   render() {
     return (
       <Chat user={1} />
-    )
+    );
   }
 }
 
@@ -62,6 +63,14 @@ class SearchPage extends React.Component{
   }
 }
 
+class ProfilePage extends React.Component{
+  render(){
+    return(
+      <Profile user={1} />
+    );
+  }
+}
+
 //render main
 ReactDOM.render((
   <Router history={hashHistory}>
@@ -72,6 +81,9 @@ ReactDOM.render((
       <Route path="chat" component={ChatPage} />
       <Route path="notification" component={NotificationPage}>
         <Route path="/notification/:id" component={NotificationPage}/>
+      </Route>
+      <Route path="profile" component={ProfilePage}>
+        <Route path="/profile/:user" component={ProfilePage} />
       </Route>
       <Route path="search" component={SearchPage}/>
     </Route>
