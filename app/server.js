@@ -196,3 +196,8 @@ export function getUserData(user,cb){
   var userData = readDocument('users',user);
   emulateServerReturn(userData,cb);
 }
+
+export function getActivityDetail(id,cb){
+  var activityData = getActivityFeedItemSync(id);
+  emulateServerReturn(activityData,cb);
+}

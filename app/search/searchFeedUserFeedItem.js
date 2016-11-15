@@ -4,14 +4,7 @@ import {getUserData} from '../server';
 export default class SearchFeedUserFeedItem extends React.Component{
   constructor(props){
     super(props);
-    this.state = {
-      nickname:"tom",
-      description : "this is test",
-      city:"Amherst",
-      state:"MA",
-      country:"USA",
-      avatar:"img/user.png"
-    };
+    this.state = {};
   }
 
   getData(){
@@ -30,7 +23,7 @@ export default class SearchFeedUserFeedItem extends React.Component{
         <div className="media-body">
           <div className="row">
             <div className="col-md-8">
-              <h4 className="media-heading">{this.state.nickname}</h4>
+              <h4 className="media-heading">{this.state.firstname} {this.state.lastname}</h4>
               {this.state.description}
             </div>
             <div className="col-md-4">

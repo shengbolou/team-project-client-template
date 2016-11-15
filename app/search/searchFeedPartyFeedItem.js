@@ -1,37 +1,52 @@
 import React from 'react';
+import {getActivityDetail} from '../server';
+import {Link} from 'react-router';
+var moment = require('moment');
+
 export default class SearchFeedPartyFeedItem extends React.Component{
   constructor(props){
     super(props);
     this.state = {};
   }
+  getData(){
+    getActivityDetail(this.props.Activity,(activityData)=>{
+      this.setState(activityData);
+    });
+  }
+
   render(){
     return(
       <div className="media">
         <div className="media-left">
-          <img src="img/parties.jpg" width="100%" height="100%" className="parties-pic"/>
+          <Link to={"activity_detail/"+this.state._id}><img src={this.state.img} height="150px" width= "200px"/></Link>
         </div>
         <div className="media-body">
           <div className="row">
             <div className="col-md-5">
-              <a href="# "><h4 className="parties-title">dancing party</h4></a>
+              <Link to={"activity_detail/"+this.state._id}><h4 className="parties-title">{this.state.title}</h4></Link>
             </div>
             <div className="col-md-7">
               <div className="pull-right badge">
-                Party
+                {this.state.type}
               </div>
             </div>
           </div>
           <div className="row">
-            Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis.
-            Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis.
+            <div className="col-md-12">
+              {this.state.description}
+            </div>
           </div>
         </div>
-        <br>
+        <br/>
         <span className="glyphicon glyphicon-map-marker"></span>
-        Amherst,MA,USA
-        <span className="pull-right">"10/26/2016 7:00pm--9:00pm"</span>
+          {this.state.city}, {this.state.state}, {this.state.country}
+        <span className="pull-right">{moment(this.state.startTime).calendar()} - {moment(this.state.endTime).calendar()}</span>
       </div>
 
     );
   }
+  componentDidMount(){
+    this.getData();
+  }
+
 }

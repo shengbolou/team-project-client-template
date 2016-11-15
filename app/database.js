@@ -30,7 +30,7 @@ var initialData = {
     "2": {
       "_id":2,
       "firstname": "Test",
-      "lastname": "Account",
+      "lastname": "Account2",
       "nickname": "None",
       "avatar": "img/user.png",
       "description": "Hello everyone, I'm a test account",
@@ -49,7 +49,7 @@ var initialData = {
     "3": {
       "_id":3,
       "firstname": "Test",
-      "lastname": "Account2",
+      "lastname": "Account3",
       "nickname": "None",
       "avatar": "img/user.png",
       "description": "Hello everyone, I'm a test account",
@@ -101,11 +101,11 @@ var initialData = {
     },
     "2": {
       "_id":2,
-      "contents": []
+      "contents": [2]
     },
     "3": {
       "_id":3,
-      "contents":[]
+      "contents":[3]
     }
   },
 
@@ -114,12 +114,42 @@ var initialData = {
       "_id":1,
       "type": "Event",
       "author":1,
-      "title": "HackUMass",
-      "img":"img/HackUMass.jpg",
+      "title": "Hack UMass",
+      "img":"./img/HackUMass.jpg",
       "startTime": 1478129314000,
       "endTime": 1479940314000,
       "description": "Hack Umass",
       "location": "University of Massachusetts Amherst",
+      "country": "USA",
+      "state": "MA",
+      "city": "Amherst",
+      "participants": [1,2],
+      "likeCounter": [1,2,3],
+      "comments":[
+        {
+          "author": 1,
+          "postDate": 1478129314000,
+          "text": "iufihishf"
+        }
+      ],
+      "contents": {
+        "img": null,
+        "text": ""
+      }
+    },
+    "2": {
+      "_id":2,
+      "type": "Party",
+      "author":1,
+      "title": "birthday party",
+      "img":"img/Birthday-Party.jpg",
+      "startTime": 1478129314000,
+      "endTime": 1479940314000,
+      "description": "Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis.",
+      "location": "University of Massachusetts Amherst",
+      "country": "USA",
+      "state": "MA",
+      "city": "Amherst",
       "participants": [],
       "likeCounter": [],
       "comments":[
@@ -133,7 +163,36 @@ var initialData = {
         "img": null,
         "text": ""
       }
+    },
+    "3": {
+      "_id":3,
+      "type": "Party",
+      "author":1,
+      "title": "dance party",
+      "img":"img/parties.jpg",
+      "startTime": 1478129314000,
+      "endTime": 1479940314000,
+      "description": "Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis.",
+      "location": "University of Massachusetts Amherst",
+      "country": "USA",
+      "state": "MA",
+      "city": "Amherst",
+      "participants": [2,3],
+      "likeCounter": [1,2,3],
+      "comments":[
+        {
+          "author": 1,
+          "postDate": 1478129314000,
+          "text": "iufihishf"
+        }
+      ],
+      "contents": {
+        "img": null,
+        "text": ""
+      }
     }
+
+
   },
 
   // "feeds" collection. Feeds for each user.

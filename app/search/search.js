@@ -1,16 +1,24 @@
 import React from 'react';
 import SearchFeed from './searchFeed';
 import Navbar from '../component/navbar';
+import {getUserData} from '../server';
+
 
 export default class Search extends React.Component{
   constructor(props){
     super(props);
     this.state = {};
   }
-  
+  getData(){
+    getUserData(this.props.user,(userData)=>{
+        this.setState(userData);
+    });
+  }
+
+
   render(){
     return(
-      <div>
+      <div className="search">
         <Navbar search="active" user={this.state}/>
         <div className="container">
           <div className="row">
@@ -23,4 +31,7 @@ export default class Search extends React.Component{
     );
   }
 
+  componentDidMount(){
+    this.getData();
+  }
 }
