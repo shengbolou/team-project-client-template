@@ -175,3 +175,7 @@ export function getUserData(user,cb){
   var userData = readDocument('users',user);
   emulateServerReturn(userData,cb);
 }
+export function getSearchActivityFeedData(activity,cb){
+  var activityData = readDocument('activityItems',activity);
+  emulateServerReturn(activityData,cb);
+}

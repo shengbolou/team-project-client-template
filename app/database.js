@@ -108,6 +108,63 @@ var initialData = {
       "endTime": 1479940314000,
       "description": "Hack Umass",
       "location": "University of Massachusetts Amherst",
+      "country": "USA",
+      "state": "MA",
+      "city": "Amherst",
+      "participants": [],
+      "likeCounter": [],
+      "comments":[
+        {
+          "author": 1,
+          "postDate": 1478129314000,
+          "text": "iufihishf"
+        }
+      ],
+      "contents": {
+        "img": null,
+        "text": ""
+      }
+    },
+    "2": {
+      "_id":2,
+      "type": "Party",
+      "author":1,
+      "title": "birthday party",
+      "img":"img/Birthday-Party.jpg",
+      "startTime": 1478129314000,
+      "endTime": 1479940314000,
+      "description": "Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis.",
+      "location": "University of Massachusetts Amherst",
+      "country": "USA",
+      "state": "MA",
+      "city": "Amherst",
+      "participants": [],
+      "likeCounter": [],
+      "comments":[
+        {
+          "author": 1,
+          "postDate": 1478129314000,
+          "text": "iufihishf"
+        }
+      ],
+      "contents": {
+        "img": null,
+        "text": ""
+      }
+    },
+    "3": {
+      "_id":3,
+      "type": "Party",
+      "author":1,
+      "title": "dance party",
+      "img":"img/parties.jpg",
+      "startTime": 1478129314000,
+      "endTime": 1479940314000,
+      "description": "Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis.",
+      "location": "University of Massachusetts Amherst",
+      "country": "USA",
+      "state": "MA",
+      "city": "Amherst",
       "participants": [],
       "likeCounter": [],
       "comments":[
@@ -122,6 +179,8 @@ var initialData = {
         "text": ""
       }
     }
+
+
   },
 
   // "feeds" collection. Feeds for each user.
