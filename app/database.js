@@ -133,7 +133,7 @@ var initialData = {
         }
       ],
       "contents": {
-        "img": "./img/HackUMass-detail-1.png",
+        "img": null,
         "text": ""
       }
     },

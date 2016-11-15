@@ -85,7 +85,7 @@ export default class ProfileRecentPostItem extends React.Component{
               </div>
             </div>
             <div className="panel-body">
-              {img}
+              <center>{img}</center>
             </div>
             <div className="panel-footer">
               <div className="row">
