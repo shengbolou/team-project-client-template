@@ -1,5 +1,7 @@
 import React from 'React';
 import Ad_comment from './ad_comment';
+import Ad_participates_item from './ad_participates_item';
+import Ad_signeduser from './Ad_signeduser'
 import {getActivityDetail} from '../server';
 var moment = require('moment');
 
@@ -50,8 +52,8 @@ export default class Ad_body extends React.Component{
                   </div>
                   <div className = "col-md-4" style={{'paddingTop': '20px'}} >
                     <div className = "col-md-12 col-sm-12 col-xs-12 body-title-signed-in" align="left">
-                      {this.state.participants === undefined ? 0:this.state.participants.length}
-                      people <font style={{'color':'grey'}}>signed up</font>
+                      {this.state.participants === undefined ? 0:this.state.participants.length} people <font style={{'color':'grey'}}>signed up</font>
+
                     <font style={{'color':'#61B4E4','fontSize':'10px','paddingLeft':'10px','cursor':'pointer'}} data-toggle="modal" data-target="#myModal"  >  View All</font>
                     <div className="modal fade" id="myModal" tabIndex="-1" role="dialog" aria-labelledby="myModalLabel">
                       <div className="modal-dialog" role="document">
@@ -62,22 +64,11 @@ export default class Ad_body extends React.Component{
                           </div>
                           <div className="modal-body">
                             <ul className="media-list">
-
-
-                              <li className="media">
-                                <div className="media-left">
-                                  <a href="profile.html">
-                                    <img className="media-object" src="img/user.png" width="55px" alt="..."/>
-                                  </a>
-                                </div>
-                                <div className="media-body media-top">
-                                  User 3<br/>
-                                psersonal description for User 3
-                              </div>
-                              <div className="media-body media-right" style={{textAlign:"right"}}>
-                                <a href="#"><span className="glyphicon glyphicon-plus"  style={{'paddingRight':'20px'}}></span></a>
-                              </div>
-                            </li>
+                                {this.state.participants === undefined ? 0:this.state.participants.map((p,i)=>{
+                                  return (
+                                    <Ad_participates_item key={i} data={p} />
+                                  )
+                                })}
                           </ul>
                         </div>
 
@@ -85,10 +76,14 @@ export default class Ad_body extends React.Component{
                     </div>
                   </div>
                   <br/>
-                  <a href="profile.html">  <img src="./img/user.png" width="35px" alt=""/></a>
-                  <a href="profile.html">  <img src="./img/user.png" width="35px" alt=""/></a>
-                  <a href="profile.html">  <img src="./img/user.png" width="35px" alt=""/></a>
-                  <a href="profile.html">  <img src="./img/user.png" width="35px" alt=""/></a>
+                    {this.state.participants === undefined ? 0:this.state.participants.map((p,i)=>{
+                      return (
+                      <Ad_signeduser key={i} data={p} />
+                      )
+                    })}
+
+
+                
 
                 </div>
               </div>

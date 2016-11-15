@@ -26,7 +26,7 @@ var initialData = {
     "2": {
       "_id":2,
       "firstname": "Test",
-      "lastname": "Account",
+      "lastname": "Account2",
       "nickname": "None",
       "avatar": "img/user.png",
       "description": "Hello everyone, I'm a test account",
@@ -41,7 +41,7 @@ var initialData = {
     "3": {
       "_id":3,
       "firstname": "Test",
-      "lastname": "Account2",
+      "lastname": "Account3",
       "nickname": "None",
       "avatar": "img/user.png",
       "description": "Hello everyone, I'm a test account",
@@ -89,11 +89,11 @@ var initialData = {
     },
     "2": {
       "_id":2,
-      "contents": []
+      "contents": [2]
     },
     "3": {
       "_id":3,
-      "contents":[]
+      "contents":[3]
     }
   },
 
@@ -111,8 +111,8 @@ var initialData = {
       "country": "USA",
       "state": "MA",
       "city": "Amherst",
-      "participants": [],
-      "likeCounter": [],
+      "participants": [2,3],
+      "likeCounter": [1,2,3],
       "comments":[
         {
           "author": 1,
