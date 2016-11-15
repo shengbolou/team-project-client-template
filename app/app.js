@@ -74,7 +74,6 @@ class Activity_detailPage extends React.Component{
 //render main
 ReactDOM.render((
   <Router history={hashHistory}>
-<<<<<<< HEAD
      <Route path="/" component={App}>
        <IndexRoute component={ActivityPage} />
        <Route path="post" component={ThrendPage} />
@@ -86,20 +85,7 @@ ReactDOM.render((
        <Route path="activity_detail" component={Activity_detailPage}>
          <Route path="/activity_detail/:id" component={Activity_detailPage}/>
        </Route>
-
+       <Route path="search" component={SearchPage}/>
      </Route>
    </Router>
-=======
-    <Route path="/" component={App}>
-      <IndexRoute component={ActivityPage} />
-      <Route path="post" component={ThrendPage} />
-      <Route path="settings" component={SettingsPage} />
-      <Route path="chat" component={ChatPage} />
-      <Route path="notification" component={NotificationPage}>
-        <Route path="/notification/:id" component={NotificationPage}/>
-      </Route>
-      <Route path="search" component={SearchPage}/>
-    </Route>
-  </Router>
->>>>>>> 7cb5891fa06ca2ddee1d6ff9457a99168d9a97f8
 ),document.getElementById('container'));
