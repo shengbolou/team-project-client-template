@@ -140,7 +140,7 @@ var initialData = {
     "2": {
       "_id":2,
       "type": "Party",
-      "author":1,
+      "author":2,
       "title": "birthday party",
       "img":"img/Birthday-Party.jpg",
       "startTime": 1478129314000,

@@ -65,29 +65,15 @@ export default class Ad_body extends React.Component{
     var img;
     var text;
     var name;
+    var authorid;
     switch(data.type){
       case "Event":
-        contents = data.contents;
-        img = <img src={contents.img} width="100%" alt="" />;
-        name = this.state.author.firstname + " "+this.state.author.lastname;
-        text = contents.text.split("\n").map((line, i) => {
-          return (
-            <p key={"line" + i}>{line}</p>
-          )                       ;
-        })
-        break;
       case "Party":
-        contents = data.contents;
-        img = <img src={contents.img} width="100%" alt="" />;
-          text = contents.text.split("\n").map((line, i) => {
-            return (
-              <p key={"line" + i}>{line}</p>
-            )                       ;
-          })
-        break;
       case "Study":
         contents = data.contents;
         img = <img src={contents.img} width="100%" alt="" />;
+        name = this.state.author.firstname + " "+this.state.author.lastname;
+        authorid = this.state.author._id;
           text = contents.text.split("\n").map((line, i) => {
             return (
               <p key={"line" + i}>{line}</p>
@@ -146,7 +132,7 @@ export default class Ad_body extends React.Component{
                       <span className="glyphicon glyphicon-user"
                         style={{'paddingRight':'10px','paddingTop':'5px','paddingLeft': '15px'}}>
                       </span>
-                      <Link to={"profile/"+this.state._id}>
+                      <Link to={"profile/"+authorid}>
                           {name}
                         </Link>
                     </div>
@@ -212,7 +198,7 @@ export default class Ad_body extends React.Component{
         </div>
       </div>
     </div>
-    <Ad_commentThread count={this.state.comments === undefined ? 0:this.state.comments.length} user={this.state._id} avatar={this.props.avatar} onPost={(comment)=>this.handlePostComment(comment)}>
+    <Ad_commentThread count={this.state.comments === undefined ? 0:this.state.comments.length} user={this.props.currentUser} avatar={this.props.avatar} onPost={(comment)=>this.handlePostComment(comment)}>
       {this.state.comments === undefined ? 0:this.state.comments.map((comment,i)=>{
         return (
           <Ad_comment key={i} data={comment} />

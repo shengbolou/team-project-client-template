@@ -48,7 +48,7 @@ body{
 
 .chat-left .panel .panel-body {
     padding: 0px;
-    height:84vh;
+    height:81vh;
     overflow-y:scroll;
     overflow-x: hidden;
 }
