@@ -1,5 +1,6 @@
 import React from 'react';
 import {likeActivity, unLikeActivity} from '../server';
+import {Link} from 'react-router';
 
 var moment = require('moment');
 
@@ -46,19 +47,21 @@ export default class ProfileRecentActivityItem extends React.Component{
         <div className="panel-body">
           <div className="row">
             <div className="col-md-12">
-              <a href="activity-detail.html">
+              <Link to={"activity_detail/"+this.state._id}>
                 <div className="media">
                   <h3>{this.state.title} <span className="badge pull-right">{this.state.type}</span></h3>
                   {startTime}--{endTime}
                 </div>
-              </a>
+              </Link>
             </div>
           </div>
           <div className="row content">
             <div className="panel-body">
               <div className="media">
                 <div className="media-body">
-                  <img className="media-object" src={this.state.img} width="300px" height="180px" alt="" />
+                  <Link to={"activity_detail/"+this.state._id}>
+                    <img className="media-object" src={this.state.img} width="300px" height="180px" alt="" />
+                  </Link>
                   <p>
                     {this.state.description}
                   </p>
