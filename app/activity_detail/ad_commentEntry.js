@@ -23,8 +23,6 @@ export default class PostCommentEntry extends React.Component{
 
   render(){
     return(
-
-
       <div className="panel-heading">
         <div className="media">
           <div className="media-left">
@@ -37,11 +35,10 @@ export default class PostCommentEntry extends React.Component{
 
             <button type="button" className="btn btn-blue-grey pull-right waves-effect waves-light" type="button" name="button" onClick={(e)=>this.handleSubmit(e)}>Post</button>
           </div>
-
-
-
         </div>
       </div>
+
+
     );
   }
 }

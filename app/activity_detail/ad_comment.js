@@ -20,7 +20,7 @@ export default class Ad_comment extends React.Component{
       <div>
       <div className="media-left">
           <Link to={"profile/"+this.state._id}>
-          <img className="media-object" src={this.state.avatar} width="45px" alt="..."/>
+          <img className="media-object" src={this.state.author.avatar} width="45px" alt="..."/>
         </Link>
       </div>
       <div className="media-body media-top">
