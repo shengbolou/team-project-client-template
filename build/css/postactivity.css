@@ -63,3 +63,18 @@
   padding-right: 15px;
   padding-bottom: 0px;
 }
+
+.md-form select{
+  font-size: 10px;
+}
+.md-form browse{
+    margin-left: 0%;
+}
+.nopadding{
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+}
+.nomargin{
+    margin-left: 0px !important;
+    margin-right: 0px !important;
+}
