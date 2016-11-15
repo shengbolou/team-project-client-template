@@ -40,7 +40,7 @@ export default class SearchFeedPartyFeedItem extends React.Component{
         <br/>
         <span className="glyphicon glyphicon-map-marker"></span>
           {this.state.city}, {this.state.state}, {this.state.country}
-        <span className="pull-right">start time:{moment(this.state.startTime).calendar()} end time:{moment(this.state.endTime).calendar()}</span>
+        <span className="pull-right">{moment(this.state.startTime).calendar()} - {moment(this.state.endTime).calendar()}</span>
       </div>
 
     );
