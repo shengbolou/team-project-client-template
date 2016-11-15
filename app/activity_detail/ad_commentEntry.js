@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router';
 
 export default class PostCommentEntry extends React.Component{
   constructor(props){
@@ -27,8 +28,8 @@ export default class PostCommentEntry extends React.Component{
         <div className="media">
           <div className="media-left">
 
-            <Link to={"profile/"+this.state._id}>
-            <img className="media-object" src={this.state.avatar} width="45px" alt="..."/>
+            <Link to={"profile/"+this.props.user}>
+            <img className="media-object" src={this.props.avatar} width="45px" alt="..."/>
           </Link>
           </div>
           <div className="media-body">

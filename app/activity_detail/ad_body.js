@@ -203,7 +203,7 @@ export default class Ad_body extends React.Component{
         </div>
       </div>
     </div>
-    <Ad_commentThread count={this.state.comments === undefined ? 0:this.state.comments.length} user={this.state._id} onPost={(comment)=>this.handlePostComment(comment)}>
+    <Ad_commentThread count={this.state.comments === undefined ? 0:this.state.comments.length} user={this.state._id} avatar={this.props.avatar} onPost={(comment)=>this.handlePostComment(comment)}>
       {this.state.comments === undefined ? 0:this.state.comments.map((comment,i)=>{
         return (
           <Ad_comment key={i} data={comment} />
