@@ -111,7 +111,7 @@ var initialData = {
       "country": "USA",
       "state": "MA",
       "city": "Amherst",
-      "participants": [2,3],
+      "participants": [1,2],
       "likeCounter": [1,2,3],
       "comments":[
         {
