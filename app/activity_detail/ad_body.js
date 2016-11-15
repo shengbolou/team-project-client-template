@@ -106,7 +106,9 @@ export default class Ad_body extends React.Component{
           <div className="modal-dialog" role="document">
             <div className="modal-content">
               <div className="modal-header">
-                <button type="button" className="close"><span aria-hidden="true">&times;</span></button>
+                <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
                 <h3 className="modal-title" id="myModalLabel">Participating users</h3>
               </div>
               <div className="modal-body">
@@ -180,9 +182,8 @@ export default class Ad_body extends React.Component{
                     <a href="#" onClick={(e)=>this.handleLikeClick(e)}><span className="glyphicon glyphicon-heart" style={{'marginRight':'5px'}}></span>
                       {this.state.likeCounter === undefined ? 0:this.state.likeCounter.length}
                     </a>
-                    <a href="#"><span className="glyphicon glyphicon-comment" style={{'marginRight':'5px','marginLeft':'20px'}}></span>
+                    <span className="glyphicon glyphicon-comment" style={{'marginRight':'5px','marginLeft':'20px'}}></span>
                     {this.state.comments === undefined ? 0:this.state.comments.length}
-                    </a>
                   </div>
                 </div>
               </div>
