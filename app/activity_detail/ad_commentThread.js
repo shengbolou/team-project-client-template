@@ -18,7 +18,7 @@ export default class Ad_commentThread extends React.Component{
               <font style={{color:"grey",fontSize:"20px"}}>Wonderful comments (
                   {this.props.count}
                 )</font>
-              <Ad_commentEntry onPost={this.props.onPost}/>
+              <Ad_commentEntry user={this.props.user} onPost={this.props.onPost}/>
                 <hr/>
           <ul className="media-list">
           {React.Children.map(this.props.children,function(child){
