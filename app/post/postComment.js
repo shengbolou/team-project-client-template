@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router';
 var moment = require('moment');
 
 export default class PostComment extends React.Component{
@@ -18,9 +19,9 @@ export default class PostComment extends React.Component{
     return(
       <div>
         <div className="media-left">
-          <a href="#">
+          <Link to={"profile/"+this.state.author._id}>
             <img className="media-object" src={this.state.author.avatar} width="45px" height="45px" alt="..."></img>
-          </a>
+          </Link>
         </div>
         <div className="media-body">
           <h5 className="media-heading">{this.state.author.firstname} {this.state.author.lastname}

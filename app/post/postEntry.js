@@ -32,8 +32,8 @@ export default class PostEntry extends React.Component{
         <div className="panel-heading">
           <div className="media">
             <div className="media-left">
-              <Link to="profile">
-                <img className="media-object" src={this.props.userAvatar} width="50px" height="50px" alt="..."></img>
+              <Link to={"profile/"+this.props.userData._id}>
+                <img className="media-object" src={this.props.userData.avatar} width="50px" height="50px" alt="..."></img>
               </Link>
             </div>
             <div className="media-body">
