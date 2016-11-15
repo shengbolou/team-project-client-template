@@ -1,20 +1,19 @@
 body{
   margin-top: 0px;
-
 }
-.background {
+
+.adbackground {
   padding-top: 20px;
   margin-top: -20px;
 }
 
-.background img {
+.adbackground img {
   object-fit: cover;
   width:100%;
   height:400px;
 }
 
 .body-title {
-
     margin-top: -45px;
 }
 
@@ -48,6 +47,7 @@ body{
 }
 
 .sign-up-btn{
+  
   margin-top:0px;
   width: 193px;
   height: 44px;

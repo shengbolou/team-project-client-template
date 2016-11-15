@@ -6,6 +6,7 @@ import Settings from './settings/settings';
 import Chat from './chat/chat'
 import Notification from './notification/notification';
 import { IndexRoute, Router, Route, hashHistory } from 'react-router';
+import Activity_detail from './activity_detail/activity_detail';
 
 
 
@@ -54,17 +55,29 @@ class NotificationPage extends React.Component{
   }
 }
 
+class Activity_detailPage extends React.Component{
+  render(){
+    return(
+      <Activity_detail user ={1} />
+    )
+  }
+}
+
 //render main
 ReactDOM.render((
   <Router history={hashHistory}>
-    <Route path="/" component={App}>
-      <IndexRoute component={ActivityPage} />
-      <Route path="post" component={ThrendPage} />
-      <Route path="settings" component={SettingsPage} />
-      <Route path="chat" component={ChatPage} />
-      <Route path="notification" component={NotificationPage}>
-        <Route path="/notification/:id" component={NotificationPage}/>
-      </Route>
-    </Route>
-  </Router>
+     <Route path="/" component={App}>
+       <IndexRoute component={ActivityPage} />
+       <Route path="post" component={ThrendPage} />
+       <Route path="settings" component={SettingsPage} />
+       <Route path="chat" component={ChatPage} />
+       <Route path="notification" component={NotificationPage}>
+         <Route path="/notification/:id" component={NotificationPage}/>
+       </Route>
+       <Route path="activity_detail" component={Activity_detailPage}>
+         <Route path="/activity_detail/:id" component={Activity_detailPage}/>
+       </Route>
+
+     </Route>
+   </Router>
 ),document.getElementById('container'));
