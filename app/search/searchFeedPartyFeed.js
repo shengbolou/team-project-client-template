@@ -15,6 +15,8 @@ export default class SearchFeedPartyFeed extends React.Component{
         </div>
         <div className="panel-body">
           <SearchFeedPartyFeedItem Activity={1}/>
+          <SearchFeedPartyFeedItem Activity={2}/>
+          <SearchFeedPartyFeedItem Activity={3}/>
         </div>
       </div>
 
