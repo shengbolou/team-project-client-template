@@ -21,7 +21,11 @@ var initialData = {
       "friends":[],
       "post":1,
       "activity":1,
-      "notification":1
+      "notification":1,
+      "email": "upao@umass.edu",
+      "dob_month": 5,
+      "dob_day": 21,
+      "dob_year": 1995
     },
     "2": {
       "_id":2,
@@ -36,7 +40,11 @@ var initialData = {
       "friends":[],
       "post":2,
       "activity":2,
-      "notification":2
+      "notification":2,
+      "email": "test@umass.edu",
+      "dob_month": 11,
+      "dob_day": 11,
+      "dob_year": 2016
     },
     "3": {
       "_id":3,
@@ -51,7 +59,11 @@ var initialData = {
       "friends":[],
       "post":3,
       "activity":3,
-      "notification":3
+      "notification":3,
+      "email": "test2@umass.edu",
+      "dob_month": 11,
+      "dob_day": 11,
+      "dob_year": 2016
     }
   },
   //notification collections
@@ -128,7 +140,7 @@ var initialData = {
     "2": {
       "_id":2,
       "type": "Party",
-      "author":1,
+      "author":2,
       "title": "birthday party",
       "img":"img/Birthday-Party.jpg",
       "startTime": 1478129314000,

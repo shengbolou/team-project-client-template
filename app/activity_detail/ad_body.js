@@ -5,12 +5,41 @@ import Ad_participates_item from './ad_participates_item';
 import Ad_signeduser from './Ad_signeduser'
 import {getActivityDetail} from '../server';
 import {adpostComment} from '../server';
+import {likeActivity} from '../server';
+import {unLikeActivity} from '../server';
+import {Link} from 'react-router';
 var moment = require('moment');
 
 export default class Ad_body extends React.Component{
   constructor(props){
     super(props);
     this.state = {};
+  }
+
+  didUserLike(user) {
+    var likeCounter = this.state.likeCounter;
+    for (var i = 0; i < likeCounter.length; i++) {
+      if (likeCounter[i]._id === user)
+        return true;
+    }
+    return false;
+  }
+
+  handleLikeClick(e){
+    e.preventDefault();
+
+    if(e.button === 0){
+      var cb = (likeCounter) => {
+        this.setState({likeCounter:likeCounter});
+      };
+
+      if(!this.didUserLike(this.props.currentUser)){
+        likeActivity(this.state._id,this.props.currentUser,cb);
+      }
+      else{
+        unLikeActivity(this.state._id,this.props.currentUser,cb);
+      }
+    }
   }
 
   handlePostComment(comment){
@@ -35,28 +64,16 @@ export default class Ad_body extends React.Component{
     var contents;
     var img;
     var text;
+    var name;
+    var authorid;
     switch(data.type){
       case "Event":
-        contents = data.contents;
-        img = <img src={contents.img} width="100%" alt="" />;
-        text = contents.text.split("\n").map((line, i) => {
-          return (
-            <p key={"line" + i}>{line}</p>
-          )                       ;
-        })
-        break;
       case "Party":
-        contents = data.contents;
-        img = <img src={contents.img} width="100%" alt="" />;
-          text = contents.text.split("\n").map((line, i) => {
-            return (
-              <p key={"line" + i}>{line}</p>
-            )                       ;
-          })
-        break;
       case "Study":
         contents = data.contents;
         img = <img src={contents.img} width="100%" alt="" />;
+        name = this.state.author.firstname + " "+this.state.author.lastname;
+        authorid = this.state.author._id;
           text = contents.text.split("\n").map((line, i) => {
             return (
               <p key={"line" + i}>{line}</p>
@@ -66,6 +83,7 @@ export default class Ad_body extends React.Component{
       default:
         img = null;
         text = null;
+        name = null;
     }
 
     return(
@@ -74,7 +92,9 @@ export default class Ad_body extends React.Component{
           <div className="modal-dialog" role="document">
             <div className="modal-content">
               <div className="modal-header">
-                <button type="button" className="close"><span aria-hidden="true">&times;</span></button>
+                <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
                 <h3 className="modal-title" id="myModalLabel">Participating users</h3>
               </div>
               <div className="modal-body">
@@ -110,8 +130,13 @@ export default class Ad_body extends React.Component{
                       <span className="glyphicon glyphicon-map-marker"
                         style={{'paddingRight':'10px','paddingTop':'5px','paddingLeft': '15px'}}>
                       </span>
-                      {this.state.location}
-
+                      {this.state.location}<br />
+                      <span className="glyphicon glyphicon-user"
+                        style={{'paddingRight':'10px','paddingTop':'5px','paddingLeft': '15px'}}>
+                      </span>
+                      <Link to={"profile/"+authorid}>
+                          {name}
+                        </Link>
                     </div>
 
                     <div className = "col-md-4" style={{'paddingTop': '20px'}} >
@@ -140,8 +165,11 @@ export default class Ad_body extends React.Component{
 
                 <div className="row">
                   <div className = "col-md-12 col-sm-12 col-xs-12 body-title-icon" style={{textAlign:"right"}}>
-                    <a href="#"><span className="glyphicon glyphicon-heart" style={{'marginRight':'15px'}}></span>11</a>
-                    <a href="#"><span className="glyphicon glyphicon-comment" style={{'marginRight':'15px','marginLeft':'15px'}}></span>0</a>
+                    <a href="#" onClick={(e)=>this.handleLikeClick(e)}><span className="glyphicon glyphicon-heart" style={{'marginRight':'5px'}}></span>
+                      {this.state.likeCounter === undefined ? 0:this.state.likeCounter.length}
+                    </a>
+                    <span className="glyphicon glyphicon-comment" style={{'marginRight':'5px','marginLeft':'20px'}}></span>
+                    {this.state.comments === undefined ? 0:this.state.comments.length}
                   </div>
                 </div>
               </div>
@@ -171,7 +199,7 @@ export default class Ad_body extends React.Component{
         </div>
       </div>
     </div>
-    <Ad_commentThread onPost={(comment)=>this.handlePostComment(comment)}>
+    <Ad_commentThread count={this.state.comments === undefined ? 0:this.state.comments.length} user={this.props.currentUser} avatar={this.props.avatar} onPost={(comment)=>this.handlePostComment(comment)}>
       {this.state.comments === undefined ? 0:this.state.comments.map((comment,i)=>{
         return (
           <Ad_comment key={i} data={comment} />

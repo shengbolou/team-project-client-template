@@ -173,7 +173,7 @@ export function getPostFeedData(user, cb){
 
 function getActivityFeedItemSync(feedItemId){
   var activityFeedItem = readDocument('activityItems',feedItemId);
-
+  activityFeedItem.author = readDocument('users',activityFeedItem.author);
   activityFeedItem.participants = activityFeedItem.participants.map((id)=>readDocument('users',id));
   activityFeedItem.likeCounter = activityFeedItem.likeCounter.map((id)=>readDocument('users',id));
   activityFeedItem.comments.forEach((comment)=>{
