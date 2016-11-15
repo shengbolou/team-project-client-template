@@ -179,3 +179,8 @@ export function getSearchActivityFeedData(activity,cb){
   var activityData = readDocument('activityItems',activity);
   emulateServerReturn(activityData,cb);
 }
+
+export function getActivityDetail(id,cb){
+  var activityData = getActivityFeedItemSync(id);
+  emulateServerReturn(activityData,cb);
+}

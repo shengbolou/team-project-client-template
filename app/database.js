@@ -102,8 +102,8 @@ var initialData = {
       "_id":1,
       "type": "Event",
       "author":1,
-      "title": "HackUMass",
-      "img":"img/HackUMass.jpg",
+      "title": "Hack UMass",
+      "img":"./img/HackUMass.jpg",
       "startTime": 1478129314000,
       "endTime": 1479940314000,
       "description": "Hack Umass",
@@ -165,8 +165,8 @@ var initialData = {
       "country": "USA",
       "state": "MA",
       "city": "Amherst",
-      "participants": [],
-      "likeCounter": [],
+      "participants": [2,3],
+      "likeCounter": [1,2,3],
       "comments":[
         {
           "author": 1,
