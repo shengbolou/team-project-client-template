@@ -35,7 +35,6 @@ export default class PostFeedItem extends React.Component{
         unLikePost(this.state._id,this.props.currentUser,cb);
       }
     }
-
   }
 
   didUserLike(user) {

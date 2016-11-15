@@ -5,12 +5,40 @@ import Ad_participates_item from './ad_participates_item';
 import Ad_signeduser from './Ad_signeduser'
 import {getActivityDetail} from '../server';
 import {adpostComment} from '../server';
+import {likeActivity} from '../server';
+import {unLikeActivity} from '../server';
 var moment = require('moment');
 
 export default class Ad_body extends React.Component{
   constructor(props){
     super(props);
     this.state = {};
+  }
+
+  didUserLike(user) {
+    var likeCounter = this.state.likeCounter;
+    for (var i = 0; i < likeCounter.length; i++) {
+      if (likeCounter[i]._id === user)
+        return true;
+    }
+    return false;
+  }
+
+  handleLikeClick(e){
+    e.preventDefault();
+
+    if(e.button === 0){
+      var cb = (likeCounter) => {
+        this.setState({likeCounter:likeCounter});
+      };
+
+      if(!this.didUserLike(this.props.currentUser)){
+        likeActivity(this.state._id,this.props.currentUser,cb);
+      }
+      else{
+        unLikeActivity(this.state._id,this.props.currentUser,cb);
+      }
+    }
   }
 
   handlePostComment(comment){
@@ -140,8 +168,12 @@ export default class Ad_body extends React.Component{
 
                 <div className="row">
                   <div className = "col-md-12 col-sm-12 col-xs-12 body-title-icon" style={{textAlign:"right"}}>
-                    <a href="#"><span className="glyphicon glyphicon-heart" style={{'marginRight':'15px'}}></span>11</a>
-                    <a href="#"><span className="glyphicon glyphicon-comment" style={{'marginRight':'15px','marginLeft':'15px'}}></span>0</a>
+                    <a href="#" onClick={(e)=>this.handleLikeClick(e)}><span className="glyphicon glyphicon-heart" style={{'marginRight':'15px'}}></span>
+                      {this.state.likeCounter === undefined ? 0:this.state.likeCounter.length}
+                    </a>
+                    <a href="#"><span className="glyphicon glyphicon-comment" style={{'marginRight':'15px','marginLeft':'15px'}}></span>
+                    {this.state.comments === undefined ? 0:this.state.comments.length}
+                    </a>
                   </div>
                 </div>
               </div>
@@ -171,7 +203,7 @@ export default class Ad_body extends React.Component{
         </div>
       </div>
     </div>
-    <Ad_commentThread onPost={(comment)=>this.handlePostComment(comment)}>
+    <Ad_commentThread count={this.state.comments === undefined ? 0:this.state.comments.length} onPost={(comment)=>this.handlePostComment(comment)}>
       {this.state.comments === undefined ? 0:this.state.comments.map((comment,i)=>{
         return (
           <Ad_comment key={i} data={comment} />
