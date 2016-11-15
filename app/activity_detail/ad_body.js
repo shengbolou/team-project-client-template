@@ -7,6 +7,7 @@ import {getActivityDetail} from '../server';
 import {adpostComment} from '../server';
 import {likeActivity} from '../server';
 import {unLikeActivity} from '../server';
+import {Link} from 'react-router';
 var moment = require('moment');
 
 export default class Ad_body extends React.Component{
@@ -63,10 +64,12 @@ export default class Ad_body extends React.Component{
     var contents;
     var img;
     var text;
+    var name;
     switch(data.type){
       case "Event":
         contents = data.contents;
         img = <img src={contents.img} width="100%" alt="" />;
+        name = this.state.author.firstname + " "+this.state.author.lastname;
         text = contents.text.split("\n").map((line, i) => {
           return (
             <p key={"line" + i}>{line}</p>
@@ -94,6 +97,7 @@ export default class Ad_body extends React.Component{
       default:
         img = null;
         text = null;
+        name = null;
     }
 
     return(
@@ -138,8 +142,13 @@ export default class Ad_body extends React.Component{
                       <span className="glyphicon glyphicon-map-marker"
                         style={{'paddingRight':'10px','paddingTop':'5px','paddingLeft': '15px'}}>
                       </span>
-                      {this.state.location}
-
+                      {this.state.location}<br />
+                      <span className="glyphicon glyphicon-user"
+                        style={{'paddingRight':'10px','paddingTop':'5px','paddingLeft': '15px'}}>
+                      </span>
+                      <Link to={"profile/"+this.state._id}>
+                          {name}
+                        </Link>
                     </div>
 
                     <div className = "col-md-4" style={{'paddingTop': '20px'}} >
@@ -168,10 +177,10 @@ export default class Ad_body extends React.Component{
 
                 <div className="row">
                   <div className = "col-md-12 col-sm-12 col-xs-12 body-title-icon" style={{textAlign:"right"}}>
-                    <a href="#" onClick={(e)=>this.handleLikeClick(e)}><span className="glyphicon glyphicon-heart" style={{'marginRight':'15px'}}></span>
+                    <a href="#" onClick={(e)=>this.handleLikeClick(e)}><span className="glyphicon glyphicon-heart" style={{'marginRight':'5px'}}></span>
                       {this.state.likeCounter === undefined ? 0:this.state.likeCounter.length}
                     </a>
-                    <a href="#"><span className="glyphicon glyphicon-comment" style={{'marginRight':'15px','marginLeft':'15px'}}></span>
+                    <a href="#"><span className="glyphicon glyphicon-comment" style={{'marginRight':'5px','marginLeft':'20px'}}></span>
                     {this.state.comments === undefined ? 0:this.state.comments.length}
                     </a>
                   </div>
