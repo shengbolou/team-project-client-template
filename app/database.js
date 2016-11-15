@@ -161,7 +161,7 @@ var initialData = {
       ],
       "contents": {
         "img": null,
-        "text": ""
+        "text": "acticity detail of activity 2"
       }
     },
     "3": {
@@ -188,7 +188,7 @@ var initialData = {
       ],
       "contents": {
         "img": null,
-        "text": ""
+        "text": "activity detail of activity 3"
       }
     }
 
