@@ -16,9 +16,12 @@
     "babel-preset-react": "^6.3.13",
     "eslint": "^1.10.3",
     "eslint-plugin-react": "^3.14.0",
+    "history": "^1.17.0",
     "react": "^0.14.6",
     "react-dom": "^0.14.6",
+    "react-router": "^1.0.3",
     "webpack": "^1.12.12",
-    "webpack-dev-server": "^1.14.1"
+    "webpack-dev-server": "^1.14.1",
+    "moment": "2.16.0"
   }
 }

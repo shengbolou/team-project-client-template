@@ -15,12 +15,13 @@ var initialData = {
       "nickname": "crown",
       "avatar": "img/user.png",
       "description": "Hello everyone, I'm a mock user",
-      "country": "US",
+      "country": "USA",
       "state": "MA",
       "city": "Amherst",
       "friends":[],
       "post":1,
-      "activity":1
+      "activity":1,
+      "notification":1
     },
     "2": {
       "_id":2,
@@ -29,12 +30,13 @@ var initialData = {
       "nickname": "None",
       "avatar": "img/user.png",
       "description": "Hello everyone, I'm a test account",
-      "country": "US",
+      "country": "USA",
       "state": "MA",
       "city": "Amherst",
       "friends":[],
       "post":2,
-      "activity":2
+      "activity":2,
+      "notification":2
     },
     "3": {
       "_id":3,
@@ -43,12 +45,40 @@ var initialData = {
       "nickname": "None",
       "avatar": "img/user.png",
       "description": "Hello everyone, I'm a test account",
-      "country": "US",
+      "country": "USA",
       "state": "MA",
       "city": "Amherst",
       "friends":[],
       "post":3,
-      "activity":3
+      "activity":3,
+      "notification":3
+    }
+  },
+  //notification collections
+  "notifications": {
+      "1": {
+        "_id":1,
+        "contents":[1,2]
+      },
+      "2": {
+        "_id":2,
+        "contents":[]
+      },
+      "3": {
+        "_id":3,
+        "contents":[]
+      }
+  },
+  "notificationItems": {
+    "1": {
+      "_id":1,
+      "sender":2,
+      "type": "FR"
+    },
+    "2": {
+      "_id":2,
+      "author": 2,
+      "type": "NF"
     }
   },
   //activity collection
@@ -75,7 +105,7 @@ var initialData = {
       "title": "HackUMass",
       "img":"img/HackUMass.jpg",
       "startTime": 1478129314000,
-      "endTime": 1479129314000,
+      "endTime": 1479940314000,
       "description": "Hack Umass",
       "location": "University of Massachusetts Amherst",
       "participants": [],
@@ -168,6 +198,11 @@ export function writeDocument(collection, changedDocument) {
   // Store a copy of the object into the database. Models a database's behavior.
   data[collection][id] = JSONClone(changedDocument);
   // Update our 'database'.
+  localStorage.setItem(startupName, JSON.stringify(data));
+}
+
+export function deleteDocument(collection,id){
+  delete data[collection][id];
   localStorage.setItem(startupName, JSON.stringify(data));
 }
 

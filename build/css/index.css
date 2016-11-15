@@ -22,6 +22,10 @@
   box-shadow: none;
 }
 
+input[type="file"] {
+    display: none;
+}
+
 h4 span,
 h5 span{
   margin-right: 5px;

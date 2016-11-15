@@ -1,4 +1,4 @@
-import {readDocument, writeDocument, addDocument} from './database.js';
+import {readDocument, writeDocument, addDocument,deleteDocument} from './database.js';
 
 /**
  * Emulates how a REST call is *asynchronous* -- it calls your function back
@@ -8,6 +8,46 @@ function emulateServerReturn(data, cb) {
   setTimeout(() => {
     cb(data);
   }, 4);
+}
+
+export function deleteNotification(id, user ,cb){
+  var userData = readDocument('users',user);
+  var notificationData = readDocument('notifications',userData.notification);
+  var index = notificationData.contents.indexOf(id);
+  if(index !== -1)
+    notificationData.contents.splice(index,1);
+
+  writeDocument("notifications",notificationData);
+  deleteDocument("notificationItems",id);
+  emulateServerReturn(notificationData,cb);
+}
+
+export function acceptRequest(id,user,cb){
+  var userData = readDocument('users',user);
+  var notificationItem = readDocument('notificationItems',id);
+  userData.friends.push(notificationItem.sender);
+  writeDocument("users",userData);
+  deleteNotification(id,user,cb);
+}
+
+function getNotificationDataSync(notificationId){
+  var notification = readDocument('notificationItems',notificationId);
+  if(notification.type === "FR"){
+    notification.sender = readDocument("users",notification.sender);
+  }
+  else{
+    notification.author = readDocument("users",notification.author);
+  }
+
+  return notification;
+}
+
+export function getNotificationData(user, cb){
+  var userData = readDocument('users',user);
+  var notificationData = readDocument('notifications',userData.notification);
+  notificationData.contents = notificationData.contents.map(getNotificationDataSync);
+
+  emulateServerReturn(notificationData,cb);
 }
 
 export function likePost(feedItemId, user, cb){
