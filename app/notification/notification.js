@@ -29,7 +29,7 @@ export default class Notification extends React.Component{
 
     return(
       <div>
-        <Navbar user={this.state}/>
+        <Navbar user={this.state} notification="active"/>
         <div className="container">
           <div className="row notification">
             <div className="col-md-8 col-md-offset-2">
