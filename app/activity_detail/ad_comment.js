@@ -72,7 +72,7 @@ export default class Ad_comment extends React.Component{
           </div>
         </div>
       </div>
-    </div>
+    </div >
     )
   }
 }

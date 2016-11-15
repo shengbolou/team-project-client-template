@@ -1,16 +1,36 @@
 import React from 'React';
 import Ad_comment from './ad_comment';
+import {getActivityDetail} from '../server';
+var moment = require('moment');
 
 export default class Ad_body extends React.Component{
   constructor(props){
     super(props);
+    this.state = {};
   }
+
+
+
+  getData(){
+    getActivityDetail(this.props.id,(activitydata)=>{
+      var debug = require('react-debug');
+      debug(activitydata);
+      this.setState(activitydata);
+    });
+  }
+
+
+    componentDidMount(){
+      this.getData();
+    }
+
+
 
   render(){
     return(
       <div className="activityDetail">
         <div className= "adbackground">
-          <img src="../img/HackUMass.JPG" />
+          <img src={this.state.img} />
         </div>
         <div className = "container">
 
@@ -21,16 +41,16 @@ export default class Ad_body extends React.Component{
 
                   <div className = "row">
                     <div className = "col-md-8" >
-                      <h2 style={{'paddingLeft':'15px'}}>HackUMass</h2>
+                      <h2 style={{'paddingLeft':'15px'}}>{this.state.title}</h2>
                       <div className="glyphicon glyphicon-time" style={{'paddingRight':'10px','paddingLeft': '15px'}}></div>
-                      12:08 AM Saturday, October 8, 2016 (EDT)<br />
+                    {moment(this.state.startTime).format('MMMM Do YYYY, h:mm:ss a')}<br />
 
                     <div className="glyphicon glyphicon-map-marker" style={{'paddingRight':'10px','paddingTop':'5px','paddingLeft': '15px'}}></div>
-                    University of Massachusetts Amherst
+                    {this.state.location}
                   </div>
                   <div className = "col-md-4" style={{'paddingTop': '20px'}} >
                     <div className = "col-md-12 col-sm-12 col-xs-12 body-title-signed-in" align="left">
-                      12 people <font style={{'color':'grey'}}>signed up  </font>
+                    {this.state.participants.length}   people <font style={{'color':'grey'}}>signed up  </font>
                     <font style={{'color':'#61B4E4','fontSize':'10px','paddingLeft':'10px','cursor':'pointer'}} data-toggle="modal" data-target="#myModal"  >  View All</font>
                     <div className="modal fade" id="myModal" tabIndex="-1" role="dialog" aria-labelledby="myModalLabel">
                       <div className="modal-dialog" role="document">
@@ -41,20 +61,7 @@ export default class Ad_body extends React.Component{
                           </div>
                           <div className="modal-body">
                             <ul className="media-list">
-                              <li className="media">
-                                <div className="media-left">
-                                  <a href="profile.html">
-                                    <img className="media-object" src="img/user.png" width="55px" alt="..."/>
-                                  </a>
-                                </div>
-                                <div className="media-body media-top">
-                                  User 1<br/>
-                                psersonal description for User 1
-                              </div>
-                              <div className="media-body media-right" style={{textAlign:"right"}} >
-                                <a href="#"><span className="glyphicon glyphicon-plus"  style={{'paddingRight':'20px',textAlign:"right"}}></span></a>
-                              </div>
-                            </li>
+
 
                             <li className="media">
                               <div className="media-left">

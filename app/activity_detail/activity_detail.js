@@ -1,7 +1,6 @@
 import React from 'React';
 import Navbar from '../component/navbar';
 import Ad_body from './ad_body';
-import Ad_comment from './ad_comment';
 import {getUserData} from '../server';
 
 export default class Activity_detail extends React.Component{
@@ -17,11 +16,12 @@ export default class Activity_detail extends React.Component{
     });
   }
 
+
   render(){
     return(
       <div>
-        <Navbar activity="active" user={this.state}/>
-        <Ad_body id={this.props.id}/>
+      <Navbar activity="active" user={this.state}/>
+      <Ad_body id={this.props.id}/>
       </div>
     )
   }
