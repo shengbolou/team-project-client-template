@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router';
 
 export default class Request extends React.Component{
   handleDelete(e){
@@ -15,9 +16,9 @@ export default class Request extends React.Component{
           <div className="col-md-8">
               <div className="media">
                   <div className="media-left">
-                      <a href="#">
+                      <Link to={"profile/"+this.props.data.sender._id}>
                           <img className="media-object" src="img/user.png" width="50px" height="50px" alt="..." />
-                      </a>
+                      </Link>
                   </div>
                   <div className="media-body">
                       <h4 className="media-heading">{this.props.data.sender.firstname}{this.props.data.sender.lastname}</h4>

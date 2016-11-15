@@ -47,7 +47,7 @@ export default class ProfilePersonalInfo extends React.Component{
     if (this.state.dob_year != null && this.state.dob_month != null && this.state.dob_day != null){
       count += 1;
     }
-    return count / 9 * 100;
+    return count / 9 * 100 | 0;
   }
 
   render(){
