@@ -29,48 +29,48 @@
 <body>
     <!-- navbar -->
     <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="index.html">
-            <img src="./img/logo/mipmap-xxhdpi/ic_launcher.png" width="50px" height="50px" alt="" />
-          </a>
-        </div>
-
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="navbar">
-          <ul class="nav navbar-nav nav-left">
-            <li><a href="index.html">Activities</a></li>
-            <li><a href="post.html">Trend</a></li>
-            <li><a href="chat.html">Chat</a></li>
-          </ul>
-
-          <ul class="nav navbar-nav navbar-right">
-            <div class="dropdown pull-left">
-              <a href="#" class="dropdown-toggle" type="button" id="user-options" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                <img src="img/user.png" width="50px" height="50px" alt="" /> User
-                <span class="caret"></span>
-              </a>
-              <ul class="dropdown-menu" aria-labelledby="user-options">
-                <li><a href="profile.html"><span><i class="fa fa-user" aria-hidden="true"></i></span>Profile</a></li>
-                <li><a href="settings.html"><span><i class="fa fa-cog" aria-hidden="true"></i></span>Settings</a></li>
-                <li><a href="postactivity.html"><span><i class="fa fa-pencil" aria-hidden="true"></i></span>Create Activity</a></li>
-                <li role="separator" class="divider"></li>
-                <li><a href="#"><span><i class="fa fa-sign-out" aria-hidden="true"></i></span>Log out</a></li>
-              </ul>
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">
+                    <img src="./img/logo/mipmap-xxhdpi/ic_launcher.png" width="50px" height="50px" alt="" />
+                </a>
             </div>
-              <li class="active"><a href="search.html"><i class="fa fa-search" aria-hidden="true"></i></a></li>
-            <li><a href="notification.html"><i class="fa fa-bell-o" aria-hidden="true"></i></a></li>
-          </ul>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="navbar">
+                <ul class="nav navbar-nav nav-left">
+                    <li><a href="index.html">Activities</a></li>
+                    <li><a href="post.html">Trend</a></li>
+                    <li><a href="chat.html">Chat</a></li>
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right">
+                    <div class="dropdown pull-left">
+                        <a href="#" class="dropdown-toggle" type="button" id="user-options" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                            <img src="img/user.png" width="50px" height="50px" alt="" /> User
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="user-options">
+                            <li><a href="profile.html"><span><i class="fa fa-user" aria-hidden="true"></i></span>Profile</a></li>
+                            <li><a href="settings.html"><span><i class="fa fa-cog" aria-hidden="true"></i></span>Settings</a></li>
+                            <li><a href="postactivity.html"><span><i class="fa fa-pencil" aria-hidden="true"></i></span>Create Activity</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="#"><span><i class="fa fa-sign-out" aria-hidden="true"></i></span>Log out</a></li>
+                        </ul>
+                    </div>
+                    <li class="active"><a href="search.html"><i class="fa fa-search" aria-hidden="true"></i></a></li>
+                    <li><a href="notification.html"><i class="fa fa-bell-o" aria-hidden="true"></i></a></li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
         </div>
-        <!-- /.navbar-collapse -->
-      </div>
-      <!-- /.container-fluid -->
+        <!-- /.container-fluid -->
     </nav>
     <!-- Post Activity -->
     <div class="container">
@@ -111,11 +111,40 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-md-12">
+                                    <div class="col-md-6">
                                         <div class="md-form">
                                             <input type="text" id="" class="form-control">
                                             <label for="form1" class="">Location</label>
                                         </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="md-form">
+                                            <!-- <input type="text" id="" class="form-control"> -->
+                                            <!-- <label for="exampleSelect1">Activity Type</label> -->
+                                            <!-- <label for="form1" class="">Activity Type</label> -->
+                                            <!-- <p style="color:#757575" class="label"><b>Activity Type</b></p> -->
+                                            <br/>
+                                            <select  id="" class="form-control">
+                                                <option>------Select a Activity Type-----</option>
+                                                <option>Event</option>
+                                                <option>Entertainment</option>
+                                                <option>Study</option>
+                                            </select>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="md-form">
+                                            <input type="text" id="" class="form-control">
+                                            <label for="form1" class="">IMG Upload</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
                                         <div class="md-form">
                                             <textarea type="text" id="" class="md-textarea"></textarea>
                                             <label for="form7">Description</label>
@@ -130,88 +159,88 @@
                                     <button type="button" class="btn btn-blue-grey pull-Left" name="button" data-toggle="modal" data-target="#invitemodal">Invite Friend</button>
                                     <!-- Modal -->
                                     <div class="modal fade " id="invitemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                                      <div class="modal-dialog" role="document">
-                                        <div class="modal-content">
-                                          <div class="modal-header" style="border:none;">
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                            <h4 class="modal-title" id="myModalLabel">Invite friends</h4>
-                                            <hr>
-                                          </div>
-                                          <div class="modal-body " style="padding:0;">
-                                                <ul class="media-list">
-                                                <li class="media" style="padding-left:10px;padding-bottom:10px;padding-top:10px;margin-top:-20px">
-                                                  <div class="media-left">
-                                                    <a href="profile.html">
-                                                      <img class="media-object" src="img/user.png" width="45px" alt="...">
-                                                    </a>
-                                                  </div>
-                                                  <div class="media-body media-top">
-                                                    User 1<br>
-                                                  <font color="grey">  psersonal description for User 1</font>
-                                                  </div>
-                                                  <div class="media-body media-right" align="right" style="padding-right:20px;">
-                                                    <button type="button" class="btn btn-default btn-blue-grey"  name="button">Invite</button>
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header" style="border:none;">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                    <h4 class="modal-title" id="myModalLabel">Invite friends</h4>
+                                                    <hr>
+                                                </div>
+                                                <div class="modal-body " style="padding:0;">
+                                                    <ul class="media-list">
+                                                        <li class="media" style="padding-left:10px;padding-bottom:10px;padding-top:10px;margin-top:-20px">
+                                                            <div class="media-left">
+                                                                <a href="profile.html">
+                                                                    <img class="media-object" src="img/user.png" width="45px" alt="...">
+                                                                </a>
+                                                            </div>
+                                                            <div class="media-body media-top">
+                                                                User 1<br>
+                                                                <font color="grey">  psersonal description for User 1</font>
+                                                            </div>
+                                                            <div class="media-body media-right" align="right" style="padding-right:20px;">
+                                                                <button type="button" class="btn btn-default btn-blue-grey"  name="button">Invite</button>
 
-                                                  </div>
-                                                  <hr>
-                                                </li>
-                                                <li class="media" style="padding-left:10px;padding-bottom:10px;padding-top:10px;margin-top:-20px">
-                                                  <div class="media-left">
-                                                    <a href="profile.html">
-                                                      <img class="media-object" src="img/user.png" width="45px" alt="...">
-                                                    </a>
-                                                  </div>
-                                                  <div class="media-body media-top">
-                                                    User 1<br>
-                                                  <font color="grey">  psersonal description for User 1</font>
-                                                  </div>
-                                                  <div class="media-body media-right" align="right" style="padding-right:20px;">
-                                                    <button type="button" class="btn btn-default btn-blue-grey"  name="button">Invite</button>
+                                                            </div>
+                                                            <hr>
+                                                        </li>
+                                                        <li class="media" style="padding-left:10px;padding-bottom:10px;padding-top:10px;margin-top:-20px">
+                                                            <div class="media-left">
+                                                                <a href="profile.html">
+                                                                    <img class="media-object" src="img/user.png" width="45px" alt="...">
+                                                                </a>
+                                                            </div>
+                                                            <div class="media-body media-top">
+                                                                User 1<br>
+                                                                <font color="grey">  psersonal description for User 1</font>
+                                                            </div>
+                                                            <div class="media-body media-right" align="right" style="padding-right:20px;">
+                                                                <button type="button" class="btn btn-default btn-blue-grey"  name="button">Invite</button>
 
-                                                  </div>
-                                                  <hr>
-                                                </li>
-                                                <li class="media" style="padding-left:10px;padding-bottom:10px;padding-top:10px;margin-top:-20px">
-                                                  <div class="media-left">
-                                                    <a href="profile.html">
-                                                      <img class="media-object" src="img/user.png" width="45px" alt="...">
-                                                    </a>
-                                                  </div>
-                                                  <div class="media-body media-top">
-                                                    User 1<br>
-                                                  <font color="grey">  psersonal description for User 1</font>
-                                                  </div>
-                                                  <div class="media-body media-right" align="right" style="padding-right:20px;">
-                                                    <button type="button" class="btn btn-default btn-blue-grey"  name="button">Invite</button>
+                                                            </div>
+                                                            <hr>
+                                                        </li>
+                                                        <li class="media" style="padding-left:10px;padding-bottom:10px;padding-top:10px;margin-top:-20px">
+                                                            <div class="media-left">
+                                                                <a href="profile.html">
+                                                                    <img class="media-object" src="img/user.png" width="45px" alt="...">
+                                                                </a>
+                                                            </div>
+                                                            <div class="media-body media-top">
+                                                                User 1<br>
+                                                                <font color="grey">  psersonal description for User 1</font>
+                                                            </div>
+                                                            <div class="media-body media-right" align="right" style="padding-right:20px;">
+                                                                <button type="button" class="btn btn-default btn-blue-grey"  name="button">Invite</button>
 
-                                                  </div>
-                                                  <hr>
-                                                </li>
-                                                <li class="media" style="padding-left:10px;padding-bottom:10px;padding-top:10px;margin-top:-20px">
-                                                  <div class="media-left">
-                                                    <a href="profile.html">
-                                                      <img class="media-object" src="img/user.png" width="45px" alt="...">
-                                                    </a>
-                                                  </div>
-                                                  <div class="media-body media-top">
-                                                    User 1<br>
-                                                  <font color="grey">  psersonal description for User 1</font>
-                                                  </div>
-                                                  <div class="media-body media-right" align="right" style="padding-right:20px;">
-                                                    <button type="button" class="btn btn-default btn-blue-grey"  name="button">Invite</button>
+                                                            </div>
+                                                            <hr>
+                                                        </li>
+                                                        <li class="media" style="padding-left:10px;padding-bottom:10px;padding-top:10px;margin-top:-20px">
+                                                            <div class="media-left">
+                                                                <a href="profile.html">
+                                                                    <img class="media-object" src="img/user.png" width="45px" alt="...">
+                                                                </a>
+                                                            </div>
+                                                            <div class="media-body media-top">
+                                                                User 1<br>
+                                                                <font color="grey">  psersonal description for User 1</font>
+                                                            </div>
+                                                            <div class="media-body media-right" align="right" style="padding-right:20px;">
+                                                                <button type="button" class="btn btn-default btn-blue-grey"  name="button">Invite</button>
 
-                                                  </div>
-                                                  <hr>
-                                                </li>
-                                              </ul>
-                                          </div>
+                                                            </div>
+                                                            <hr>
+                                                        </li>
+                                                    </ul>
+                                                </div>
 
-                                          <div class="modal-footer" style="border:none;">
-                                            <button type="button" class="btn btn-default btn-blue-grey" data-dismiss="modal">Close</button>
-                                            <button type="button" class="btn btn-primary btn-blue-grey">Confirm</button>
-                                          </div>
+                                                <div class="modal-footer" style="border:none;">
+                                                    <button type="button" class="btn btn-default btn-blue-grey" data-dismiss="modal">Close</button>
+                                                    <button type="button" class="btn btn-primary btn-blue-grey">Confirm</button>
+                                                </div>
+                                            </div>
                                         </div>
-                                      </div>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -223,20 +252,20 @@
                 </div>
             </div>
         </div>
-  </div>
+    </div>
 
 
 
-<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-<script src="js/jquery.min.js"></script>
-<!-- Include all compiled plugins (below), or include individual files as needed -->
-<script src="js/bootstrap.min.js"></script>
-<script src="js/mdb.min.js"></script>
-<!-- App code cd-->
-<script src="js/bundle.js"></script>
-<script type="text/javascript">
-$('.list-group .collapse').collapse()
-</script>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="js/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/mdb.min.js"></script>
+    <!-- App code cd-->
+    <script src="js/bundle.js"></script>
+    <script type="text/javascript">
+    $('.list-group .collapse').collapse()
+    </script>
 </body>
 
 </html>
