@@ -94,7 +94,7 @@ export default class PostFeedItem extends React.Component{
           <div className="row">
             <div className="col-md-12">
               <a href="#" onClick={(e)=>this.handleLikeClick(e)}><span className="glyphicon glyphicon-heart"></span>{data.likeCounter.length}</a>
-              <a href="#"><span className="glyphicon glyphicon-comment"></span>{data.comments.length}</a>
+              <span className="glyphicon glyphicon-comment"></span>{data.comments.length}
 
               <PostCommentThread onPostComment={(comment)=>this.handlePostComment(comment)}>
                 {data.comments.map((comment,i)=>{

@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router';
 
 export default class NewsFeed extends React.Component{
 
@@ -13,15 +14,17 @@ export default class NewsFeed extends React.Component{
           <div className="col-md-9">
               <div className="media">
                   <div className="media-left">
-                      <a href="#">
+                      <Link to={"profile/"+this.props.data.author._id}>
                           <img className="media-object" src={this.props.data.author.avatar} width="50px" height="50px" alt="..." />
-                      </a>
+                      </Link>
                   </div>
                   <div className="media-body">
                       <h4 className="media-heading">
-                        <a href="#">{this.props.data.author.firstname}{this.props.data.author.lastname}</a>
+                        <Link to={"profile/"+this.props.data.author._id}>
+                          {this.props.data.author.firstname}{this.props.data.author.lastname}
+                        </Link>
                       </h4>
-                        <a href="#">posted a new activity</a>
+                        <Link to={"profile/"+this.props.data.author._id}>posted a new activity</Link>
                   </div>
               </div>
           </div>
