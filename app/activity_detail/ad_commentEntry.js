@@ -17,7 +17,7 @@ export default class PostCommentEntry extends React.Component{
     e.preventDefault();
     if(this.state.text.trim() !== ""){
       this.setState({text:""});
-      this.props.onPostComment(this.state.text);
+      this.props.onPost(this.state.text);
     }
   }
 

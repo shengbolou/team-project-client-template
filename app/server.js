@@ -201,3 +201,16 @@ export function getActivityDetail(id,cb){
   var activityData = getActivityFeedItemSync(id);
   emulateServerReturn(activityData,cb);
 }
+
+export function adpostComment(activityId, author, comment, cb){
+  var activitydetailitem = readDocument('activityItems',activityId);
+  activitydetailitem.comments.push({
+    "author": author,
+    "postDate": (new Date()).getTime(),
+    "text": comment
+  });
+
+  writeDocument('activityItems',activitydetailitem);
+
+  emulateServerReturn(getActivityFeedItemSync(activityId),cb);
+}
