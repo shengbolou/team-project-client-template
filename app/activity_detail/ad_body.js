@@ -48,12 +48,20 @@ export default class Ad_body extends React.Component{
       case "Party":
         contents = data.contents;
         img = <img src={contents.img} width="100%" alt="" />;
-        text = contents.text;
+          text = contents.text.split("\n").map((line, i) => {
+            return (
+              <p key={"line" + i}>{line}</p>
+            )                       ;
+          })
         break;
       case "Study":
         contents = data.contents;
         img = <img src={contents.img} width="100%" alt="" />;
-        text = contents.text;
+          text = contents.text.split("\n").map((line, i) => {
+            return (
+              <p key={"line" + i}>{line}</p>
+            )                       ;
+          })
         break;
       default:
         img = null;
