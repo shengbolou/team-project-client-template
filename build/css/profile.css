@@ -15,6 +15,10 @@
   border-top-color: #FDFDFD;
 }
 
+.profile .panel .panel-footer .glyphicon{
+  margin-right: 5px;
+}
+
 .profile .panel .panel-footer .col-md-12 a{
   color: grey;
   margin-right: 50px;

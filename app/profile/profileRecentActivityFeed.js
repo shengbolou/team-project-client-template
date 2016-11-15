@@ -7,7 +7,7 @@ export default class ProfileRecentActivityFeed extends React.Component{
   constructor(props){
     super(props);
     this.state = {
-      contents: []
+      "contents": []
     };
   }
 

@@ -12,7 +12,7 @@ export default class ProfileRecentPostFeed extends React.Component{
   }
 
   getData(){
-    getPostFeedData(this.props.userId, (post) => {
+    getPostFeedData(this.props.user, (post) => {
         this.setState(post);
     });
   }
@@ -25,7 +25,7 @@ export default class ProfileRecentPostFeed extends React.Component{
     return(
       <div>
         {this.state.contents.map((postItem)=>{
-          return <ProfileRecentPostItem key={postItem._id} data={postItem} currentUser={this.props.user._id}/>
+          return <ProfileRecentPostItem key={postItem._id} data={postItem} currentUser={this.props.user}/>
         })}
       </div>
     );

@@ -30,23 +30,65 @@ export default class Ad_body extends React.Component{
     this.getData();
   }
 
-
-
   render(){
     var data = this.state;
     var contents;
     var img;
+    var text;
     switch(data.type){
-      case "general":
+      case "Event":
         contents = data.contents;
         img = <img src={contents.img} width="100%" alt="" />;
+        text = contents.text.split("\n").map((line, i) => {
+          return (
+            <p key={"line" + i}>{line}</p>
+          )                       ;
+        })
+        break;
+      case "Party":
+        contents = data.contents;
+        img = <img src={contents.img} width="100%" alt="" />;
+          text = contents.text.split("\n").map((line, i) => {
+            return (
+              <p key={"line" + i}>{line}</p>
+            )                       ;
+          })
+        break;
+      case "Study":
+        contents = data.contents;
+        img = <img src={contents.img} width="100%" alt="" />;
+          text = contents.text.split("\n").map((line, i) => {
+            return (
+              <p key={"line" + i}>{line}</p>
+            )                       ;
+          })
         break;
       default:
-      img = null;
+        img = null;
+        text = null;
     }
 
     return(
       <div className="activityDetail">
+        <div className="modal fade" id="myModal" tabIndex="-1" role="dialog" >
+          <div className="modal-dialog" role="document">
+            <div className="modal-content">
+              <div className="modal-header">
+                <button type="button" className="close"><span aria-hidden="true">&times;</span></button>
+                <h3 className="modal-title" id="myModalLabel">Participating users</h3>
+              </div>
+              <div className="modal-body">
+                <ul className="media-list">
+                  {this.state.participants === undefined ? 0:this.state.participants.map((p,i)=>{
+                    return (
+                      <Ad_participates_item key={i} data={p} />
+                    )
+                  })}
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
         <div className= "adbackground">
           <img src={this.state.img} />
         </div>
@@ -79,25 +121,7 @@ export default class Ad_body extends React.Component{
                       <font style={{'color':'#61B4E4','fontSize':'10px','paddingLeft':'10px','cursor':'pointer'}}
                         data-toggle="modal" data-target="#myModal"  >View All</font>
 
-                      <div className="modal fade" id="myModal" tabIndex="-1" role="dialog" aria-labelledby="myModalLabel">
-                        <div className="modal-dialog" role="document">
-                          <div className="modal-content">
-                            <div className="modal-header">
-                              <button type="button" className="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                              <h3 className="modal-title" id="myModalLabel">Participating users</h3>
-                            </div>
-                            <div className="modal-body">
-                              <ul className="media-list">
-                                {this.state.participants === undefined ? 0:this.state.participants.map((p,i)=>{
-                                  return (
-                                    <Ad_participates_item key={i} data={p} />
-                                  )
-                                })}
-                              </ul>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+
 
                       <br/>
 
@@ -133,12 +157,11 @@ export default class Ad_body extends React.Component{
                   </div>
                   <div className="row">
                     <div className="col-md-12" style={{'paddingTop':'20px'}}>
-                      Friday, October 7th
-                      <p>6 PM - 9 PM: Check-in at Campus Center first floor, dinner at Blue Wall Cafe <br/>
-                        9 PM - 10 PM: Opening ceremony in Campus Center Auditorium <br/>
-                        10 PM: Move to Integrative Learning Center (ILC) <br/>
-                        12 Midnight: Hacking begins in the ILC <br/>
-                    </p>
+                      <br />
+
+                      {text}
+
+
                     <br/>
                   </div>
                 </div>
