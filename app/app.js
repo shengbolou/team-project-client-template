@@ -7,8 +7,9 @@ import Chat from './chat/chat'
 import Notification from './notification/notification';
 import Search from './search/search';
 import Profile from './profile/profile';
-import { IndexRoute, Router, Route, hashHistory } from 'react-router';
+import PostActivity from './postactivity/postactivity';
 import Activity_detail from './activity_detail/activity_detail';
+import { IndexRoute, Router, Route, hashHistory } from 'react-router';
 
 
 
@@ -82,7 +83,7 @@ class ProfilePage extends React.Component{
 class PostActivityPage extends React.Component {
   render() {
     return (
-      <PostActivity user={1} id={this.props.params.id} />
+      <PostActivity user={1} />
     );
   }
 }
@@ -106,7 +107,7 @@ ReactDOM.render((
       </Route>
       <Route path="search" component={SearchPage}/>
       <Route path="postactivity" component={PostActivityPage} />
-    </Route>
+      </Route>
   </Router>
 
 ),document.getElementById('container'));

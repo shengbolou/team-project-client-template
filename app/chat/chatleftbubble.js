@@ -26,7 +26,7 @@ export default class ChatLeftBubble extends React.Component {
                   </a>
               </div>
               <div className="media-body" style={{
-                  'paddingRight': '0px'
+                  'paddingRight': '0'
               }}>
                   <div className="msg">
                     {this.state.text}

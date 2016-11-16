@@ -42,7 +42,7 @@ export default class Navbar extends React.Component{
                     <ul className="dropdown-menu" aria-labelledby="user-options">
                       <li><Link to={"profile/"+this.props.user._id}><span><i className="fa fa-user" aria-hidden="true"></i></span>Profile</Link></li>
                       <li><Link to="settings"><span><i className="fa fa-cog" aria-hidden="true"></i></span>Settings</Link></li>
-                      <li><a href="postactivity.html"><span><i className="fa fa-pencil" aria-hidden="true"></i></span>Create Activity</a></li>
+                      <li><Link to="postactivity"><span><i className="fa fa-pencil" aria-hidden="true"></i></span>Create Activity</Link></li>
                       <li role="separator" className="divider"></li>
                       <li><a href="#"><span><i className="fa fa-sign-out" aria-hidden="true"></i></span>Log out</a></li>
                     </ul>
