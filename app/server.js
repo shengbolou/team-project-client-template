@@ -1,4 +1,5 @@
 import {readDocument, writeDocument, addDocument,deleteDocument} from './database.js';
+var moment = require('moment');
 
 /**
  * Emulates how a REST call is *asynchronous* -- it calls your function back
@@ -9,6 +10,7 @@ function emulateServerReturn(data, cb) {
     cb(data);
   }, 4);
 }
+
 
 export function deleteNotification(id, user ,cb){
   var userData = readDocument('users',user);
@@ -147,6 +149,36 @@ export function postStatus(user, text, cb){
   writeDocument('postFeeds', postFeedData);
 
   emulateServerReturn(post,cb);
+}
+
+export function createActivity(data,cb){
+  var activityItem = {
+    "type": data.type,
+    "author":data.userData._id,
+    "title": data.title,
+    "description":data.description,
+    "img":data.img === null ? "./img/HackUMass.jpg" : data.img,
+    "startTime": moment(data.startTime).valueOf(),
+    "endTime": moment(data.endTime).valueOf(),
+    "location": data.location,
+    "country": "USA",
+    "state": "MA",
+    "city": "Amherst",
+    "participants": [],
+    "likeCounter": [],
+    "comments":[
+    ],
+    "contents": {
+      "img": data.img === null ? "./img/HackUMass-detail-1.png":data.img,
+      "text": data.detail
+    }
+  }
+  activityItem = addDocument('activityItems',activityItem);
+
+  var activities = readDocument('activities',data.userData.activity);
+  activities.contents.unshift(activityItem._id);
+  writeDocument('activities', activities);
+  emulateServerReturn(activities,cb);
 }
 
 function getPostFeedItemSync(feedItemId){

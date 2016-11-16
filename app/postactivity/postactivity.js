@@ -1,6 +1,8 @@
 import React from 'react';
 import Navbar from '../component/navbar';
-import {getUserData} from '../server';
+import {getUserData,createActivity} from '../server';
+import FriendItem from './friendItem';
+import { hashHistory } from 'react-router'
 
 export default class PostActivity extends React.Component {
 
@@ -10,11 +12,12 @@ export default class PostActivity extends React.Component {
       userData: {},
       type:"",
       title: "",
-      img:"",
+      img:null,
       startTime: '',
       endTime: '',
       description: "",
-      location: ""
+      location: "",
+      detail:""
     }
   }
 
@@ -25,9 +28,72 @@ export default class PostActivity extends React.Component {
       })
     });
   }
-  
+
+  handleSubmit(e){
+    e.preventDefault();
+    if(this.state.type!=="------Select a Activity Type-----"&&
+        this.state.title.trim()!=="" &&
+        this.state.startTime.trim()!=="" &&
+        this.state.endTime.trim()!==""&&
+        this.state.description.trim()!==""&&
+        this.state.location.trim()!==""&&
+        this.state.detail.trim()!==""
+    ){
+      createActivity(this.state,()=>{
+        hashHistory.push('/');
+      });
+    }
+  }
+
   componentDidMount(){
     this.getData();
+  }
+
+  handleTitle(e){
+    e.preventDefault();
+    this.setState({
+      title: e.target.value
+    })
+  }
+
+  handleStartTime(e){
+    e.preventDefault();
+    this.setState({
+      startTime: e.target.value
+    })
+  }
+
+  handleEndTime(e){
+    e.preventDefault();
+    this.setState({
+      endTime: e.target.value
+    })
+  }
+
+  handleLocation(e){
+    e.preventDefault();
+    this.setState({
+      location: e.target.value
+    })
+  }
+  handleDetail(e){
+    e.preventDefault();
+    this.setState({
+      detail: e.target.value
+    })
+  }
+
+  handleEvent(e){
+    e.preventDefault();
+    this.setState({
+      type: e.target.value
+    })
+  }
+  handleDescription(e){
+    e.preventDefault();
+    this.setState({
+      description: e.target.value
+    })
   }
 
 
@@ -89,22 +155,14 @@ export default class PostActivity extends React.Component {
                         </div>
                         <div className="col-md-6">
                           <div className="md-form">
-
-                            <br/>
-                            <select  id="" className="form-control select">
+                            <select className="form-control select" value={this.state.type} onChange={(e)=>this.handleEvent(e)}>
                               <option>------Select a Activity Type-----</option>
-                              <option value={"Event"}
-                                onChange={(e)=>this.handleEvent(e)}>
-                                Event</option>
-                              <option value={"Entertainment"}
-                                onChange={(e)=>this.handleEvent(e)}>Entertainment</option>
-                              <option value={"Study"}
-                                onChange={(e)=>this.handleEvent(e)}>Study</option>
+                              <option>Event</option>
+                              <option>Entertainment</option>
+                              <option>Study</option>
                             </select>
-
                           </div>
                         </div>
-
                       </div>
                       <div className="row">
                         <div className="col-md-12">
@@ -113,6 +171,12 @@ export default class PostActivity extends React.Component {
                               value={this.state.description}
                               onChange={(e)=>this.handleDescription(e)}></textarea>
                             <label htmlFor="form7">Description</label>
+                          </div>
+                          <div className="md-form">
+                            <textarea type="text" id="" className="md-textarea"
+                              value={this.state.detail}
+                              onChange={(e)=>this.handleDetail(e)}></textarea>
+                            <label htmlFor="">Details</label>
                           </div>
                         </div>
                       </div>
@@ -136,51 +200,10 @@ export default class PostActivity extends React.Component {
                                   "padding":'0'
                                 }}>
                                 <ul className="media-list">
-                                  <li className="media" style={{
-                                      "paddingLeft":'10',
-                                      "paddingBottom":'10',
-                                      "paddingTop":'10',
-                                      "marginTop":'-20'
-                                    }}>
-                                    <div className="media-left">
-                                      <a href="profile.html">
-                                        <img className="media-object" src="img/user.png" width="45px" alt="..." />
-                                      </a>
-                                    </div>
-                                    <div className="media-body media-top">
-                                      User 1<br />
-                                    <font color="grey">  psersonal description for User 1</font>
-                                  </div>
-                                  <div className="media-body media-right" align="right" style={{"paddingRight":'20'}}>
-                                    <button type="button" className="btn btn-default btn-blue-grey"  name="button">Invite</button>
-
-                                  </div>
-                                  <hr/>
-                                </li>
-                                <li className="media" style={{
-                                    "paddingLeft":'10',
-                                    "paddingBottom":'10',
-                                    "paddingTop":'10',
-                                    "marginTop":'-20'
-                                  }}>
-                                  <div className="media-left">
-                                    <a href="profile.html">
-                                      <img className="media-object" src="img/user.png" width="45px" alt="..." />
-                                    </a>
-                                  </div>
-                                  <div className="media-body media-top">
-                                    User 1<br />
-                                  <font color="grey">  psersonal description for User 1</font>
-                                </div>
-                                <div className="media-body media-right" align="right" style={{
-                                    "paddingRight":'20'
-                                  }}>
-                                  <button type="button" className="btn btn-default btn-blue-grey"  name="button">Invite</button>
-
-                                </div>
-                                <hr />
-                              </li>
-                            </ul>
+                                  {this.state.userData.friends === undefined ? null : this.state.userData.friends.map((friend,i)=>{
+                                    return <FriendItem data={friend} key={i}/>
+                                  })}
+                                </ul>
                           </div>
 
                           <div className="modal-footer" style={{
@@ -196,7 +219,7 @@ export default class PostActivity extends React.Component {
                       Upload IMG <input type="file" style={{"display":"none"}}/></label>
                   </div>
                   <div className="col-md-6 nopadding">
-                    <button type="button" className="btn btn-blue-grey pull-right nomargin " name="button"  onClick={(e)=>this.handleSubmit(e)}>Submit</button>
+                    <button type="button" className="btn btn-blue-grey pull-right nomargin" onClick={(e)=>this.handleSubmit(e)}>Submit</button>
                   </div>
                 </div>
               </div>

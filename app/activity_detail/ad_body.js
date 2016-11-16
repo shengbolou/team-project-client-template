@@ -68,7 +68,7 @@ export default class Ad_body extends React.Component{
     var authorid;
     switch(data.type){
       case "Event":
-      case "Party":
+      case "Entertainment":
       case "Study":
         contents = data.contents;
         img = <img src={contents.img} width="100%" alt="" />;
