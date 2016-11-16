@@ -50,10 +50,15 @@ export default class Chat extends React.Component {
 
 
 
-                                  {this.state.message.messages === undefined ? 0:this.state.message.messages.map((comment,i)=>{
+                                  {this.state.message.messages === undefined ? 0:this.state.message.messages.map((message,i)=>{
+                                    if(message.sender==this.state.user._id){
                                     return (
-                                      <ChatRightBubble key={i} data={comment} />
-                                    )
+                                      <ChatRightBubble key={i} data={message} />
+                                    )}
+                                    else{
+                                    return (
+                                      <ChatLeftBubble key={i} data={message} />
+                                    )}
                                   })}
 
 

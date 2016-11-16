@@ -10,10 +10,10 @@ export default class ChatRightBubble extends React.Component {
 
     render() {
       //default time format
-      var time = moment(12).calendar();
+      var time = moment(this.state.date).calendar();
       //if less than 24 hours, use relative time
       if((new Date().getTime()) - 12 <= 86400000)
-        time = moment(12).fromNow();
+        time = moment(this.state.date).fromNow();
 
         return (
             <div className="media my-msg">
@@ -23,7 +23,7 @@ export default class ChatRightBubble extends React.Component {
 
                 <div className="media-body">
                     <div className="msg pull-right">
-                      {12}
+                      {this.state.text}
                     </div>
                 </div>
                 <div className="media-right ">
