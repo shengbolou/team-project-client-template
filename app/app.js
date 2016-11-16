@@ -79,6 +79,13 @@ class ProfilePage extends React.Component{
     );
   }
 }
+class PostActivityPage extends React.Component {
+  render() {
+    return (
+      <PostActivity user={1} id={this.props.params.id} />
+    );
+  }
+}
 
 //render main
 ReactDOM.render((
@@ -98,6 +105,7 @@ ReactDOM.render((
         <Route path="/activity_detail/:id" component={Activity_detailPage}/>
       </Route>
       <Route path="search" component={SearchPage}/>
+      <Route path="postactivity" component={PostActivityPage} />
     </Route>
   </Router>
 
