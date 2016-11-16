@@ -4,32 +4,60 @@ import NavHeading from './navheading';
 import NavBody from './navbody';
 import ChatWindow from './chatwindow';
 import {getUserData} from '../server';
+import {getMessages} from '../server';
+import ChatRightBubble from './chatrightbubble';
+import ChatLeftBubble from './chatleftbubble';
 
 export default class Chat extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {}
+        this.state = {
+          user: {}
+        ,
+          message :{}
+        };
     }
 
     getData() {
         getUserData(this.props.user, (userData) => {
-            this.setState(userData);
+            this.setState({user:userData});
         });
+        getMessages(1,(message)=>{
+          this.setState({message: message})
+        })
+
     }
+    handlePostMessage(message){
+      postMessage(this.props.userdata._id, this.props.target ,message, (newMessage)=>{
+        this.setState({message:newMessage});
+      })
+    }
+
     render() {
         return (
             <div>
-                <Navbar chat="active" user={this.state}/>
+                <Navbar chat="active" user={this.state.user}/>
                 <div className="container">
                     <div className="row">
                         <div className="col-md-4 col-sm-4 col-xs-4 col-md-offset-1 col-sm-offset-1 col-xs-offset-1 chat-left">
                             <div className="panel panel-dafault">
                                 <NavHeading chat="active"/>
-                                <NavBody/>
-
+                                <NavBody data={this.state.user}/>
                             </div>
                         </div>
-                        <ChatWindow/>
+
+                          <ChatWindow userdata={this.state.user} messages={this.state.message} target={2} onPost={(message)=>this.handlePostMessage(message)}>
+
+
+
+                                  {this.state.message.messages === undefined ? 0:this.state.message.messages.map((comment,i)=>{
+                                    return (
+                                      <ChatRightBubble key={i} data={comment} />
+                                    )
+                                  })}
+
+
+                          </ChatWindow>
                     </div>
 
                 </div>

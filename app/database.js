@@ -18,7 +18,7 @@ var initialData = {
       "country": "USA",
       "state": "MA",
       "city": "Amherst",
-      "friends":[],
+      "friends":[2],
       "post":1,
       "activity":1,
       "notification":1,
@@ -37,7 +37,7 @@ var initialData = {
       "country": "USA",
       "state": "MA",
       "city": "Amherst",
-      "friends":[],
+      "friends":[1],
       "post":2,
       "activity":2,
       "notification":2,
@@ -230,6 +230,40 @@ var initialData = {
           "author": 3,
           "text": "Hello",
           "postDate": 1478149540000
+        }
+      ]
+    }
+  },
+
+  // "feeds" collection. Feeds for each user.
+  "messageSession": {
+    "1": {
+      "_id": 1,
+      "contents": [1]
+    }
+  },
+  //message table
+  "message": {
+    "1": {
+      "_id":1,
+      "messages": [
+        {
+          "sender" : 1,
+          "target" : 2,
+          "date" : 1478149540000,
+          "text": "what's up"
+        },
+        {
+          "sender" : 2,
+          "target" : 1,
+          "date" : 1478149540000,
+          "text": "what's up"
+        },
+        {
+          "sender" : 1,
+          "target" : 2,
+          "date" : 1478149540000,
+          "text": "what's up"
         }
       ]
     }

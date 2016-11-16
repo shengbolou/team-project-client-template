@@ -1,21 +1,29 @@
 import React from 'react';
+var moment = require('moment');
 
 export default class ChatRightBubble extends React.Component {
 
     constructor(props) {
         super(props);
+        this.state = props.data;
     }
 
     render() {
+      //default time format
+      var time = moment(12).calendar();
+      //if less than 24 hours, use relative time
+      if((new Date().getTime()) - 12 <= 86400000)
+        time = moment(12).fromNow();
+
         return (
             <div className="media my-msg">
                 <div className="media-top">
-                    At 20:07 on August 2
+                    {time}
                 </div>
 
                 <div className="media-body">
                     <div className="msg pull-right">
-                        sarrsamee rae hpinaut! tait u myaha in tainrayy hk manaathpyan k nhaitsatoe lain mai aatainn hce linemyarrrae start pyeenoutaahcawpine Bird ko aanaeengaal laatmhaattway yanae noutsonenae hpyiteat . aouttobharl 1, bigwigs nhaint myawwataamayrik htuuhkyawan nhain
+                      {12}
                     </div>
                 </div>
                 <div className="media-right ">
