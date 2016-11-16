@@ -22,17 +22,33 @@ export default class Settings extends React.Component{
 
   handleChangeUserInfo(e){
     e.preventDefault();
-
-    changeUserInfo(this.props.user,
-      this.state.lastname,
-      this.state.firstname,
-      this.state.discription,
-      this.state.country,
-      this.state.state,
-      this.state.city,
-      (userData)=>{
-        this.setState({userData: userData});
-      });
+    if(this.state.lastname!==""&&
+        this.state.firstname!=""&&
+        this.state.nickname!==""&&
+        this.state.description!==""&&
+        this.state.country!==""&&
+        this.state.state!==""&&
+        this.state.city!==""){
+          changeUserInfo(this.state,(userData)=>{
+            this.setState({userData: userData});
+            alert = (<div className="alert alert-success alert-dismissible" role="alert">
+                          <button type="button" className="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;
+                            </span>
+                          </button>
+                          <strong>Change info succeed!</strong>
+                        </div>);
+          });
+        }
+        else{
+          alert = (<div className="alert alert-warning alert-dismissible" role="alert">
+                        <button type="button" className="close" data-dismiss="alert" aria-label="Close">
+                          <span aria-hidden="true">&times;
+                          </span>
+                        </button>
+                        <strong>Please fill in blanks</strong>
+                      </div>);
+        }
 
       this.setState(
         {
@@ -45,14 +61,6 @@ export default class Settings extends React.Component{
           city: ""
         }
       );
-
-      alert = (<div className="alert alert-success alert-dismissible" role="alert">
-                    <button type="button" className="close" data-dismiss="alert" aria-label="Close">
-                      <span aria-hidden="true">&times;
-                      </span>
-                    </button>
-                    <strong>Change info succeed!</strong> Please refresh page
-                  </div>);
 
   }
 

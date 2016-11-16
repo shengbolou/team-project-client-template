@@ -2,7 +2,7 @@ import React from 'react';
 import Navbar from '../component/navbar';
 import {getUserData,createActivity} from '../server';
 import FriendItem from './friendItem';
-import { hashHistory } from 'react-router'
+import {hashHistory} from 'react-router';
 
 export default class PostActivity extends React.Component {
 
