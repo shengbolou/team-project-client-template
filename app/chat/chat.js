@@ -3,32 +3,37 @@ import Navbar from '../component/navbar';
 import NavHeading from './navheading';
 import NavBody from './navbody';
 import ChatWindow from './chatwindow';
-import {getUserData} from '../server';
-import {getMessages} from '../server';
 import ChatRightBubble from './chatrightbubble';
 import ChatLeftBubble from './chatleftbubble';
+import {getUserData,getMessages,postMessage} from '../server';
 
 export default class Chat extends React.Component {
+
     constructor(props) {
         super(props);
         this.state = {
-          user: {}
-        ,
-          message :{}
+          user: {},
+          message :[]
         };
     }
 
     getData() {
-        getUserData(this.props.user, (userData) => {
-            this.setState({user:userData});
-        });
-        getMessages(1,(message)=>{
-          this.setState({message: message})
+      getUserData(this.props.user, (userData) => {
+        this.setState({
+          user:userData
         })
+      });
+
+      getMessages(this.props.user,(message)=>{
+        this.setState({
+          message:message
+        })
+      });
 
     }
+
     handlePostMessage(message){
-      postMessage(this.props.userdata._id, this.props.target ,message, (newMessage)=>{
+      postMessage(1, this.props.user, 2 ,message, (newMessage)=>{
         this.setState({message:newMessage});
       })
     }
@@ -46,22 +51,19 @@ export default class Chat extends React.Component {
                             </div>
                         </div>
 
-                          <ChatWindow userdata={this.state.user} messages={this.state.message} target={2} onPost={(message)=>this.handlePostMessage(message)}>
-
-
-
-                                  {this.state.message.messages === undefined ? 0:this.state.message.messages.map((message,i)=>{
-                                    if(message.sender==this.state.user._id){
-                                    return (
-                                      <ChatRightBubble key={i} data={message} />
-                                    )}
-                                    else{
-                                    return (
-                                      <ChatLeftBubble key={i} data={message} />
-                                    )}
-                                  })}
-
-
+                          <ChatWindow target={2} onPost={(message)=>this.handlePostMessage(message)}>
+                            {this.state.message === undefined ? 0: this.state.message.map((msg,i)=>{
+                              if(msg.sender._id===this.state.user._id){
+                                return (
+                                  <ChatRightBubble key={i} data={msg} />
+                                )
+                              }
+                              else{
+                                return (
+                                  <ChatLeftBubble key={i} data={msg} />
+                                )
+                              }
+                            })}
                           </ChatWindow>
                     </div>
 

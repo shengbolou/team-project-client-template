@@ -1,6 +1,5 @@
 import React from 'React';
 import {getUserData} from '../server';
-import {postMessage} from '../server';
 import {Link} from 'react-router';
 import ChatEntry from './chatentry';
 
@@ -8,11 +7,7 @@ export default class ChatWindow extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-          target: {}
-        ,
-          message :{}
-        };
+        this.state = {}
     }
 
     componentDidMount() {
@@ -20,17 +15,13 @@ export default class ChatWindow extends React.Component {
     }
 
     handlePostMessage(text){
-      postMessage(1,this.props.userdata._id,this.props.target,text ,(newMessage) => {
-        this.setState({message:newMessage});
-      })
+      this.props.onPost(text);
     }
 
     getData() {
         getUserData(this.props.target, (userData) => {
-
-            this.setState({target: userData})
+            this.setState(userData)
         });
-
     }
 
     render() {
@@ -44,8 +35,8 @@ export default class ChatWindow extends React.Component {
                     <div className="panel-heading panel-heading-chatwindow">
                         <div className="media">
                             <div className="media-left">
-                              <Link to={"profile/"+this.state.target._id}>
-                                <img className="media-object" src={this.state.target.avatar } alt="image" height="45" width="45"></img>
+                              <Link to={"profile/"+this.state._id}>
+                                <img className="media-object" src={this.state.avatar } alt="image" height="45" width="45"></img>
                                 </Link>
                           </div>
                             <div className="media-body">
@@ -53,13 +44,13 @@ export default class ChatWindow extends React.Component {
 
                                     <div className="media">
                                         <div className="media-left media-body">
-                                            <font size="3">{this.state.target.firstname} {this.state.target.lastname}</font>
+                                            <font size="3">{this.state.firstname} {this.state.lastname}</font>
                                         </div>
 
                                     </div>
                                 </div>
                                 <font size="2" color="grey ">
-                                    {this.state.target.description}</font>
+                                    {this.state.description}</font>
                             </div>
                         </div>
                     </div>
@@ -68,18 +59,13 @@ export default class ChatWindow extends React.Component {
 
                       {React.Children.map(this.props.children,function(child){
                         return (
-
                             child
-
                         );
                       })}
 
                     </div>
 
-                    <ChatEntry sender={this.props.userdata} target={this.props.target} onPost={(message)=>this.handlePostMessage(message)}>
-
-                    </ChatEntry>
-
+                    <ChatEntry onPost={(message)=>this.handlePostMessage(message)}/>
                 </div>
             </div>
 
