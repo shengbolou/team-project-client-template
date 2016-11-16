@@ -1,11 +1,12 @@
 import React from 'React';
 import NavChatItem from './navchatitem';
-import NavFriendItem from './navfrienditem';
 
 export default class NavBody extends React.Component {
 
     constructor(props) {
         super(props);
+
+        this.state = props.data;
     }
 
     render() {
@@ -15,11 +16,14 @@ export default class NavBody extends React.Component {
                     'marginBottom': '0',
                     'marginTop': '-1'
                 }}>
-                    <NavChatItem avator="img/user.png" user="someone" date="some date" lastmessage="last message"/>
-                    <NavChatItem avator="img/user.png" user="someone2" date="some date" lastmessage="last message2"/>
-                    <NavFriendItem avator="img/user.png" user="someone2"/>
+                  {this.props.data.firstname === undefined ? 0:this.props.data.friends.map((item)=>{
+                  return <NavChatItem key={item._id} data={item} currentUser={this.props.data._id}/>
+                })}
+
+
                 </ul>
             </div>
         )
     }
+
 }

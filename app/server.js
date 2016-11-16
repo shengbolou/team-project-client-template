@@ -194,6 +194,7 @@ export function getActivityFeedData(user,cb){
 
 export function getUserData(user,cb){
   var userData = readDocument('users',user);
+  userData.friends = userData.friends.map((id)=>readDocument('users',id));
   emulateServerReturn(userData,cb);
 }
 
@@ -213,4 +214,32 @@ export function adpostComment(activityId, author, comment, cb){
   writeDocument('activityItems',activitydetailitem);
 
   emulateServerReturn(getActivityFeedItemSync(activityId),cb);
+}
+
+export function getMessages(sessionid,cb){
+  var message = readDocument('messageSession',sessionid);
+  message.contents = message.contents.map(getMessageSync);
+
+  emulateServerReturn(getMessageSync(sessionid).messages,cb);
+}
+
+export function postMessage(sessionId,sender,target, text, cb){
+  var message = readDocument('message',sessionId);
+  message.messages.push({
+    "sender": sender,
+    "target":target,
+    "date":(new Date()).getTime(),
+    "text": text
+  });
+  writeDocument('message',message);
+  emulateServerReturn(getMessageSync(sessionId).messages,cb);
+}
+
+function getMessageSync(sessionId){
+  var message = readDocument("message",sessionId);
+  message.messages.forEach((message)=>{
+    message.sender = readDocument('users', message.sender);
+    message.target = readDocument('users', message.target);
+  });
+  return message;
 }
