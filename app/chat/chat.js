@@ -46,7 +46,7 @@ export default class Chat extends React.Component {
                             </div>
                         </div>
 
-                          <ChatWindow userdata={this.state.user} messages={this.state.message} target={2} onPost={(message)=>this.handlePostMessage(message)}>
+                          <ChatWindow userdata={this.state.user} messages={this.state.message} length={this.state.message.length} target={2} onPost={(message)=>this.handlePostMessage(message)}>
 
 
 
