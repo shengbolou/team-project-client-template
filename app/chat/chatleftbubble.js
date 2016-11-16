@@ -1,5 +1,6 @@
 import React from 'react';
 var moment = require('moment');
+import {Link} from 'react-router';
 
 export default class ChatLeftBubble extends React.Component {
 
@@ -21,9 +22,11 @@ export default class ChatLeftBubble extends React.Component {
                   {time}
               </div>
               <div className="media-left">
-                  <a className="media-left" href="#">
-                      <img className="media-object" src="img/user.png" alt="image" height="40" width="40"></img>
-                  </a>
+                  <div className="media-left" >
+                      <Link to={"profile/"+this.state.sender._id}>
+                      <img className="media-object" src={this.state.sender.avatar} alt="image" height="40" width="40"></img>
+                      </Link>
+                </div>
               </div>
               <div className="media-body" style={{
                   'paddingRight': '0px'
