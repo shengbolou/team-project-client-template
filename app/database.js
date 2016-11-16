@@ -18,7 +18,7 @@ var initialData = {
       "country": "USA",
       "state": "MA",
       "city": "Amherst",
-      "friends":[2,3],
+      "friends":[2],
       "post":1,
       "activity":1,
       "notification":1,
