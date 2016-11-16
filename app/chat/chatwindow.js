@@ -12,6 +12,7 @@ export default class ChatWindow extends React.Component {
 
     componentDidMount() {
         this.getData();
+      
     }
 
     handlePostMessage(text){
