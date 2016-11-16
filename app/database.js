@@ -257,7 +257,18 @@ var initialData = {
           "sender" : 2,
           "target" : 1,
           "date" : 1478149540000,
-          "text": "what's up"
+          "text": `
+Mr Trump tweeted that the process of selecting his new cabinet and other positions was "very organised".
+US media say two senior members of the transition team working on national security have been forced out.
+Mr Trump, a property tycoon and Republican outsider, won an unexpected victory against Hillary Clinton.
+Outgoing President Barack Obama, on a visit to Greece, admitted he and his successor "could not be more different" but vowed to "do everything we can to support the smoothest transition possible," saying democracy depended on it.
+Inside the secret Clinton Facebook group
+Twitter suspends alt-right figureheads
+The people around Donald Trump
+Five bumpy White House transitions
+Mr Trump has already replaced New Jersey Governor Chris Christie with Vice-President-elect Mike Pence as head of his transition team.
+Media reports say Mr Trump's son-in-law and close adviser Jared Kushner was behind the change.
+Mr Christie was New Jersey attorney general when Mr Kushner's father was tried and jailed in the state for tax evasion, illegal campaign contributions and witness tampering in 2004."`
         },
         {
           "sender" : 1,

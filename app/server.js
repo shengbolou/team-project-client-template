@@ -232,7 +232,7 @@ export function postMessage(sessionId,sender,target, text, cb){
     "text": text
   });
   writeDocument('message',message);
-  emulateServerReturn(getMessageSync(sessionId),cb);
+  emulateServerReturn(getMessageSync(sessionId).messages,cb);
 }
 
 function getMessageSync(sessionId){

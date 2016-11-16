@@ -12,7 +12,7 @@ export default class NavHeading extends React.Component {
             <div className="panel-heading panel-heading-chat" style={{paddingBottom:"3px"}}>
                 <ul className="nav nav-pills nav-justified" >
                     <li role="presentation" className={this.props.chat}>
-                        <a>Chats</a>
+                        <a>Friends</a>
                     </li>
                 </ul>
             </div>

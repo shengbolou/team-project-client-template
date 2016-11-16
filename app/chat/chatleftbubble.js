@@ -20,7 +20,7 @@ export default class ChatLeftBubble extends React.Component {
               <div className="media-top">
                   {time}
               </div>
-              <div className="media-left ">
+              <div className="media-left">
                   <a className="media-left" href="#">
                       <img className="media-object" src="img/user.png" alt="image" height="40" width="40"></img>
                   </a>
