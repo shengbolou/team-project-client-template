@@ -28,7 +28,7 @@ export default class NavChatItem extends React.Component {
                             </div>
                         </div>
                         <font size="2" color="grey ">
-                            last message</font>
+                            {this.props.last}</font>
                     </div>
                 </div>
             </li>
