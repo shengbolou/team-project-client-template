@@ -1,5 +1,6 @@
 import React from 'react';
 import Navbar from '../component/navbar';
+import {getUserData} from '../server';
 
 export default class PostActivity extends React.Component {
 
@@ -7,7 +8,6 @@ export default class PostActivity extends React.Component {
     super(props);
     this.state = {
       userData: {},
-      activitiesData: {},
       type:"",
       title: "",
       img:"",
@@ -18,7 +18,17 @@ export default class PostActivity extends React.Component {
     }
   }
 
-
+  getData(){
+    getUserData(this.props.user,(userData)=>{
+      this.setState({
+        userData: userData
+      })
+    });
+  }
+  
+  componentDidMount(){
+    this.getData();
+  }
 
 
   render() {
