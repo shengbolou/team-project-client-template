@@ -99,7 +99,7 @@ export function changeUserInfo(data, cb){
   userData.lastname = data.lastname;
   userData.firstname = data.firstname;
   userData.nickname = data.nickname;
-  userData.discription = data.discription;
+  userData.description = data.description;
   userData.country = data.country;
   userData.state = data.state;
   userData.city = data.city;
