@@ -7,13 +7,13 @@
 .infos{
   margin-top: 20px;
 }
-.system-settings{
+.postactivity .system-settings{
   margin-top: 20px;
 }
-.system-settings .list-group{
+.postactivity .system-settings .list-group{
   box-shadow: 0 10px 28px 0 rgba(137,157,197,.12) !important;
 }
-.system-settings .list-group .list-group-item{
+.postactivity .system-settings .list-group .list-group-item{
   border:none;
   padding: 20px;
 }

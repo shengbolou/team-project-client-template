@@ -94,15 +94,15 @@ export function unLikeActivity(activityId, user, cb){
   emulateServerReturn(activityItem.likeCounter.map((id)=>readDocument('users',id)), cb);
 }
 
-export function changeUserInfo(user, lastname, firstname, nickname, discription, country, state, city, cb){
-  var userData = readDocument('users', user);
-  userData.lastname = lastname;
-  userData.firstname = firstname;
-  userData.nickname = nickname;
-  userData.discription = discription;
-  userData.country = country;
-  userData.state = state;
-  userData.city = city;
+export function changeUserInfo(data, cb){
+  var userData = readDocument('users',data.userData._id);
+  userData.lastname = data.lastname;
+  userData.firstname = data.firstname;
+  userData.nickname = data.nickname;
+  userData.discription = data.discription;
+  userData.country = data.country;
+  userData.state = data.state;
+  userData.city = data.city;
 
   writeDocument('users', userData);
 
