@@ -99,11 +99,13 @@ export default class Ad_body extends React.Component{
               </div>
               <div className="modal-body">
                 <ul className="media-list">
-                  {this.state.participants === undefined ? 0:this.state.participants.map((p,i)=>{
+                  {this.state.participants === undefined ? 0:
+                    (this.state.participants.length === 0 ? "No one has signed up yet!" :
+                    this.state.participants.map((p,i)=>{
                     return (
                       <Ad_participates_item key={i} data={p} />
                     )
-                  })}
+                  }))}
                 </ul>
               </div>
             </div>
@@ -145,9 +147,6 @@ export default class Ad_body extends React.Component{
 
                       <font style={{'color':'#61B4E4','fontSize':'10px','paddingLeft':'10px','cursor':'pointer'}}
                         data-toggle="modal" data-target="#myModal"  >View All</font>
-
-
-
                       <br/>
 
                       {this.state.participants === undefined ? 0:this.state.participants.map((p,i)=>{
