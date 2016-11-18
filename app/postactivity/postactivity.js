@@ -129,18 +129,19 @@ export default class PostActivity extends React.Component {
                       <div className="row">
                         <div className="col-md-6">
                           <div className="md-form">
-                            <input type="text" id="" className="form-control"
+                            <h5>Start Time</h5>
+                            <input type="datetime-local" id="" className="form-control"
                               value={this.state.startTime}
-                              onChange={(e)=>this.handleStartTime(e)}/>
-                            <label htmlFor="form1" className="">Start Time: MM/DD/YYYY</label>
+                              onChange={(e)=>this.handleStartTime(e)}
+                              placeholder="this"/>
                           </div>
                         </div>
                         <div className="col-md-6">
                           <div className="md-form">
-                            <input type="text" id="" className="form-control"
+                              <h5>End Time</h5>
+                            <input type="datetime-local" id="" className="form-control"
                               value={this.state.endTime}
                               onChange={(e)=>this.handleEndTime(e)}/>
-                            <label htmlFor="form1" className="">End Time: MM/DD/YYYY</label>
                           </div>
                         </div>
                       </div>
