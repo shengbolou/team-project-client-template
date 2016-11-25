@@ -21,6 +21,7 @@ var deleteDocument = database.deleteDocument;
 //schemas
 var statusUpdateSchema = require('./schemas/statusUpdate.json');
 var commentSchema = require('./schemas/comment.json');
+var userInfoSchema = require('./schemas/userInfo.json');
 var validate = require('express-jsonschema').validate;
 
 
@@ -174,6 +175,32 @@ app.post('/postItem/:postItemId/commentThread/comment',validate({body:commentSch
     else{
       res.status(401).end();
     }
+  });
+
+  //change user info
+  app.put('/settings/user/:userId',validate({body:userInfoSchema}),function(req,res){
+    var data = req.body;
+    var moment = require('moment');
+    var userId = parseInt(req.params.userId);
+    var fromUser = getUserIdFromToken(req.get('Authorization'));
+
+    if(fromUser == userId){
+      var userData = readDocument('users',userId);
+      userData.lastname = data.lastname;
+      userData.firstname = data.firstname;
+      userData.nickname = data.nickname;
+      userData.description = data.description;
+      userData.location = data.location;
+      userData.birthday = moment(data.birthday).valueOf();
+
+      writeDocument('users', userData);
+      res.status(201);
+      res.send(userData);
+    }
+    else{
+      res.status(401).end();
+    }
+
   });
 
 

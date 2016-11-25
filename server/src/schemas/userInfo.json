@@ -1,0 +1,38 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "userData": {
+      "type": "object",
+      "properties": {}
+    },
+    "lastname": {
+      "type": "string"
+    },
+    "firstname": {
+      "type": "string"
+    },
+    "nickname": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "birthday": {
+      "type": "string"
+    },
+    "location": {
+      "type": "object",
+      "properties": {}
+    }
+  },
+  "required": [
+    "userData",
+    "lastname",
+    "firstname",
+    "nickname",
+    "description",
+    "birthday",
+    "location"
+  ]
+}

@@ -88,7 +88,7 @@ export default class Settings extends React.Component{
 
   onLocationSet(data){
     this.setState({location:data})
-  };
+  }
 
   handleBirthday(e){
     e.preventDefault();

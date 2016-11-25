@@ -12,6 +12,7 @@
   },
   "devDependencies": {
     "eslint": "^2.4.0",
-    "eslint-plugin-node": "^1.0.0"
+    "eslint-plugin-node": "^1.0.0",
+    "moment": "2.16.0"
   }
 }

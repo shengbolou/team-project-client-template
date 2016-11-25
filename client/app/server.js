@@ -156,17 +156,9 @@ export function unLikeActivity(activityId, user, cb){
 }
 
 export function changeUserInfo(data, cb){
-  var userData = readDocument('users',data.userData._id);
-  userData.lastname = data.lastname;
-  userData.firstname = data.firstname;
-  userData.nickname = data.nickname;
-  userData.description = data.description;
-  userData.location = data.location;
-  userData.birthday = moment(data.birthday).valueOf();
-
-  writeDocument('users', userData);
-
-  emulateServerReturn(userData, cb);
+  sendXHR('PUT','/settings/user/'+data.userData._id,data,(xhr)=>{
+    cb(JSON.parse(xhr.responseText));
+  })
 
 }
 
@@ -217,18 +209,6 @@ export function createActivity(data,cb){
   activities.contents.unshift(activityItem._id);
   writeDocument('activities', activities);
   emulateServerReturn(activities,cb);
-}
-
-function getPostFeedItemSync(feedItemId){
-  var postFeedItem = readDocument("postFeedItems",feedItemId);
-  postFeedItem.likeCounter = postFeedItem.likeCounter.map((id)=>readDocument('users', id));
-  postFeedItem.contents.author = readDocument('users', postFeedItem.contents.author);
-
-  postFeedItem.comments.forEach((comment)=>{
-    comment.author = readDocument('users', comment.author);
-  });
-
-  return postFeedItem;
 }
 
 
