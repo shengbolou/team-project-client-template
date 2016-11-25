@@ -19,6 +19,8 @@ export default class ProfileMainFeed extends React.Component{
   }
 
   render(){
+    var location = (this.state.location === undefined ||Object.keys(this.state.location ).length === 0 ?
+                    "Earth" : this.state.location.description);
     return(
       <div className="panel panel-default main-panel">
         <div className="panel-body">
@@ -34,7 +36,7 @@ export default class ProfileMainFeed extends React.Component{
                 {this.state.description}
                 <div className="location">
                   <span className="glyphicon glyphicon-map-marker"></span>
-                  {this.state.city}, {this.state.state}, {this.state.country}
+                  {location}
                 </div>
               </div>
             </div>

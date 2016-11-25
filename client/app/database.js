@@ -15,17 +15,13 @@ var initialData = {
       "nickname": "crown",
       "avatar": "img/user.png",
       "description": "Hello everyone, I'm a mock user",
-      "country": "USA",
-      "state": "MA",
-      "city": "Amherst",
+      "location":{},
       "friends":[2],
       "post":1,
       "activity":1,
       "notification":1,
       "email": "upao@umass.edu",
-      "dob_month": 5,
-      "dob_day": 21,
-      "dob_year": 1995
+      "birthday":14781293140
     },
     "2": {
       "_id":2,
@@ -34,17 +30,13 @@ var initialData = {
       "nickname": "None",
       "avatar": "img/user.png",
       "description": "Hello everyone, I'm a test account",
-      "country": "USA",
-      "state": "MA",
-      "city": "Amherst",
+      "location":{},
       "friends":[1],
       "post":2,
       "activity":2,
       "notification":2,
       "email": "test@umass.edu",
-      "dob_month": 11,
-      "dob_day": 11,
-      "dob_year": 2016
+      "birthday":1478129314000
     },
     "3": {
       "_id":3,
@@ -53,17 +45,13 @@ var initialData = {
       "nickname": "None",
       "avatar": "img/user.png",
       "description": "Hello everyone, I'm a test account",
-      "country": "USA",
-      "state": "MA",
-      "city": "Amherst",
+      "location":{},
       "friends":[],
       "post":3,
       "activity":3,
       "notification":3,
       "email": "test2@umass.edu",
-      "dob_month": 11,
-      "dob_day": 11,
-      "dob_year": 2016
+      "birthday":1478129314000
     }
   },
   //notification collections

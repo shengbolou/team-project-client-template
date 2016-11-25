@@ -2,8 +2,8 @@ import React from 'react';
 import Navbar from '../component/navbar';
 import {getUserData} from '../server';
 import {changeUserInfo} from '../server';
+import Location from 'react-place';
 var alert = null;
-
 export default class Settings extends React.Component{
 
   constructor(props){
@@ -14,9 +14,8 @@ export default class Settings extends React.Component{
       firstname: "",
       nickname: "",
       description: "",
-      country: "",
-      state: "",
-      city: ""
+      birthday:"",
+      location: {}
     }
   }
 
@@ -26,9 +25,7 @@ export default class Settings extends React.Component{
         this.state.firstname!=""&&
         this.state.nickname!==""&&
         this.state.description!==""&&
-        this.state.country!==""&&
-        this.state.state!==""&&
-        this.state.city!==""){
+        Object.keys(this.state.location).length !== 0){
           changeUserInfo(this.state,(userData)=>{
             this.setState({userData: userData});
             alert = (<div className="alert alert-success alert-dismissible" role="alert">
@@ -56,9 +53,8 @@ export default class Settings extends React.Component{
           firstname: "",
           nickname: "",
           description: "",
-          country: "",
-          state: "",
-          city: ""
+          birthday:"",
+          location:{}
         }
       );
 
@@ -90,22 +86,14 @@ export default class Settings extends React.Component{
     this.setState({description: e.target.value});
   }
 
-  handleState(e){
+  onLocationSet(data){
+    this.setState({location:data})
+  };
+
+  handleBirthday(e){
     e.preventDefault();
-    this.setState({state: e.target.value});
+    this.setState({birthday: e.target.value});
   }
-
-  handleCountry(e){
-    e.preventDefault();
-    this.setState({country: e.target.value});
-  }
-
-  handleCity(e){
-    e.preventDefault();
-    this.setState({city: e.target.value});
-  }
-
-
 
   render(){
     return(
@@ -150,6 +138,13 @@ export default class Settings extends React.Component{
                               <label htmlFor="form1" className="">NickName</label>
                           </div>
                           <div className="md-form">
+                            <h5>Birthday</h5>
+                            <input type="date" id="" className="form-control"
+                              value={this.state.birthday}
+                              onChange={(e)=>this.handleBirthday(e)}
+                              placeholder="this"/>
+                          </div>
+                          <div className="md-form">
                               <textarea type="text" className="md-textarea"
                                 value={this.state.description}
                                 onChange={(e)=>this.handleDescription(e)}></textarea>
@@ -164,22 +159,16 @@ export default class Settings extends React.Component{
                     <div className="col-md-12">
                       <h4>Location</h4>
                       <div className="md-form" style={{"marginTop":'20'}}>
-                          <input type="text" id="" className="form-control"
-                            value={this.state.country}
-                            onChange={(e)=>this.handleCountry(e)}/>
-                          <label htmlFor="form1" className="">Country</label>
-                      </div>
-                      <div className="md-form">
-                          <input type="text" id="" className="form-control"
-                            value={this.state.state}
-                            onChange={(e)=>this.handleState(e)}/>
-                          <label htmlFor="form1" className="">State</label>
-                      </div>
-                      <div className="md-form">
-                          <input type="text" id="" className="form-control"
-                            value={this.state.city}
-                            onChange={(e)=>this.handleCity(e)}/>
-                          <label htmlFor="form1" className="">City</label>
+                        <Location
+                          country='US'
+                          noMatching='Sorry, I can not find {{value}}.'
+                          onLocationSet={(data)=>this.onLocationSet(data)}
+                          inputProps={{
+                            style: {color: '#0099FF'},
+                            className:'location form-control',
+                            placeholder: 'Where are your?'
+                          }}
+                          />
                       </div>
                     </div>
                   </div>
