@@ -14,9 +14,15 @@ app.use(express.static('../client/build'));
 //import database functions
 var database = require('./database.js');
 var readDocument = database.readDocument;
-// var addDocument = database.addDocument;
-// var writeDocument = database.writeDocument;
-// var deleteDocument = database.deleteDocument;
+var addDocument = database.addDocument;
+var writeDocument = database.writeDocument;
+var deleteDocument = database.deleteDocument;
+
+//schemas
+var statusUpdateSchema = require('./schemas/statusUpdate.json');
+var commentSchema = require('./schemas/comment.json');
+var validate = require('express-jsonschema').validate;
+
 
 //get post feed data
 function getPostFeedItemSync(feedItemId){
@@ -49,6 +55,129 @@ app.get('/user/:userId/feed',function(req,res){
   }
 });
 
+function postStatus(user, text){
+  var time = new Date().getTime();
+
+  var post = {
+    "likeCounter":[],
+    "type": "general",
+    "contents": {
+      "author": user,
+      "postDate": time,
+      "text": text,
+      "img": null
+    },
+    "comments":[]
+  };
+
+  post = addDocument('postFeedItems',post);
+
+  var userData = readDocument('users',user);
+  var postFeedData = readDocument('postFeeds',userData.post);
+
+  postFeedData.contents.unshift(post._id);
+
+  writeDocument('postFeeds', postFeedData);
+
+  return post;
+}
+
+//create post
+app.post('/postItem', validate({ body: statusUpdateSchema }),function(req,res){
+  var body = req.body;
+  var fromUser = getUserIdFromToken(req.get('Authorization'));
+  if(fromUser === body.userId){
+    var newPost = postStatus(body.userId,body.text);
+    res.status(201);
+    res.send(newPost);
+  }
+  else{
+    res.status(401).end();
+  }
+});
+
+//like post
+app.put('/postItem/:postItemId/likelist/:userId',function(req,res){
+  var fromUser = getUserIdFromToken(req.get('Authorization'));
+  var postItemId = parseInt(req.params.postItemId,10);
+  var userId = parseInt(req.params.userId,10);
+  if(userId === fromUser){
+    var postFeedItem = readDocument('postFeedItems',postItemId);
+    if(postFeedItem.likeCounter.indexOf(userId)===-1){
+      postFeedItem.likeCounter.push(userId);
+      writeDocument('postFeedItems',postFeedItem);
+    }
+    res.status(201);
+    res.send(postFeedItem.likeCounter.map((id)=>readDocument('users',id)));
+  }
+  else{
+    res.status(401).end();
+  }
+
+});
+
+//unlike post
+app.delete('/postItem/:postItemId/likelist/:userId',function(req,res){
+  var fromUser = getUserIdFromToken(req.get('Authorization'));
+  var postItemId = parseInt(req.params.postItemId,10);
+  var userId = parseInt(req.params.userId,10);
+  if(userId === fromUser){
+    var postFeedItem = readDocument('postFeedItems',postItemId);
+    var index = postFeedItem.likeCounter.indexOf(userId);
+    if(index!==-1){
+      postFeedItem.likeCounter.splice(index,1);
+      writeDocument('postFeedItems',postFeedItem);
+    }
+    res.status(201);
+    res.send(postFeedItem.likeCounter.map((id)=>readDocument('users',id)));
+  }
+  else{
+    res.status(401).end();
+  }
+
+});
+
+//get user data
+app.get('/user/:userId',function(req,res){
+  var fromUser = getUserIdFromToken(req.get('Authorization'));
+  var userId = parseInt(req.params.userId,10);
+  if(fromUser === userId){
+    var userData = readDocument('users',userId);
+    userData.friends = userData.friends.map((id)=>readDocument('users',id));
+    res.status(201);
+    res.send(userData);
+  }
+  else{
+    res.status(401).end();
+  }
+});
+
+//post comments
+app.post('/postItem/:postItemId/commentThread/comment',validate({body:commentSchema}),
+  function(req,res){
+    var fromUser = getUserIdFromToken(req.get('Authorization'));
+    var body = req.body;
+    var postItemId = parseInt(req.params.postItemId);
+    var userId = body.author;
+    if(fromUser === userId){
+      var postFeedItem = readDocument('postFeedItems',postItemId);
+      postFeedItem.comments.push({
+        "author": userId,
+        "text": body.text,
+        "postDate": (new Date()).getTime()
+      });
+
+      writeDocument('postFeedItems',postFeedItem);
+      res.status(201);
+      res.send(getPostFeedItemSync(postItemId));
+    }
+    else{
+      res.status(401).end();
+    }
+  });
+
+
+
 
 /**
 * Get the user ID from a token. Returns -1 (an invalid ID)
@@ -75,6 +204,29 @@ function getUserIdFromToken(authorizationLine) {
     return -1;
   }
 }
+
+
+// Reset database.
+app.post('/resetdb', function(req, res) {
+  console.log("Resetting database...");
+  // This is a debug route, so don't do any validation.
+  database.resetDatabase();
+  // res.send() sends an empty response with status code 200
+  res.send();
+});
+
+/**
+* Translate JSON Schema Validation failures into error 400s.
+*/
+app.use(function(err, req, res, next) {
+  if (err.name === 'JsonSchemaValidation') {
+    // Set a bad request http response status
+    res.status(400).end();
+  } else {
+    // It's some other sort of error; pass it to next error middleware handler
+    next(err);
+  }
+});
 
 // Starts the server on port 3000!
 app.listen(3000, function () {

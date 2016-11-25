@@ -121,24 +121,17 @@ export function getNotificationData(user, cb){
 }
 
 export function likePost(feedItemId, user, cb){
-  var postFeedItem = readDocument('postFeedItems',feedItemId);
-  postFeedItem.likeCounter.push(user);
-
-  writeDocument('postFeedItems',postFeedItem);
-
-  emulateServerReturn(postFeedItem.likeCounter.map((id)=>readDocument('users',id)), cb);
+  sendXHR('PUT', '/postItem/'+feedItemId+'/likelist/'+user,
+   undefined, (xhr)=>{
+     cb(JSON.parse(xhr.responseText));
+   });
 }
 
 export function unLikePost(feedItemId, user, cb){
-  var postFeedItem = readDocument('postFeedItems',feedItemId);
-  var userindex = postFeedItem.likeCounter.indexOf(user);
-
-  if(userindex !== -1){
-    postFeedItem.likeCounter.splice(userindex,1);
-    writeDocument('postFeedItems', postFeedItem);
-  }
-
-  emulateServerReturn(postFeedItem.likeCounter.map((id)=>readDocument('users',id)), cb);
+  sendXHR('DELETE', '/postItem/'+feedItemId+'/likelist/'+user,
+   undefined, (xhr)=>{
+     cb(JSON.parse(xhr.responseText));
+   });
 }
 
 export function likeActivity(activityId, user, cb){
@@ -180,43 +173,21 @@ export function changeUserInfo(data, cb){
 
 
 export function postComment(feedItemId, author, comment, cb){
-  var postFeedItem = readDocument('postFeedItems',feedItemId);
-  postFeedItem.comments.push({
-    "author": author,
-    "text": comment,
-    "postDate": (new Date()).getTime()
-  });
-
-  writeDocument('postFeedItems',postFeedItem);
-
-  emulateServerReturn(getPostFeedItemSync(feedItemId),cb);
+  sendXHR('POST','/postItem/'+feedItemId+'/commentThread/comment',{
+    author:author,
+    text:comment
+  },(xhr)=>{
+    cb(JSON.parse(xhr.responseText));
+  })
 }
 
 export function postStatus(user, text, cb){
-  var time = new Date().getTime();
-
-  var post = {
-    "likeCounter":[],
-    "type": "general",
-    "contents": {
-      "author": user,
-      "postDate": time,
-      "text": text,
-      "img": null
-    },
-    "comments":[]
-  };
-
-  post = addDocument('postFeedItems',post);
-
-  var userData = readDocument('users',user);
-  var postFeedData = readDocument('postFeeds',userData.post);
-
-  postFeedData.contents.unshift(post._id);
-
-  writeDocument('postFeeds', postFeedData);
-
-  emulateServerReturn(post,cb);
+  sendXHR('POST', '/postItem', {
+    userId:user,
+    text:text
+  }, (xhr)=>{
+    cb(JSON.parse(xhr.responseText));
+  });
 }
 
 export function createActivity(data,cb){
@@ -293,9 +264,9 @@ export function getActivityFeedData(user,cb){
 }
 
 export function getUserData(user,cb){
-  var userData = readDocument('users',user);
-  userData.friends = userData.friends.map((id)=>readDocument('users',id));
-  emulateServerReturn(userData,cb);
+  sendXHR('GET','/user/'+user,undefined,(xhr)=>{
+    cb(JSON.parse(xhr.responseText));
+  })
 }
 
 export function getActivityDetail(id,cb){
