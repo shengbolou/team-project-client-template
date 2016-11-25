@@ -9,6 +9,7 @@ import Search from './search/search';
 import Profile from './profile/profile';
 import PostActivity from './postactivity/postactivity';
 import Activity_detail from './activity_detail/activity_detail';
+import ErrorBanner from './component/errorbanner';
 import { IndexRoute, Router, Route, hashHistory } from 'react-router';
 
 
@@ -29,7 +30,14 @@ class ThrendPage extends React.Component{
 class App extends React.Component {
   render() {
     return (
-      <div>{this.props.children}</div>
+      <div>
+        <div className="row">
+          <div className="col-md-8 col-md-offset-2">
+            <ErrorBanner />
+          </div>
+        </div>
+        {this.props.children}
+      </div>
     );
   }
 }
