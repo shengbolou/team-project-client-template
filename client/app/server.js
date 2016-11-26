@@ -28,7 +28,7 @@ function sendXHR(verb, resource, body, cb) {
       // The server may have included some response text with details concerning
       // the error.
       var responseText = xhr.responseText;
-      AppError('Could not ' + verb + " " + resource + ": Received " +
+      window.AppError('Could not ' + verb + " " + resource + ": Received " +
       statusCode + " " + statusText + ": " + responseText);
     }
   });
@@ -37,12 +37,12 @@ function sendXHR(verb, resource, body, cb) {
   xhr.timeout = 10000;
   // Network failure: Could not connect to server.
   xhr.addEventListener('error', function() {
-    AppError('Could not ' + verb + " " + resource +
+    window.AppError('Could not ' + verb + " " + resource +
     ": Could not connect to the server.");
   });
   // Network failure: request took too long to complete.
   xhr.addEventListener('timeout', function() {
-    AppError('Could not ' + verb + " " + resource +
+    window.AppError('Could not ' + verb + " " + resource +
     ": Request timed out.");
   });
   switch (typeof(body)) {
@@ -156,10 +156,15 @@ export function unLikeActivity(activityId, user, cb){
 }
 
 export function changeUserInfo(data, cb){
-  sendXHR('PUT','/settings/user/'+data.userData._id,data,(xhr)=>{
+  sendXHR('PUT','/settings/user/'+data.userId,data,(xhr)=>{
     cb(JSON.parse(xhr.responseText));
   })
+}
 
+export function changeEmail(data,cb){
+  sendXHR('PUT','/settings/emailChange/user/'+data.userId, data,(xhr)=>{
+    cb(JSON.parse(xhr.responseText));
+  })
 }
 
 

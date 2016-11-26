@@ -2,9 +2,8 @@
   "$schema": "http://json-schema.org/draft-04/schema#",
   "type": "object",
   "properties": {
-    "userData": {
-      "type": "object",
-      "properties": {}
+    "userId": {
+      "type": "integer"
     },
     "lastname": {
       "type": "string"
@@ -27,7 +26,7 @@
     }
   },
   "required": [
-    "userData",
+    "userId",
     "lastname",
     "firstname",
     "nickname",
