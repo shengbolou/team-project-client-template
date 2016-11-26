@@ -276,7 +276,6 @@ app.put('/activityItem/:activityId/likelist/:userId',function(req, res){
 
 //unlike activity
 app.delete('/activityItem/:activityId/likelist/:userId', function(req, res){
-  var fromUser = getUserIdFromToken(req.get('Authorization'));
   var activityId = parseInt(req.params.activityId, 10);
   var userId = parseInt(req.params.userId, 10);
   var activityItem = readDocument('activityItems', activityId);
