@@ -219,21 +219,21 @@ export function getPostFeedData(user, cb){
 
 }
 
-function getActivityFeedItemSync(feedItemId){
-  var activityFeedItem = readDocument('activityItems',feedItemId);
-  activityFeedItem.author = readDocument('users',activityFeedItem.author);
-  activityFeedItem.participants = activityFeedItem.participants.map((id)=>readDocument('users',id));
-  activityFeedItem.likeCounter = activityFeedItem.likeCounter.map((id)=>readDocument('users',id));
-  activityFeedItem.comments.forEach((comment)=>{
-    comment.author = readDocument('users',comment.author);
+function getActivityFeedItemSync(activityId){
+  var activityItem = readDocument('activityItems', activityId);
+  activityItem.author = readDocument('users',activityItem.author);
+  activityItem.participants = activityItem.participants.map((id)=>readDocument('users',id));
+  activityItem.likeCounter = activityItem.likeCounter.map((id)=>readDocument('users',id));
+  activityItem.comments.forEach((comment) => {
+    comment.author = readDocument('users', comment.author);
   });
 
-  return activityFeedItem;
+  return activityItem;
 }
 
 export function getActivityFeedData(user,cb){
   // We don't need to send a body, so pass in 'undefined' for the body.
-  sendXHR('GET', '/user/'+user+'/activity', undefined, (xhr) => {
+  sendXHR('GET', '/user/' + user + '/activity', undefined, (xhr) => {
     // Call the callback with the data.
     cb(JSON.parse(xhr.responseText));
   });

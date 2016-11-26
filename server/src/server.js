@@ -202,16 +202,16 @@ app.put('/settings/user/:userId',validate({body:userInfoSchema}),function(req,re
   }
 });
 
-function getActivityFeedItemSync(feedItemId){
-  var activityFeedItem = readDocument('activityItems',feedItemId);
-  activityFeedItem.author = readDocument('users',activityFeedItem.author);
-  activityFeedItem.participants = activityFeedItem.participants.map((id)=>readDocument('users',id));
-  activityFeedItem.likeCounter = activityFeedItem.likeCounter.map((id)=>readDocument('users',id));
-  activityFeedItem.comments.forEach((comment)=>{
-    comment.author = readDocument('users',comment.author);
+function getActivityFeedItemSync(activityId){
+  var activityItem = readDocument('activityItems', activityId);
+  activityItem.author = readDocument('users', activityItem.author);
+  activityItem.participants = activityItem.participants.map((id) => readDocument('users', id));
+  activityItem.likeCounter = activityItem.likeCounter.map((id) => readDocument('users', id));
+  activityItem.comments.forEach((comment) => {
+    comment.author = readDocument('users', comment.author);
   });
 
-  return activityFeedItem;
+  return activityItem;
 }
 
 function getActivityFeedData(user){
