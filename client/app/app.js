@@ -84,7 +84,7 @@ class SearchPage extends React.Component{
 class ProfilePage extends React.Component{
   render(){
     return(
-      <Profile user={parseInt(this.props.params.user)} />
+      <Profile user={parseInt(this.props.params.user)} currUser={1}/>
     );
   }
 }

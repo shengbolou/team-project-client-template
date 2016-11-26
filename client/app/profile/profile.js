@@ -14,7 +14,7 @@ export default class Profile extends React.Component{
   }
 
   getData(){
-    getUserData(this.props.user, (userData)=>{
+    getUserData(this.props.currUser, (userData)=>{
         this.setState(userData);
     });
   }

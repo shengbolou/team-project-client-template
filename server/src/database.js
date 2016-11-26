@@ -179,6 +179,10 @@ var initialData = {
 
   // "feeds" collection. Feeds for each user.
   "postFeeds": {
+    "3": {
+      "_id":3,
+      "contents":[]
+    },
     "2": {
       "_id": 2,
       "contents": []

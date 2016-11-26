@@ -48,13 +48,13 @@ function getPostFeedData(user){
 
 app.get('/user/:userId/feed',function(req,res){
   var userId = parseInt(req.params.userId,10);
-  var fromUser = getUserIdFromToken(req.get('Authorization'));
-  if(userId === fromUser){
+  // var fromUser = getUserIdFromToken(req.get('Authorization'));
+  // if(userId === fromUser){
     res.send(getPostFeedData(userId));
-  }
-  else{
-    res.status(401).end();
-  }
+  // }
+  // else{
+    // res.status(401).end();
+  // }
 });
 
 function postStatus(user, text){
@@ -141,17 +141,17 @@ app.delete('/postItem/:postItemId/likelist/:userId',function(req,res){
 
 //get user data
 app.get('/user/:userId',function(req,res){
-  var fromUser = getUserIdFromToken(req.get('Authorization'));
+  // var fromUser = getUserIdFromToken(req.get('Authorization'));
   var userId = parseInt(req.params.userId,10);
-  if(fromUser === userId){
+  // if(fromUser === userId){
     var userData = readDocument('users',userId);
     userData.friends = userData.friends.map((id)=>readDocument('users',id));
     res.status(201);
     res.send(userData);
-  }
-  else{
-    res.status(401).end();
-  }
+  // }
+  // else{
+    // res.status(401).end();
+  // }
 });
 
 //post comments
