@@ -47,13 +47,9 @@ function getPostFeedData(user){
 
 app.get('/user/:userId/feed',function(req,res){
   var userId = parseInt(req.params.userId,10);
-  var fromUser = getUserIdFromToken(req.get('Authorization'));
-  if(userId === fromUser){
+
     res.send(getPostFeedData(userId));
-  }
-  else{
-    res.status(401).end();
-  }
+
 });
 
 function postStatus(user, text){
@@ -114,7 +110,6 @@ app.put('/postItem/:postItemId/likelist/:userId',function(req,res){
   else{
     res.status(401).end();
   }
-
 });
 
 //unlike post
@@ -140,11 +135,53 @@ app.delete('/postItem/:postItemId/likelist/:userId',function(req,res){
 
 //get user data
 app.get('/user/:userId',function(req,res){
-  var fromUser = getUserIdFromToken(req.get('Authorization'));
   var userId = parseInt(req.params.userId,10);
+  var userData = readDocument('users',userId);
+  userData.friends = userData.friends.map((id)=>readDocument('users',id));
+  res.status(201);
+  res.send(userData);
+});
+
+//post comments
+app.post('/postItem/:postItemId/commentThread/comment',validate({body:commentSchema}),
+function(req,res){
+  var fromUser = getUserIdFromToken(req.get('Authorization'));
+  var body = req.body;
+  var postItemId = parseInt(req.params.postItemId);
+  var userId = body.author;
   if(fromUser === userId){
+    var postFeedItem = readDocument('postFeedItems',postItemId);
+    postFeedItem.comments.push({
+      "author": userId,
+      "text": body.text,
+      "postDate": (new Date()).getTime()
+    });
+    writeDocument('postFeedItems',postFeedItem);
+    res.status(201);
+    res.send(getPostFeedItemSync(postItemId));
+  }
+  else{
+    res.status(401).end();
+  }
+});
+
+//change user info
+app.put('/settings/user/:userId',validate({body:userInfoSchema}),function(req,res){
+  var data = req.body;
+  var moment = require('moment');
+  var userId = parseInt(req.params.userId);
+  var fromUser = getUserIdFromToken(req.get('Authorization'));
+
+  if(fromUser == userId){
     var userData = readDocument('users',userId);
-    userData.friends = userData.friends.map((id)=>readDocument('users',id));
+    userData.lastname = data.lastname;
+    userData.firstname = data.firstname;
+    userData.nickname = data.nickname;
+    userData.description = data.description;
+    userData.location = data.location;
+    userData.birthday = moment(data.birthday).valueOf();
+
+    writeDocument('users', userData);
     res.status(201);
     res.send(userData);
   }
@@ -153,58 +190,71 @@ app.get('/user/:userId',function(req,res){
   }
 });
 
-//post comments
-app.post('/postItem/:postItemId/commentThread/comment',validate({body:commentSchema}),
-  function(req,res){
-    var fromUser = getUserIdFromToken(req.get('Authorization'));
-    var body = req.body;
-    var postItemId = parseInt(req.params.postItemId);
-    var userId = body.author;
-    if(fromUser === userId){
-      var postFeedItem = readDocument('postFeedItems',postItemId);
-      postFeedItem.comments.push({
-        "author": userId,
-        "text": body.text,
-        "postDate": (new Date()).getTime()
-      });
-
-      writeDocument('postFeedItems',postFeedItem);
-      res.status(201);
-      res.send(getPostFeedItemSync(postItemId));
-    }
-    else{
-      res.status(401).end();
-    }
+function getActivityFeedItemSync(feedItemId){
+  var activityFeedItem = readDocument('activityItems',feedItemId);
+  activityFeedItem.author = readDocument('users',activityFeedItem.author);
+  activityFeedItem.participants = activityFeedItem.participants.map((id)=>readDocument('users',id));
+  activityFeedItem.likeCounter = activityFeedItem.likeCounter.map((id)=>readDocument('users',id));
+  activityFeedItem.comments.forEach((comment)=>{
+    comment.author = readDocument('users',comment.author);
   });
 
-  //change user info
-  app.put('/settings/user/:userId',validate({body:userInfoSchema}),function(req,res){
-    var data = req.body;
-    var moment = require('moment');
-    var userId = parseInt(req.params.userId);
-    var fromUser = getUserIdFromToken(req.get('Authorization'));
+  return activityFeedItem;
+}
 
-    if(fromUser == userId){
-      var userData = readDocument('users',userId);
-      userData.lastname = data.lastname;
-      userData.firstname = data.firstname;
-      userData.nickname = data.nickname;
-      userData.description = data.description;
-      userData.location = data.location;
-      userData.birthday = moment(data.birthday).valueOf();
+function getActivityFeedData(user){
+  var userData = readDocument('users',user);
+  var activityData = readDocument('activities',userData.activity);
 
-      writeDocument('users', userData);
-      res.status(201);
-      res.send(userData);
+  activityData.contents = activityData.contents.map(getActivityFeedItemSync);
+
+  return activityData;
+}
+
+// get activity Feed data
+app.get('/user/:userid/activity', function(req, res) {
+  var userId = parseInt(req.params.userId,10);
+  res.send(getActivityFeedData(userId));
+});
+
+//like activity
+app.put('/activityItem/:activityId/likelist/:userId',function(req, res){
+  var fromUser = getUserIdFromToken(req.get('Authorization'));
+  var activityId = parseInt(req.params.activityId, 10);
+  var userId = parseInt(req.params.userId, 10);
+  if(userId === fromUser){
+    var activityItem = readDocument('activityItems', activityId);
+    if(activityItem.likeCounter.indexOf(userId) === -1){
+      activityItem.likeCounter.push(userId);
+      writeDocument('activityItems', activityItem);
     }
-    else{
-      res.status(401).end();
+    res.status(201);
+    res.send(activityItem.likeCounter.map((id) => readDocument('users', id)));
+  }
+  else{
+    res.status(401).end();
+  }
+});
+
+//unlike activity
+app.delete('/activityItem/:activityId/likelist/:userId', function(req, res){
+  var fromUser = getUserIdFromToken(req.get('Authorization'));
+  var activityId = parseInt(req.params.activityId, 10);
+  var userId = parseInt(req.params.userId, 10);
+  if(userId === fromUser){
+    var activityItem = readDocument('activityItems', activityId);
+    var index = activityItem.likeCounter.indexOf(userId);
+    if(index !== -1){
+      activityItem.likeCounter.splice(index, 1);
+      writeDocument('activityItems', activityItem);
     }
-
-  });
-
-
-
+    res.status(201);
+    res.send(activityItem.likeCounter.map((id) => readDocument('users', id)));
+  }
+  else{
+    res.status(401).end();
+  }
+});
 
 /**
 * Get the user ID from a token. Returns -1 (an invalid ID)

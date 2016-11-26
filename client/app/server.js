@@ -11,10 +11,10 @@ function sendXHR(verb, resource, body, cb) {
   var xhr = new XMLHttpRequest();
   xhr.open(verb, resource);
   xhr.setRequestHeader('Authorization', 'Bearer ' + token);
-  // The below comment tells ESLint that FacebookError is a global.
+  // The below comment tells ESLint that AppError is a global.
   // Otherwise, ESLint would complain about it! (See what happens in Atom if
   // you remove the comment...)
-  // global FacebookError
+  /* global AppError */
   // Response received from server. It could be a failure, though!
   xhr.addEventListener('load', function() {
     var statusCode = xhr.status;
@@ -135,24 +135,17 @@ export function unLikePost(feedItemId, user, cb){
 }
 
 export function likeActivity(activityId, user, cb){
-  var activityItem = readDocument('activityItems', activityId);
-  activityItem.likeCounter.push(user);
-
-  writeDocument('activityItems', activityItem);
-
-  emulateServerReturn(activityItem.likeCounter.map((id)=>readDocument('users',id)), cb);
+  sendXHR('PUT', '/activityItem/' + activityId + '/likelist/' + user,
+   undefined, (xhr) => {
+     cb(JSON.parse(xhr.responseText));
+   });
 }
 
 export function unLikeActivity(activityId, user, cb){
-  var activityItem = readDocument('activityItems', activityId);
-  var userindex = activityItem.likeCounter.indexOf(user);
-
-  if(userindex !== -1){
-    activityItem.likeCounter.splice(userindex,1);
-    writeDocument('activityItems', activityItem);
-  }
-
-  emulateServerReturn(activityItem.likeCounter.map((id)=>readDocument('users',id)), cb);
+  sendXHR('DELETE', '/activityItem/' + activityId +'/likelist/' + user,
+   undefined, (xhr) => {
+     cb(JSON.parse(xhr.responseText));
+   });
 }
 
 export function changeUserInfo(data, cb){
@@ -234,12 +227,11 @@ function getActivityFeedItemSync(feedItemId){
 }
 
 export function getActivityFeedData(user,cb){
-  var userData = readDocument('users',user);
-  var activityData = readDocument('activities',userData.activity);
-
-  activityData.contents = activityData.contents.map(getActivityFeedItemSync);
-
-  emulateServerReturn(activityData,cb);
+  // We don't need to send a body, so pass in 'undefined' for the body.
+  sendXHR('GET', '/user/'+user+'/activity', undefined, (xhr) => {
+    // Call the callback with the data.
+    cb(JSON.parse(xhr.responseText));
+  });
 }
 
 export function getUserData(user,cb){

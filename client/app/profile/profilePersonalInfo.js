@@ -53,7 +53,7 @@ export default class ProfilePersonalInfo extends React.Component{
         <div className="panel panel-default">
           <div className="panel-body">
             <div className="media">
-              You've completed {progress}% of profile.
+              {this.state.firstname} have completed {progress}% of profile.
               <br />
               <progress value={progress} max="100"></progress>
             </div>
