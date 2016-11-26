@@ -1,9 +1,9 @@
 import React from 'react';
 import Navbar from '../component/navbar';
-import {getUserData} from '../server';
-import {changeUserInfo} from '../server';
+import {getUserData,changeEmail,changeUserInfo} from '../server';
 import Location from 'react-place';
 var alert = null;
+var emailAlert = null;
 export default class Settings extends React.Component{
 
   constructor(props){
@@ -15,6 +15,8 @@ export default class Settings extends React.Component{
       nickname: "",
       description: "",
       birthday:"",
+      oldEmail:"",
+      newEmail:"",
       location: {}
     }
   }
@@ -26,7 +28,15 @@ export default class Settings extends React.Component{
         this.state.nickname!==""&&
         this.state.description!==""&&
         Object.keys(this.state.location).length !== 0){
-          changeUserInfo(this.state,(userData)=>{
+          changeUserInfo({
+            userId: this.state.userData._id,
+            lastname: this.state.lastname,
+            firstname:  this.state.firstname,
+            nickname: this.state.nickname,
+            description: this.state.description,
+            birthday:this.state.birthday,
+            location: this.state.location
+          },(userData)=>{
             this.setState({userData: userData});
             alert = (<div className="alert alert-success alert-dismissible" role="alert">
                           <button type="button" className="close" data-dismiss="alert" aria-label="Close">
@@ -94,6 +104,50 @@ export default class Settings extends React.Component{
     e.preventDefault();
     this.setState({birthday: e.target.value});
   }
+  handleOldEmail(e){
+    e.preventDefault();
+    this.setState({oldEmail: e.target.value});
+  }
+  handleNewEmail(e){
+    e.preventDefault();
+    this.setState({newEmail: e.target.value});
+  }
+  handleEmailChange(e){
+      e.preventDefault();
+      if(this.state.oldEmail!=="" && this.state.newEmail!==""){
+        changeEmail({
+          userId: this.state.userData._id,
+          oldEmail: this.state.oldEmail,
+          newEmail: this.state.newEmail
+        },(error)=>{
+          if(error){
+            emailAlert = (<div className="alert alert-warning" role="alert">
+                          <strong>Old email is wrong</strong>
+                        </div>);
+          }
+          else{
+            emailAlert = (<div className="alert alert-success" role="alert">
+                          <strong>Change email succeed!</strong>
+                        </div>);
+          }
+          this.setState({
+            oldEmail:"",
+            newEmail:""
+          })
+        });
+      }
+      else{
+        emailAlert = (<div className="alert alert-warning" role="alert">
+                      <strong>fill in blanks</strong>
+                    </div>);
+      }
+
+      this.setState({
+        oldEmail:"",
+        newEmail:""
+      })
+  }
+
 
   render(){
     return(
@@ -164,7 +218,7 @@ export default class Settings extends React.Component{
                           noMatching='Sorry, I can not find {{value}}.'
                           onLocationSet={(data)=>this.onLocationSet(data)}
                           inputProps={{
-                            style: {color: '#0099FF'},
+                            style: {color: '#61B4E4'},
                             className:'location form-control',
                             placeholder: 'Where are your?'
                           }}
@@ -211,15 +265,16 @@ export default class Settings extends React.Component{
                 </a>
                 <div id="reset-email" className="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
                   <div className="panel-body">
+                    {emailAlert}
                     <div className="md-form" style={{"marginTop":'20'}}>
-                        <input type="email" id="" className="form-control"/>
+                        <input type="email" id="" value={this.state.oldEmail}className="form-control" onChange={(e)=>this.handleOldEmail(e)}/>
                         <label htmlFor="Form1" className="">Old Email</label>
                     </div>
                     <div className="md-form" style={{"marginTop":'20'}}>
-                        <input type="email" id="" className="form-control"/>
+                        <input type="email" id="" value={this.state.newEmail} className="form-control" onChange={(e)=>this.handleNewEmail(e)}/>
                         <label htmlFor="Form1" className="">New Email</label>
                     </div>
-                    <button type="button" className="btn btn-blue-grey pull-right" name="button">Submit</button>
+                    <button type="button" className="btn btn-blue-grey pull-right" name="button" onClick={(e)=>this.handleEmailChange(e)}>Submit</button>
                   </div>
                 </div>
               </div>

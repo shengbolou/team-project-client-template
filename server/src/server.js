@@ -22,6 +22,8 @@ var deleteDocument = database.deleteDocument;
 var statusUpdateSchema = require('./schemas/statusUpdate.json');
 var commentSchema = require('./schemas/comment.json');
 var userInfoSchema = require('./schemas/userInfo.json');
+var emailChangeSchema = require('./schemas/emailChange.json');
+var activitySchema = require('./schemas/activity.json');
 var validate = require('express-jsonschema').validate;
 
 
@@ -47,9 +49,13 @@ function getPostFeedData(user){
 
 app.get('/user/:userId/feed',function(req,res){
   var userId = parseInt(req.params.userId,10);
-
+  // var fromUser = getUserIdFromToken(req.get('Authorization'));
+  // if(userId === fromUser){
     res.send(getPostFeedData(userId));
-
+  // }
+  // else{
+    // res.status(401).end();
+  // }
 });
 
 function postStatus(user, text){
@@ -135,11 +141,17 @@ app.delete('/postItem/:postItemId/likelist/:userId',function(req,res){
 
 //get user data
 app.get('/user/:userId',function(req,res){
+  // var fromUser = getUserIdFromToken(req.get('Authorization'));
   var userId = parseInt(req.params.userId,10);
-  var userData = readDocument('users',userId);
-  userData.friends = userData.friends.map((id)=>readDocument('users',id));
-  res.status(201);
-  res.send(userData);
+  // if(fromUser === userId){
+    var userData = readDocument('users',userId);
+    userData.friends = userData.friends.map((id)=>readDocument('users',id));
+    res.status(201);
+    res.send(userData);
+  // }
+  // else{
+    // res.status(401).end();
+  // }
 });
 
 //post comments
@@ -204,17 +216,41 @@ function getActivityFeedItemSync(feedItemId){
 
 function getActivityFeedData(user){
   var userData = readDocument('users',user);
-  var activityData = readDocument('activities',userData.activity);
-
+  var activityData = readDocument('activities', userData.activity);
   activityData.contents = activityData.contents.map(getActivityFeedItemSync);
-
   return activityData;
 }
+
+app.put('/settings/emailChange/user/:userId',validate({body:emailChangeSchema}),function(req,res){
+  var data = req.body;
+  var userId = parseInt(req.params.userId);
+  var fromUser = getUserIdFromToken(req.get('Authorization'));
+  if(fromUser === userId){
+    var userData = readDocument('users',userId);
+    if(userData.email === data.oldEmail){
+      userData.email = data.newEmail;
+      writeDocument('users', userData);
+      res.send(false);
+    }
+    else{
+      res.send(true);
+    }
+  }
+  else{
+    res.statsus(401).end();
+  }
+});
 
 // get activity Feed data
 app.get('/user/:userid/activity', function(req, res) {
   var userId = parseInt(req.params.userId,10);
-  res.send(getActivityFeedData(userId));
+  // var fromUser = getUserIdFromToken(req.get('Authorization'));
+  // if(userId === fromUser){
+    res.send(getActivityFeedData(userId));
+  // }
+  // else{
+    // res.status(401).end();
+  // }
 });
 
 //like activity
@@ -281,7 +317,6 @@ function getUserIdFromToken(authorizationLine) {
     return -1;
   }
 }
-
 
 // Reset database.
 app.post('/resetdb', function(req, res) {

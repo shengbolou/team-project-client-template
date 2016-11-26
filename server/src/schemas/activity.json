@@ -1,0 +1,109 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "_id": {
+      "type": "integer"
+    },
+    "type": {
+      "type": "string"
+    },
+    "author": {
+      "type": "integer"
+    },
+    "title": {
+      "type": "string"
+    },
+    "img": {
+      "type": "string"
+    },
+    "startTime": {
+      "type": "integer"
+    },
+    "endTime": {
+      "type": "integer"
+    },
+    "description": {
+      "type": "string"
+    },
+    "location": {
+      "type": "string"
+    },
+    "country": {
+      "type": "string"
+    },
+    "state": {
+      "type": "string"
+    },
+    "city": {
+      "type": "string"
+    },
+    "participants": {
+      "type": "array",
+      "items": {
+        "type": "integer"
+      }
+    },
+    "likeCounter": {
+      "type": "array",
+      "items": {
+        "type": "integer"
+      }
+    },
+    "comments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "author": {
+            "type": "integer"
+          },
+          "postDate": {
+            "type": "integer"
+          },
+          "text": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "author",
+          "postDate",
+          "text"
+        ]
+      }
+    },
+    "contents": {
+      "type": "object",
+      "properties": {
+        "img": {
+          "type": "string"
+        },
+        "text": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "img",
+        "text"
+      ]
+    }
+  },
+  "required": [
+    "_id",
+    "type",
+    "author",
+    "title",
+    "img",
+    "startTime",
+    "endTime",
+    "description",
+    "location",
+    "country",
+    "state",
+    "city",
+    "participants",
+    "likeCounter",
+    "comments",
+    "contents"
+  ]
+}
