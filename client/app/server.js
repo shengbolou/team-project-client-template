@@ -1,4 +1,4 @@
-import {readDocument, writeDocument, addDocument,deleteDocument} from './database.js';
+import {readDocument, writeDocument, addDocument} from './database.js';
 var moment = require('moment');
 var token = 'eyJpZCI6MX0=';
 
@@ -81,43 +81,21 @@ function emulateServerReturn(data, cb) {
 
 
 export function deleteNotification(id, user ,cb){
-  var userData = readDocument('users',user);
-  var notificationData = readDocument('notifications',userData.notification);
-  var index = notificationData.contents.indexOf(id);
-  if(index !== -1)
-    notificationData.contents.splice(index,1);
-
-  writeDocument("notifications",notificationData);
-  deleteDocument("notificationItems",id);
-  emulateServerReturn(notificationData,cb);
+  sendXHR('DELETE','/notification/'+id+'/'+user,undefined,(xhr)=>{
+    cb(JSON.parse(xhr.responseText));
+  });
 }
 
 export function acceptRequest(id,user,cb){
-  var userData = readDocument('users',user);
-  var notificationItem = readDocument('notificationItems',id);
-  userData.friends.push(notificationItem.sender);
-  writeDocument("users",userData);
-  deleteNotification(id,user,cb);
-}
-
-function getNotificationDataSync(notificationId){
-  var notification = readDocument('notificationItems',notificationId);
-  if(notification.type === "FR"){
-    notification.sender = readDocument("users",notification.sender);
-  }
-  else{
-    notification.author = readDocument("users",notification.author);
-  }
-
-  return notification;
+  sendXHR('PUT','/notification/'+id+'/'+user,undefined,(xhr)=>{
+    cb(JSON.parse(xhr.responseText));
+  });
 }
 
 export function getNotificationData(user, cb){
-  var userData = readDocument('users',user);
-  var notificationData = readDocument('notifications',userData.notification);
-  notificationData.contents = notificationData.contents.map(getNotificationDataSync);
-
-  emulateServerReturn(notificationData,cb);
+  sendXHR('GET','/user/'+user+'/notification',undefined,(xhr)=>{
+    cb(JSON.parse(xhr.responseText));
+  });
 }
 
 export function likePost(feedItemId, user, cb){

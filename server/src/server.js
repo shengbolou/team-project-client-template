@@ -292,6 +292,82 @@ app.delete('/activityItem/:activityId/likelist/:userId', function(req, res){
   }
 });
 
+
+function getNotificationDataSync(notificationId){
+  var notification = readDocument('notificationItems',notificationId);
+  if(notification.type === "FR"){
+    notification.sender = readDocument("users",notification.sender);
+  }
+  else{
+    notification.author = readDocument("users",notification.author);
+  }
+
+  return notification;
+}
+
+//get notification
+app.get('/user/:userId/notification',function(req,res){
+  var fromUser = getUserIdFromToken(req.get('Authorization'));
+  var userId = parseInt(req.params.userId);
+  if(fromUser === userId){
+    var userData = readDocument('users',userId);
+    var notificationData = readDocument('notifications',userData.notification);
+    notificationData.contents = notificationData.contents.map(getNotificationDataSync);
+    res.status(201);
+    res.send(notificationData);
+  }
+  else{
+    res.status(401).end();
+  }
+});
+
+
+function deleteNotification(id, user){
+  var userData = readDocument('users',user);
+  var notificationData = readDocument('notifications',userData.notification);
+  var index = notificationData.contents.indexOf(id);
+  if(index !== -1)
+    notificationData.contents.splice(index,1);
+
+  writeDocument("notifications",notificationData);
+  deleteDocument("notificationItems",id);
+  return notificationData;
+}
+
+//acceptRequest
+app.put('/notification/:notificationId/:userId',function(req,res){
+  var fromUser = getUserIdFromToken(req.get('Authorization'));
+  var userId = parseInt(req.params.userId);
+  var notificationId = parseInt(req.params.notificationId);
+  if(fromUser === userId){
+    var userData = readDocument('users',userId);
+    var notificationItem = readDocument('notificationItems',notificationId);
+    userData.friends.push(notificationItem.sender);
+    writeDocument("users",userData);
+    res.status(201);
+    res.send(deleteNotification(notificationId,userId));
+  }
+  else{
+    res.status(401).end();
+  }
+});
+
+//deleteNotification
+app.delete('/notification/:notificationId/:userId',function(req,res){
+  var fromUser = getUserIdFromToken(req.get('Authorization'));
+  var userId = parseInt(req.params.userId);
+  var notificationId = parseInt(req.params.notificationId);
+  if(fromUser === userId){
+    res.status(201);
+    res.send(deleteNotification(notificationId,userId));
+  }
+  else{
+    res.status(401).end();
+  }
+});
+
+
+
 /**
 * Get the user ID from a token. Returns -1 (an invalid ID)
 * if it fails.
