@@ -263,21 +263,15 @@ app.get('/activityItem/:activityId',function(req,res){
 
 //like activity
 app.put('/activityItem/:activityId/likelist/:userId',function(req, res){
-  var fromUser = getUserIdFromToken(req.get('Authorization'));
   var activityId = parseInt(req.params.activityId, 10);
   var userId = parseInt(req.params.userId, 10);
-  if(userId === fromUser){
-    var activityItem = readDocument('activityItems', activityId);
-    if(activityItem.likeCounter.indexOf(userId) === -1){
-      activityItem.likeCounter.push(userId);
-      writeDocument('activityItems', activityItem);
-    }
-    res.status(201);
-    res.send(activityItem.likeCounter.map((id) => readDocument('users', id)));
+  var activityItem = readDocument('activityItems', activityId);
+  if(activityItem.likeCounter.indexOf(userId) === -1){
+    activityItem.likeCounter.push(userId);
+    writeDocument('activityItems', activityItem);
   }
-  else{
-    res.status(401).end();
-  }
+  res.status(201);
+  res.send(activityItem.likeCounter.map((id) => readDocument('users', id)));
 });
 
 //unlike activity
@@ -285,19 +279,15 @@ app.delete('/activityItem/:activityId/likelist/:userId', function(req, res){
   var fromUser = getUserIdFromToken(req.get('Authorization'));
   var activityId = parseInt(req.params.activityId, 10);
   var userId = parseInt(req.params.userId, 10);
-  if(userId === fromUser){
-    var activityItem = readDocument('activityItems', activityId);
-    var index = activityItem.likeCounter.indexOf(userId);
-    if(index !== -1){
-      activityItem.likeCounter.splice(index, 1);
-      writeDocument('activityItems', activityItem);
-    }
-    res.status(201);
-    res.send(activityItem.likeCounter.map((id) => readDocument('users', id)));
+  var activityItem = readDocument('activityItems', activityId);
+  var index = activityItem.likeCounter.indexOf(userId);
+  if(index !== -1){
+    activityItem.likeCounter.splice(index, 1);
+    writeDocument('activityItems', activityItem);
   }
-  else{
-    res.status(401).end();
-  }
+  res.status(201);
+  res.send(activityItem.likeCounter.map((id) => readDocument('users', id)));
+
 });
 
 
