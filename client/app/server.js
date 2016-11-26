@@ -14,7 +14,7 @@ function sendXHR(verb, resource, body, cb) {
   // The below comment tells ESLint that AppError is a global.
   // Otherwise, ESLint would complain about it! (See what happens in Atom if
   // you remove the comment...)
-  /* global AppError */
+  // global AppError //
   // Response received from server. It could be a failure, though!
   xhr.addEventListener('load', function() {
     var statusCode = xhr.status;

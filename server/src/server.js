@@ -243,7 +243,7 @@ app.put('/settings/emailChange/user/:userId',validate({body:emailChangeSchema}),
 
 // get activity Feed data
 app.get('/user/:userid/activity', function(req, res) {
-  var userId = parseInt(req.params.userId,10);
+  var userId = parseInt(req.params.userid,10);
   // var fromUser = getUserIdFromToken(req.get('Authorization'));
   // if(userId === fromUser){
     res.send(getActivityFeedData(userId));
