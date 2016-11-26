@@ -30,9 +30,6 @@ export default class ProfilePersonalInfo extends React.Component{
     if (this.state.nickname != null){
       count += 1;
     }
-    if (this.state.avatar != null){
-      count += 1;
-    }
     if (this.state.description != null){
       count += 1;
     }
@@ -46,7 +43,7 @@ export default class ProfilePersonalInfo extends React.Component{
     if (this.state.birthday != null){
       count += 1;
     }
-    return count / 7 * 100 | 0;
+    return count / 6 * 100 | 0;
   }
 
   render(){
