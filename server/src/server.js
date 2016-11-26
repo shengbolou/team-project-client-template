@@ -253,6 +253,14 @@ app.get('/user/:userid/activity', function(req, res) {
   // }
 });
 
+//get activity detail
+app.get('/activityItem/:activityId',function(req,res){
+  var activityId = parseInt(req.params.activityId);
+  var activityData = getActivityFeedItemSync(activityId);
+  res.status(201);
+  res.send(activityData);
+});
+
 //like activity
 app.put('/activityItem/:activityId/likelist/:userId',function(req, res){
   var fromUser = getUserIdFromToken(req.get('Authorization'));

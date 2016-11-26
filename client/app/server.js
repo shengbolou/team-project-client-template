@@ -224,8 +224,9 @@ export function getUserData(user,cb){
 }
 
 export function getActivityDetail(id,cb){
-  var activityData = getActivityFeedItemSync(id);
-  emulateServerReturn(activityData,cb);
+  sendXHR('GET','/activityItem/'+id, undefined, (xhr) => {
+    cb(JSON.parse(xhr.responseText));
+  });
 }
 
 export function adpostComment(activityId, author, comment, cb){
