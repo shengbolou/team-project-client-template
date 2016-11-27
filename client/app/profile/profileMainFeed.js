@@ -19,8 +19,8 @@ export default class ProfileMainFeed extends React.Component{
   }
 
   render(){
-    var location = (this.state.location === undefined ||Object.keys(this.state.location ).length === 0 ?
-                    "Earth" : this.state.location.description);
+    var location = (this.state.location === undefined ||Object.keys(this.state.location).length === 0 ?
+                    "Earth" : this.state.location.formatted_address);
     return(
       <div className="panel panel-default main-panel">
         <div className="panel-body">
