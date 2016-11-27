@@ -242,7 +242,7 @@ app.put('/settings/emailChange/user/:userId',validate({body:emailChangeSchema}),
   }
 });
 
-app.put('/settings/location/:userId',function(req,res){
+app.put('/settings/location/user/:userId',function(req){
   var userId = parseInt(req.params.userId);
   var fromUser = getUserIdFromToken(req.get('Authorization'));
   var body = req.body;
@@ -250,11 +250,6 @@ app.put('/settings/location/:userId',function(req,res){
     var userData = readDocument('users',userId);
     userData.location = body;
     writeDocument('users', userData);
-    res.status(201);
-    res.send(true);
-  }
-  else{
-    res.status(401);
   }
 });
 
