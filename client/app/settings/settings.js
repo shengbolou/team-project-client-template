@@ -4,6 +4,7 @@ import {getUserData,changeEmail,changeUserInfo} from '../server';
 import Location from 'react-place';
 var alert = null;
 var emailAlert = null;
+var moment = require('moment');
 export default class Settings extends React.Component{
 
   constructor(props){
@@ -37,22 +38,14 @@ export default class Settings extends React.Component{
             birthday:this.state.birthday,
             location: this.state.location
           },(userData)=>{
-            this.setState({userData: userData});
             alert = (<div className="alert alert-success alert-dismissible" role="alert">
-                          <button type="button" className="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;
-                            </span>
-                          </button>
                           <strong>Change info succeed!</strong>
                         </div>);
+          this.setState({userData: userData});
           });
         }
         else{
           alert = (<div className="alert alert-warning alert-dismissible" role="alert">
-                        <button type="button" className="close" data-dismiss="alert" aria-label="Close">
-                          <span aria-hidden="true">&times;
-                          </span>
-                        </button>
                         <strong>Please fill in blanks</strong>
                       </div>);
         }
@@ -72,7 +65,15 @@ export default class Settings extends React.Component{
 
   getData(){
     getUserData(this.props.user,(userData)=>{
-        this.setState({userData:userData});
+        this.setState({
+          userData:userData,
+          lastname: userData.lastname,
+          firstname: userData.firstname,
+          nickname: userData.nickname,
+          description: userData.description,
+          birthday: moment(userData.birthday).format('YYYY-MM-DD'),
+          location: userData.location
+        });
     });
   }
 
@@ -168,10 +169,10 @@ export default class Settings extends React.Component{
                       <div className="row">
                         <div className="col-md-6">
                           <div className="md-form">
-                              <input type="text" id="" className="form-control"
+                              <input type="text" className="form-control"
                                 value={this.state.lastname}
                                 onChange={(e)=>this.handleLastname(e)}/>
-                              <label htmlFor="form1" className="">LastName</label>
+                              <label className="shown">LastName</label>
                           </div>
                         </div>
                         <div className="col-md-6">
@@ -179,7 +180,7 @@ export default class Settings extends React.Component{
                               <input type="text" id="" className="form-control"
                                 value={this.state.firstname}
                                 onChange={(e)=>this.handleFirstname(e)}/>
-                              <label htmlFor="form1" className="">FirstName</label>
+                              <label className="shown">FirstName</label>
                           </div>
                         </div>
                       </div>
@@ -189,7 +190,7 @@ export default class Settings extends React.Component{
                               <input type="text" id="" className="form-control"
                                 value={this.state.nickname}
                                 onChange={(e)=>this.handleNickname(e)}/>
-                              <label htmlFor="form1" className="">NickName</label>
+                              <label className="shown">NickName</label>
                           </div>
                           <div className="md-form">
                             <h5>Birthday</h5>
@@ -202,7 +203,7 @@ export default class Settings extends React.Component{
                               <textarea type="text" className="md-textarea"
                                 value={this.state.description}
                                 onChange={(e)=>this.handleDescription(e)}></textarea>
-                              <label htmlFor="form7">About you</label>
+                              <label className="shown">About you</label>
                           </div>
                         </div>
                       </div>
@@ -220,7 +221,8 @@ export default class Settings extends React.Component{
                           inputProps={{
                             style: {color: '#61B4E4'},
                             className:'location form-control',
-                            placeholder: 'Where are your?'
+                            placeholder: 'Where are your?',
+                            value:this.state.location.description
                           }}
                           />
                       </div>
