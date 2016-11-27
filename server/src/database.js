@@ -201,6 +201,7 @@ var initialData = {
       "type": "general",
       "contents": {
         "author": 1,
+        "location":{},
         //unix time
         "postDate": 1478129314000,
         "text": "What's up there",

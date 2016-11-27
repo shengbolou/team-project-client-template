@@ -61,3 +61,6 @@
 .comments .media .media-body p{
   font-size: 12px;
 }
+.glyphicon-map-marker::before{
+  margin-right: 2px !important;
+}

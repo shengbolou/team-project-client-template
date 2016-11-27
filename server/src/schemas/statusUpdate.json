@@ -7,10 +7,14 @@
     },
     "text": {
       "type": "string"
+    },
+    "location": {
+      "type": "object"
     }
   },
   "required": [
     "userId",
-    "text"
+    "text",
+    "location"
   ]
 }

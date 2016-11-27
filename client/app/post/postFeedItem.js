@@ -80,6 +80,13 @@ export default class PostFeedItem extends React.Component{
             <div className="media-body">
               <h4 className="media-heading">{contents.author.firstname} {contents.author.lastname}</h4>
               <span style={{"fontSize":"12"}}>{time}</span>
+              <span className="glyphicon glyphicon-map-marker pull-right" style={{
+                  "color":"#61C1E9"
+              }}>
+                  {Object.keys(contents.location).length>0 ?
+                  (contents.location.address_components[2].short_name+","+
+                  contents.location.address_components[4].short_name) : "Earth"}
+              </span>
             </div>
           </div>
         </div>

@@ -67,7 +67,6 @@ function sendXHR(verb, resource, body, cb) {
 }
 
 export function getlocation(cb){
-
   var geolocation = require('geolocation');
   geolocation.getCurrentPosition(function (err, position) {
     if (err) throw err;
@@ -168,11 +167,14 @@ export function postComment(feedItemId, author, comment, cb){
 }
 
 export function postStatus(user, text, cb){
-  sendXHR('POST', '/postItem', {
-    userId:user,
-    text:text
-  }, (xhr)=>{
-    cb(JSON.parse(xhr.responseText));
+  getlocation((res)=>{
+    sendXHR('POST', '/postItem', {
+      userId:user,
+      text:text,
+      location:res.status==="OK" && res.results.length>0 ? res.results[0] : {}
+    }, (xhr)=>{
+      cb(JSON.parse(xhr.responseText));
+    });
   });
 }
 

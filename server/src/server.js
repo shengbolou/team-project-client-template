@@ -58,7 +58,7 @@ app.get('/user/:userId/feed',function(req,res){
   // }
 });
 
-function postStatus(user, text){
+function postStatus(user, text,location){
   var time = new Date().getTime();
 
   var post = {
@@ -68,7 +68,8 @@ function postStatus(user, text){
       "author": user,
       "postDate": time,
       "text": text,
-      "img": null
+      "img": null,
+      "location": location
     },
     "comments":[]
   };
@@ -90,7 +91,7 @@ app.post('/postItem', validate({ body: statusUpdateSchema }),function(req,res){
   var body = req.body;
   var fromUser = getUserIdFromToken(req.get('Authorization'));
   if(fromUser === body.userId){
-    var newPost = postStatus(body.userId,body.text);
+    var newPost = postStatus(body.userId,body.text,body.location);
     res.status(201);
     res.send(newPost);
   }
