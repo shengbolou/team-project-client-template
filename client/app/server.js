@@ -82,9 +82,8 @@ export function getlocation(cb){
 }
 
 export function setlocation(userId,location){
-  var xhr = new XMLHttpRequest();
-  xhr.open('PUT','/settings/location/user/'+userId);
-  xhr.send(JSON.stringify(location));
+  sendXHR('PUT','/settings/location/user/'+userId,location,()=>{
+  });
 }
 
 
