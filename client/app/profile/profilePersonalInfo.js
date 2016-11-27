@@ -33,11 +33,7 @@ export default class ProfilePersonalInfo extends React.Component{
     if (this.state.description != null){
       count += 1;
     }
-    var len = 0
-    for (var o in this.state.location) {
-      len++;
-    }
-    if (len){
+    if (Object.keys(this.state.location === undefined ? {} : this.state.location).length){
       count += 1;
     }
     if (this.state.birthday != null){
