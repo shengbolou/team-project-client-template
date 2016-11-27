@@ -1,6 +1,5 @@
 import React from 'react';
 import {Link} from 'react-router';
-import {getlocation} from '../server';
 
 export default class PostEntry extends React.Component{
 

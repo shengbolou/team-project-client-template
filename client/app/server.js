@@ -69,15 +69,18 @@ function sendXHR(verb, resource, body, cb) {
 export function getlocation(cb){
   var geolocation = require('geolocation');
   geolocation.getCurrentPosition(function (err, position) {
-    if (err) throw err;
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET',
-    'http://maps.googleapis.com/maps/api/geocode/json?latlng='+position.coords.latitude+","+position.coords.longitude+'&sensor=true');
-    xhr.onload = function() {
-      cb(JSON.parse(xhr.responseText));
+    if(err){
+      cb("error");
     }
-    // xhr.setRequestHeader('Access-Control-Allow-Origin','*');
-    xhr.send();
+    else{
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET',
+      'http://maps.googleapis.com/maps/api/geocode/json?latlng='+position.coords.latitude+","+position.coords.longitude+'&sensor=true');
+      xhr.onload = function() {
+        cb(JSON.parse(xhr.responseText));
+      }
+      xhr.send();
+    }
   });
 }
 
@@ -171,7 +174,7 @@ export function postStatus(user, text, cb){
     sendXHR('POST', '/postItem', {
       userId:user,
       text:text,
-      location:res.status==="OK" && res.results.length>0 ? res.results[0] : {}
+      location:res!="error"&&res.status==="OK" && res.results.length>0 ? res.results[0] : {}
     }, (xhr)=>{
       cb(JSON.parse(xhr.responseText));
     });
