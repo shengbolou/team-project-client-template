@@ -251,6 +251,7 @@ app.put('/settings/location/user/:userId',function(req,res){
     userData.location = body;
     writeDocument('users', userData);
     res.status(201);
+    res.send(true);
   }
 });
 
