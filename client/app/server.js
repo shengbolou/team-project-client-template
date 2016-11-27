@@ -66,7 +66,22 @@ function sendXHR(verb, resource, body, cb) {
   }
 }
 
+export function getlocation(cb){
+  var geolocation = require('geolocation');
+  geolocation.getCurrentPosition(function (err, position) {
+    if (err) throw err;
+    sendXHR('GET',
+    'http://maps.googleapis.com/maps/api/geocode/json?latlng='+position.coords.latitude+","+position.coords.longitude+'&sensor=true',
+    undefined, (xhr)=>{
+      cb(JSON.parse(xhr.responseText));
+    });
+  });
+}
 
+export function setlocation(userId,location){
+  sendXHR('PUT','/settings/location/'+userId,location,()=>{
+  });
+}
 
 
 /**

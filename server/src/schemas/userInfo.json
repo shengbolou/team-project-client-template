@@ -19,10 +19,6 @@
     },
     "birthday": {
       "type": "string"
-    },
-    "location": {
-      "type": "object",
-      "properties": {}
     }
   },
   "required": [
@@ -31,7 +27,6 @@
     "firstname",
     "nickname",
     "description",
-    "birthday",
-    "location"
+    "birthday"
   ]
 }

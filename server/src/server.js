@@ -241,6 +241,22 @@ app.put('/settings/emailChange/user/:userId',validate({body:emailChangeSchema}),
   }
 });
 
+app.put('/settings/location/:userId',function(req,res){
+  var userId = parseInt(req.params.userId);
+  var fromUser = getUserIdFromToken(req.get('Authorization'));
+  var body = req.body;
+  if(fromUser === userId){
+    var userData = readDocument('users',userId);
+    userData.location = body;
+    writeDocument('users', userData);
+    res.status(201);
+    res.send(true);
+  }
+  else{
+    res.status(401);
+  }
+});
+
 // get activity Feed data
 app.get('/user/:userid/activity', function(req, res) {
   var userId = parseInt(req.params.userid,10);

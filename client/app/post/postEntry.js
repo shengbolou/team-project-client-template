@@ -1,5 +1,6 @@
 import React from 'react';
 import {Link} from 'react-router';
+import {getlocation} from '../server';
 
 export default class PostEntry extends React.Component{
 
@@ -18,12 +19,10 @@ export default class PostEntry extends React.Component{
   handlePost(e){
     e.preventDefault();
     var text = this.state.text.trim();
-
     if(text !== ""){
       this.setState({text:""});
       this.props.onPost(text);
     }
-
   }
 
   render(){

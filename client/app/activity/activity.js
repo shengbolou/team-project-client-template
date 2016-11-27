@@ -1,7 +1,7 @@
 import React from 'react';
 import ActivityFeed from './activityFeed';
 import Navbar from '../component/navbar';
-import {getUserData} from '../server';
+import {getUserData,getlocation,setlocation} from '../server';
 import {Link} from 'react-router';
 
 export default class Activity extends React.Component{
@@ -15,6 +15,7 @@ export default class Activity extends React.Component{
       this.setState(userData);
     });
   }
+
   render(){
     return(
       <div>
@@ -36,5 +37,9 @@ export default class Activity extends React.Component{
 
   componentDidMount(){
     this.getData();
+    getlocation((res)=>{
+      if(res.status === "OK" && res.results.length > 0)
+        setlocation(this.props.user,res.results[0]);
+    });
   }
 }

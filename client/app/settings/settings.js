@@ -1,10 +1,10 @@
 import React from 'react';
 import Navbar from '../component/navbar';
 import {getUserData,changeEmail,changeUserInfo} from '../server';
-import Location from 'react-place';
 var alert = null;
 var emailAlert = null;
 var moment = require('moment');
+
 export default class Settings extends React.Component{
 
   constructor(props){
@@ -17,8 +17,7 @@ export default class Settings extends React.Component{
       description: "",
       birthday:"",
       oldEmail:"",
-      newEmail:"",
-      location: {}
+      newEmail:""
     }
   }
 
@@ -27,16 +26,14 @@ export default class Settings extends React.Component{
     if(this.state.lastname!==""&&
         this.state.firstname!=""&&
         this.state.nickname!==""&&
-        this.state.description!==""&&
-        Object.keys(this.state.location).length !== 0){
+        this.state.description!==""){
           changeUserInfo({
             userId: this.state.userData._id,
             lastname: this.state.lastname,
             firstname:  this.state.firstname,
             nickname: this.state.nickname,
             description: this.state.description,
-            birthday:this.state.birthday,
-            location: this.state.location
+            birthday:this.state.birthday
           },(userData)=>{
             alert = (<div className="alert alert-success alert-dismissible" role="alert">
                           <strong>Change info succeed!</strong>
@@ -50,17 +47,6 @@ export default class Settings extends React.Component{
                       </div>);
         }
 
-      this.setState(
-        {
-          lastname: "",
-          firstname: "",
-          nickname: "",
-          description: "",
-          birthday:"",
-          location:{}
-        }
-      );
-
   }
 
   getData(){
@@ -71,8 +57,7 @@ export default class Settings extends React.Component{
           firstname: userData.firstname,
           nickname: userData.nickname,
           description: userData.description,
-          birthday: moment(userData.birthday).format('YYYY-MM-DD'),
-          location: userData.location
+          birthday: moment(userData.birthday).format('YYYY-MM-DD')
         });
     });
   }
@@ -96,11 +81,6 @@ export default class Settings extends React.Component{
     e.preventDefault();
     this.setState({description: e.target.value});
   }
-
-  onLocationSet(data){
-    this.setState({location:data})
-  }
-
   handleBirthday(e){
     e.preventDefault();
     this.setState({birthday: e.target.value});
@@ -206,25 +186,6 @@ export default class Settings extends React.Component{
                               <label className="shown">About you</label>
                           </div>
                         </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="row">
-                    <div className="col-md-12">
-                      <h4>Location</h4>
-                      <div className="md-form" style={{"marginTop":'20'}}>
-                        <Location
-                          country='US'
-                          noMatching='Sorry, I can not find {{value}}.'
-                          onLocationSet={(data)=>this.onLocationSet(data)}
-                          inputProps={{
-                            style: {color: '#61B4E4'},
-                            className:'location form-control',
-                            placeholder: 'Where are your?',
-                            value:this.state.location.description
-                          }}
-                          />
                       </div>
                     </div>
                   </div>
