@@ -67,14 +67,18 @@ function sendXHR(verb, resource, body, cb) {
 }
 
 export function getlocation(cb){
+
   var geolocation = require('geolocation');
   geolocation.getCurrentPosition(function (err, position) {
     if (err) throw err;
-    sendXHR('GET',
-    'http://maps.googleapis.com/maps/api/geocode/json?latlng='+position.coords.latitude+","+position.coords.longitude+'&sensor=true',
-    undefined, (xhr)=>{
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET',
+    'http://maps.googleapis.com/maps/api/geocode/json?latlng='+position.coords.latitude+","+position.coords.longitude+'&sensor=true');
+    xhr.onload = function() {
       cb(JSON.parse(xhr.responseText));
-    });
+    }
+    // xhr.setRequestHeader('Access-Control-Allow-Origin','*');
+    xhr.send();
   });
 }
 
