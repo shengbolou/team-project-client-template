@@ -1,7 +1,9 @@
 body{
   overflow-x: hidden !important;
 }
-
+ul.list-group.friends{
+  box-shadow: none !important;
+}
 .panel-heading-chat .nav li a{
   border-bottom-left-radius: 0px;
   border-bottom-right-radius: 0px;
