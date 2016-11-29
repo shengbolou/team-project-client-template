@@ -242,7 +242,7 @@ export function getActivityDetail(id,cb){
 }
 
 export function adpostComment(activityId, author, comment, cb){
-  sendXHR('POST','/activity/'+activityId+'/commentThread/comment',{
+  sendXHR('POST','/activityItem/'+activityId+'/commentThread/comment',{
     author:author,
     text:comment
   },(xhr)=>{

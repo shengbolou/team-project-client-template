@@ -305,11 +305,11 @@ app.delete('/activityItem/:activityId/likelist/:userId', function(req, res){
 });
 
 //post ADcomments
-app.post('/activityItem/:activityItemId/commentThread/comment',validate({body:ADcommentSchema}),
+app.post('/activityItem/:activityId/commentThread/comment',validate({body:ADcommentSchema}),
 function(req,res){
   var fromUser = getUserIdFromToken(req.get('Authorization'));
   var body = req.body;
-  var activityItemId = parseInt(req.params.activityItemId);
+  var activityItemId = parseInt(req.params.activityId, 10);
   var userId = body.author;
   if(fromUser === userId){
     var activityFeedItem = readDocument('activityItems',activityItemId);
@@ -318,7 +318,7 @@ function(req,res){
       "text": body.text,
       "postDate": (new Date()).getTime()
     });
-    writeDocument('activityItems',activityFeedItem);
+    writeDocument('activityItem',activityFeedItem);
     res.status(201);
     res.send(getPostFeedItemSync(activityItemId));
   }
