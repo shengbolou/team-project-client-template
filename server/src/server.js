@@ -25,6 +25,7 @@ var userInfoSchema = require('./schemas/userInfo.json');
 var emailChangeSchema = require('./schemas/emailChange.json');
 var activitySchema = require('./schemas/activity.json');
 var validate = require('express-jsonschema').validate;
+var ADcommentSchema = require('./schemas/comment.json');
 
 
 //get post feed data
@@ -203,18 +204,6 @@ app.put('/settings/user/:userId',validate({body:userInfoSchema}),function(req,re
   }
 });
 
-function getActivityFeedItemSync(activityId){
-  var activityItem = readDocument('activityItems', activityId);
-  activityItem.author = readDocument('users', activityItem.author);
-  activityItem.participants = activityItem.participants.map((id) => readDocument('users', id));
-  activityItem.likeCounter = activityItem.likeCounter.map((id) => readDocument('users', id));
-  activityItem.comments.forEach((comment) => {
-    comment.author = readDocument('users', comment.author);
-  });
-
-  return activityItem;
-}
-
 function getActivityFeedData(user){
   var userData = readDocument('users',user);
   var activityData = readDocument('activities', userData.activity);
@@ -275,6 +264,18 @@ app.get('/activityItem/:activityId',function(req,res){
   res.send(activityData);
 });
 
+function getActivityFeedItemSync(activityId){
+  var activityItem = readDocument('activityItems', activityId);
+  activityItem.author = readDocument('users', activityItem.author);
+  activityItem.participants = activityItem.participants.map((id) => readDocument('users', id));
+  activityItem.likeCounter = activityItem.likeCounter.map((id) => readDocument('users', id));
+  activityItem.comments.forEach((comment) => {
+    comment.author = readDocument('users', comment.author);
+  });
+
+  return activityItem;
+}
+
 //like activity
 app.put('/activityItem/:activityId/likelist/:userId',function(req, res){
   var activityId = parseInt(req.params.activityId, 10);
@@ -301,6 +302,29 @@ app.delete('/activityItem/:activityId/likelist/:userId', function(req, res){
   res.status(201);
   res.send(activityItem.likeCounter.map((id) => readDocument('users', id)));
 
+});
+
+//post ADcomments
+app.post('/activityItem/:activityItemId/commentThread/comment',validate({body:ADcommentSchema}),
+function(req,res){
+  var fromUser = getUserIdFromToken(req.get('Authorization'));
+  var body = req.body;
+  var activityItemId = parseInt(req.params.activityItemId);
+  var userId = body.author;
+  if(fromUser === userId){
+    var activityFeedItem = readDocument('activityItems',activityItemId);
+    activityFeedItem.comments.push({
+      "author": userId,
+      "text": body.text,
+      "postDate": (new Date()).getTime()
+    });
+    writeDocument('activityItems',activityFeedItem);
+    res.status(201);
+    res.send(getPostFeedItemSync(activityItemId));
+  }
+  else{
+    res.status(401).end();
+  }
 });
 
 
@@ -426,6 +450,7 @@ app.use(function(err, req, res, next) {
     next(err);
   }
 });
+
 
 // Starts the server on port 3000!
 app.listen(3000, function () {

@@ -221,18 +221,6 @@ export function getPostFeedData(user, cb){
 
 }
 
-function getActivityFeedItemSync(activityId){
-  var activityItem = readDocument('activityItems', activityId);
-  activityItem.author = readDocument('users',activityItem.author);
-  activityItem.participants = activityItem.participants.map((id)=>readDocument('users',id));
-  activityItem.likeCounter = activityItem.likeCounter.map((id)=>readDocument('users',id));
-  activityItem.comments.forEach((comment) => {
-    comment.author = readDocument('users', comment.author);
-  });
-
-  return activityItem;
-}
-
 export function getActivityFeedData(user,cb){
   // We don't need to send a body, so pass in 'undefined' for the body.
   sendXHR('GET', '/user/' + user + '/activity', undefined, (xhr) => {
@@ -254,16 +242,12 @@ export function getActivityDetail(id,cb){
 }
 
 export function adpostComment(activityId, author, comment, cb){
-  var activitydetailitem = readDocument('activityItems',activityId);
-  activitydetailitem.comments.push({
-    "author": author,
-    "postDate": (new Date()).getTime(),
-    "text": comment
-  });
-
-  writeDocument('activityItems',activitydetailitem);
-
-  emulateServerReturn(getActivityFeedItemSync(activityId),cb);
+  sendXHR('POST','/activity/'+activityId+'/commentThread/comment',{
+    author:author,
+    text:comment
+  },(xhr)=>{
+    cb(JSON.parse(xhr.responseText));
+  })
 }
 
 export function getMessages(sessionid,cb){
