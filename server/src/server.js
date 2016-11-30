@@ -318,9 +318,9 @@ function(req,res){
       "text": body.text,
       "postDate": (new Date()).getTime()
     });
-    writeDocument('activityItem',activityFeedItem);
+    writeDocument('activityItems',activityFeedItem);
     res.status(201);
-    res.send(getPostFeedItemSync(activityItemId));
+    res.send(getActivityFeedItemSync(activityItemId));
   }
   else{
     res.status(401).end();
