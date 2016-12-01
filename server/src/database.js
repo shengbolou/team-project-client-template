@@ -222,43 +222,74 @@ var initialData = {
     }
   },
 
-  // "feeds" collection. Feeds for each user.
-  "messageSession": {
-    "1": {
-      "_id": 1,
-      "contents": [1]
-    }
-  },
-  //message table
-  "message": {
-    "1": {
-      "_id":1,
-      "messages": [
-        {
-          "sender" : 1,
-          "target" : 2,
-          "date" : 1478149540000,
-          "text": "what's up"
-        },
-        {
-          "sender" : 2,
-          "target" : 1,
-          "date" : 1478149540000,
-          "text": `
-Mr Trump tweeted that the process of selecting his new cabinet and other positions was "very organised".`
+  // "messagesession" collection.
+    "messageSession": {
+      "1": {
+        "_id": 1,
+        "users": [1,2],
+        "contents": [1]
+      },
+      "2": {
+        "_id": 2,
+        "users": [1,3],
+        "contents": [2]
+      }
+    },
+    //message table
+    "message": {
+      "1": {
+        "_id":1,
+        "messages": [
+          {
+            "sender" : 1,
+            "target" : 2,
+            "date" : 1478149540000,
+            "text": "what's up"
+          },
+          {
+            "sender" : 2,
+            "target" : 1,
+            "date" : 1478149540000,
+            "text": `
+  Mr Trump tweeted that the process of selecting his new cabinet and other positions was "very organised".`
 
-        },
-        {
-          "sender" : 1,
-          "target" : 2,
-          "date" : 1478149540000,
-          "text": "cool"
+          },
+          {
+            "sender" : 1,
+            "target" : 2,
+            "date" : 1478149540000,
+            "text": "cool"
+          }
+        ]
+      },
+      "2": {
+          "_id":2,
+          "messages": [
+            {
+              "sender" : 1,
+              "target" : 3,
+              "date" : 1478149540000,
+              "text": "yo"
+            },
+            {
+              "sender" : 3,
+              "target" : 1,
+              "date" : 1478149540000,
+              "text": `Good Night!.`
+
+            },
+            {
+              "sender" : 1,
+              "target" : 3,
+              "date" : 1478149540000,
+              "text": "Good night!"
+            }
+          ]
         }
-      ]
-    }
-  }
 
-};
+    }
+
+  };
 
 var data;
 // If 'true', the in-memory object representing the database has changed,

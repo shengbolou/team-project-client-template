@@ -400,6 +400,60 @@ app.delete('/notification/:notificationId/:userId',function(req,res){
   }
 });
 
+//getMessage
+app.get('/user/:userId/chatsession/:id',function(req,res){
+  var fromUser = getUserIdFromToken(req.get('Authorization'));
+  var id = parseInt(req.params.id, 10);
+  var userid = parseInt(req.params.userId, 10);
+  if(userid == fromUser){
+    var message = readDocument('messageSession',id);
+    message.contents = message.contents.map(getMessageSync);
+    res.status(201);
+    res.send(getMessageSync(id).messages);
+  }
+  else{
+    console.log(fromUser);
+    res.status(401).end();
+  }
+});
+
+//post message
+app.post('/user/:userid/chatsession/:id',function(req,res){
+  var fromUser = getUserIdFromToken(req.get('Authorization'));
+  var id = parseInt(req.params.id, 10);
+  var userid = parseInt(req.params.userid, 10);
+  var body = req.body;
+  if(userid == fromUser){
+    var senderid = body.sender;
+    var targetid = body.target;
+    var text = body.text;
+
+  var message = readDocument('message',id);
+  message.messages.push({
+     "sender": senderid,
+     "target":targetid,
+     "date":(new Date()).getTime(),
+     "text": text
+     });
+     writeDocument('message',message);
+     res.status(201);
+     res.send(getMessageSync(id).messages);
+  }
+  else{
+    res.status(401).end();
+  }
+});
+
+
+function getMessageSync(sessionId){
+  var message = readDocument("message",sessionId);
+  message.messages.forEach((message)=>{
+    message.sender = readDocument('users', message.sender);
+    message.target = readDocument('users', message.target);
+  });
+  return message;
+}
+
 
 
 /**

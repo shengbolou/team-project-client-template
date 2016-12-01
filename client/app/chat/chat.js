@@ -16,6 +16,9 @@ export default class Chat extends React.Component {
           message :[]
         };
     }
+    componentDidMount() {
+        this.getData();
+    }
 
     getData() {
       getUserData(this.props.user, (userData) => {
@@ -24,7 +27,7 @@ export default class Chat extends React.Component {
         })
       });
 
-      getMessages(this.props.user,(message)=>{
+      getMessages(this.props.user,this.props.user,(message)=>{
         this.setState({
           message:message
         })
@@ -72,7 +75,5 @@ export default class Chat extends React.Component {
         );
     }
 
-    componentDidMount() {
-        this.getData();
-    }
+
 }
