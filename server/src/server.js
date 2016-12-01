@@ -23,9 +23,8 @@ var statusUpdateSchema = require('./schemas/statusUpdate.json');
 var commentSchema = require('./schemas/comment.json');
 var userInfoSchema = require('./schemas/userInfo.json');
 var emailChangeSchema = require('./schemas/emailChange.json');
-var activitySchema = require('./schemas/activity.json');
+//var activitySchema = require('./schemas/activity.json');
 var validate = require('express-jsonschema').validate;
-var ADcommentSchema = require('./schemas/comment.json');
 
 
 //get post feed data
@@ -305,7 +304,7 @@ app.delete('/activityItem/:activityId/likelist/:userId', function(req, res){
 });
 
 //post ADcomments
-app.post('/activityItem/:activityId/commentThread/comment',validate({body:ADcommentSchema}),
+app.post('/activityItem/:activityId/commentThread/comment',validate({body:commentSchema}),
 function(req,res){
   var fromUser = getUserIdFromToken(req.get('Authorization'));
   var body = req.body;
