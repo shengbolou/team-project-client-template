@@ -27,7 +27,6 @@ var emailChangeSchema = require('./schemas/emailChange.json');
 //var activitySchema = require('./schemas/activity.json');
 var validate = require('express-jsonschema').validate;
 
-
 //get post feed data
 function getPostFeedItemSync(feedItemId){
   var postFeedItem = readDocument("postFeedItems",feedItemId);
@@ -453,6 +452,32 @@ function getMessageSync(sessionId){
     message.target = readDocument('users', message.target);
   });
   return message;
+}
+
+app.get('/getsession/:userid/:targetid',function(req,res){
+  var fromUser = getUserIdFromToken(req.get('Authorization'));
+  var userid = parseInt(req.params.userid, 10);
+  if(userid == fromUser){
+    var targetid = parseInt(req.params.targetid, 10);
+    res.status(201);
+    res.send(getSessionId(userid,targetid));
+  }
+  else{
+    console.log(fromUser);
+    res.status(401).end();
+  }
+});
+
+function getSessionId(userid,targetid){
+  var sessions = getCollection('messageSession');
+  var arr = Object.keys(sessions).map(function(k) { return sessions[k] });
+  var sessionId = arr.filter(function(sessionObject){
+    var users = sessionObject.users;
+    if(users.indexOf(userid)!==-1 && users.indexOf(targetid)!==-1){
+      return sessionObject._id;
+    }
+  });
+  return sessionId[0];
 }
 
 

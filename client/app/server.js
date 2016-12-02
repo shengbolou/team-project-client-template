@@ -278,7 +278,12 @@ export function postMessage(sessionId,sender,target, text, cb){
   // });
   // writeDocument('message',message);
   // emulateServerReturn(getMessageSync(sessionId).messages,cb);
+}
 
+export function getSessionId(userid,targetid,cb){
+  sendXHR('GET','/getsession/'+userid+'/'+targetid, undefined ,(xhr) => {
+    cb(JSON.parse(xhr.responseText));
+  });
 }
 
 export function searchquery(userid,querytext,cb){

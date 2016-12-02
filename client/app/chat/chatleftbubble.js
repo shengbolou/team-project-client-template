@@ -9,6 +9,10 @@ export default class ChatLeftBubble extends React.Component {
         this.state = props.data;
     }
 
+    componentWillReceiveProps(nextProps){
+          this.setState(nextProps.data);
+    }
+
     render() {
       //default time format
       var time = moment(this.state.date).calendar();

@@ -10,7 +10,7 @@ var initialData = {
       "avatar": "img/user.png",
       "description": "Hello everyone, I'm a mock user",
       "location":{},
-      "friends":[2],
+      "friends":[2,3],
       "post":1,
       "activity":1,
       "notification":1,

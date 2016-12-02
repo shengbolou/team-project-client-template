@@ -3,9 +3,7 @@ import Navbar from '../component/navbar';
 import NavHeading from './navheading';
 import NavBody from './navbody';
 import ChatWindow from './chatwindow';
-import ChatRightBubble from './chatrightbubble';
-import ChatLeftBubble from './chatleftbubble';
-import {getUserData,getMessages,postMessage} from '../server';
+import {getUserData,getMessages,postMessage,getSessionId} from '../server';
 
 export default class Chat extends React.Component {
 
@@ -13,11 +11,18 @@ export default class Chat extends React.Component {
         super(props);
         this.state = {
           user: {},
-          message :[]
+          message :[],
+          friend: 2,
+          sessionId:1
         };
     }
     componentDidMount() {
-        this.getData();
+      getSessionId(this.props.user,this.state.friend,(session)=>{
+        this.setState({
+          sessionId:session._id
+        })
+      });
+      this.getData();
     }
 
     getData() {
@@ -27,7 +32,7 @@ export default class Chat extends React.Component {
         })
       });
 
-      getMessages(this.props.user,this.props.user,(message)=>{
+      getMessages(this.props.user,this.state.sessionId,(message)=>{
         this.setState({
           message:message
         })
@@ -36,9 +41,26 @@ export default class Chat extends React.Component {
     }
 
     handlePostMessage(message){
-      postMessage(1, this.props.user, 2 ,message, (newMessage)=>{
+      postMessage(this.state.sessionId, this.props.user, this.state.friend ,message, (newMessage)=>{
         this.setState({message:newMessage});
       })
+    }
+
+    handleSwitchFriends(friendId){
+      this.setState({friend:friendId},()=>{
+        getSessionId(this.props.user,this.state.friend,(session)=>{
+          this.setState({
+            sessionId:session._id
+          },()=>{
+            getMessages(this.props.user,this.state.sessionId,(message)=>{
+              this.setState({
+                message:message
+              })
+            });
+          });
+        });
+      });
+
     }
 
     render() {
@@ -50,23 +72,12 @@ export default class Chat extends React.Component {
                         <div className="col-md-4 col-sm-4 col-xs-4 col-md-offset-1 col-sm-offset-1 col-xs-offset-1 chat-left">
                             <div className="panel panel-dafault">
                                 <NavHeading chat="active"/>
-                                <NavBody data={this.state.user} messages={this.state.message}/>
+                                <NavBody data={this.state.user} messages={this.state.message} switchUser={(id)=>this.handleSwitchFriends(id)}/>
                             </div>
                         </div>
-                          <ChatWindow target={2} onPost={(message)=>this.handlePostMessage(message)}>
-                            {this.state.message === undefined ? 0: this.state.message.map((msg,i)=>{
-                              if(msg.sender._id===this.state.user._id){
-                                return (
-                                  <ChatRightBubble key={i} data={msg} />
-                                )
-                              }
-                              else{
-                                return (
-                                  <ChatLeftBubble key={i} data={msg} />
-                                )
-                              }
-                            })}
-                          </ChatWindow>
+                        <ChatWindow target={this.state.friend} curUser={this.props.user}onPost={(message)=>this.handlePostMessage(message)}
+                          message={this.state.message}>
+                        </ChatWindow>
                     </div>
 
                 </div>
