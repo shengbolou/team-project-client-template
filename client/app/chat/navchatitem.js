@@ -5,9 +5,14 @@ export default class NavChatItem extends React.Component {
         super(props);
     }
 
+    handleClick(e){
+      e.preventDefault();
+      this.props.switchUser(this.props.data._id);
+    }
+
     render() {
         return (
-            <li className="list-group-item">
+            <li className="list-group-item" onClick={(e)=>this.handleClick(e)}>
                 <div className="media">
                     <div className="media-left">
                       <Link to={"profile/"+this.props.data._id}>
