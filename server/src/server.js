@@ -88,7 +88,19 @@ function postStatus(user, text,location){
 
   return post;
 }
-
+//create post
+app.post('/postItem', validate({ body: statusUpdateSchema }),function(req,res){
+  var body = req.body;
+  var fromUser = getUserIdFromToken(req.get('Authorization'));
+  if(fromUser === body.userId){
+    var newPost = postStatus(body.userId,body.text,body.location);
+    res.status(201);
+    res.send(newPost);
+  }
+  else{
+    res.status(401).end();
+  }
+});
 
 
 
@@ -271,22 +283,6 @@ function activityStatus(type,user,title,description,img,startTime,
         "text": contents.detail
       }
   }
-//create post
-app.post('/postItem', validate({ body: statusUpdateSchema }),function(req,res){
-  var body = req.body;
-  var fromUser = getUserIdFromToken(req.get('Authorization'));
-  if(fromUser === body.userId){
-    var newPost = postStatus(body.userId,body.text,body.location);
-    res.status(201);
-    res.send(newPost);
-  }
-  else{
-    res.status(401).end();
-  }
-});
-
-
-
   activity = addDocument('postActivityItem',activity);
 
   var userData = readDocument('users',user);
@@ -298,8 +294,6 @@ app.post('/postItem', validate({ body: statusUpdateSchema }),function(req,res){
 
   return activity;
 }
-
-
 //post activity
 app.post('/postActivity', validate({ body: activitySchema }),function(req,res){
   var body = req.body;
