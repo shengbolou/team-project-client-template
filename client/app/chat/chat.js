@@ -3,9 +3,7 @@ import Navbar from '../component/navbar';
 import NavHeading from './navheading';
 import NavBody from './navbody';
 import ChatWindow from './chatwindow';
-import ChatRightBubble from './chatrightbubble';
-import ChatLeftBubble from './chatleftbubble';
-import {getUserData,getMessages,postMessage} from '../server';
+import {getUserData,getMessages,postMessage,getSessionId} from '../server';
 
 export default class Chat extends React.Component {
 
@@ -19,11 +17,15 @@ export default class Chat extends React.Component {
         };
     }
     componentDidMount() {
-        this.getData();
+      getSessionId(this.props.user,this.state.friend,(session)=>{
+        this.setState({
+          sessionId:session._id
+        })
+      });
+      this.getData();
     }
 
     getData() {
-
       getUserData(this.props.user, (userData) => {
         this.setState({
           user:userData
@@ -45,7 +47,20 @@ export default class Chat extends React.Component {
     }
 
     handleSwitchFriends(friendId){
-      this.setState({friend:friendId});
+      this.setState({friend:friendId},()=>{
+        getSessionId(this.props.user,this.state.friend,(session)=>{
+          this.setState({
+            sessionId:session._id
+          },()=>{
+            getMessages(this.props.user,this.state.sessionId,(message)=>{
+              this.setState({
+                message:message
+              })
+            });
+          });
+        });
+      });
+
     }
 
     render() {
@@ -60,20 +75,9 @@ export default class Chat extends React.Component {
                                 <NavBody data={this.state.user} messages={this.state.message} switchUser={(id)=>this.handleSwitchFriends(id)}/>
                             </div>
                         </div>
-                          <ChatWindow target={this.state.friend} onPost={(message)=>this.handlePostMessage(message)}>
-                            {this.state.message === undefined ? 0: this.state.message.map((msg,i)=>{
-                              if(msg.sender._id===this.state.user._id){
-                                return (
-                                  <ChatRightBubble key={i} data={msg} />
-                                )
-                              }
-                              else{
-                                return (
-                                  <ChatLeftBubble key={i} data={msg} />
-                                )
-                              }
-                            })}
-                          </ChatWindow>
+                        <ChatWindow target={this.state.friend} curUser={this.props.user}onPost={(message)=>this.handlePostMessage(message)}
+                          message={this.state.message}>
+                        </ChatWindow>
                     </div>
 
                 </div>

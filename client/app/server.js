@@ -281,7 +281,7 @@ export function postMessage(sessionId,sender,target, text, cb){
 }
 
 export function getSessionId(userid,targetid,cb){
-  sendXHR('GET','/getsession/'+userid+'/'+targetid), undefined,(xhr) => {
+  sendXHR('GET','/getsession/'+userid+'/'+targetid, undefined ,(xhr) => {
     cb(JSON.parse(xhr.responseText));
-  }
+  });
 }

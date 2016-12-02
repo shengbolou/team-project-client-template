@@ -470,13 +470,14 @@ app.get('/getsession/:userid/:targetid',function(req,res){
 
 function getSessionId(userid,targetid){
   var sessions = getCollection('messageSession');
-  var sessionId = sessions.filter(function(sessionObject){
+  var arr = Object.keys(sessions).map(function(k) { return sessions[k] });
+  var sessionId = arr.filter(function(sessionObject){
     var users = sessionObject.users;
     if(users.indexOf(userid)!==-1 && users.indexOf(targetid)!==-1){
       return sessionObject._id;
     }
-return sessionId;
   });
+  return sessionId[0];
 }
 
 

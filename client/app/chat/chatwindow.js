@@ -2,17 +2,21 @@ import React from 'React';
 import {getUserData} from '../server';
 import {Link} from 'react-router';
 import ChatEntry from './chatentry';
+import ChatRightBubble from './chatrightbubble';
+import ChatLeftBubble from './chatleftbubble';
 
 export default class ChatWindow extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {}
+        this.state = {
+          targetUser: {},
+          message: props.message
+        }
     }
 
     componentDidMount() {
         this.getData();
-      
     }
 
     handlePostMessage(text){
@@ -21,8 +25,18 @@ export default class ChatWindow extends React.Component {
 
     getData() {
         getUserData(this.props.target, (userData) => {
-            this.setState(userData)
+            this.setState({targetUser:userData})
         });
+    }
+
+    componentWillReceiveProps(nextProps){
+      getUserData(this.props.target, (userData) => {
+          this.setState(
+            {
+              targetUser:userData,
+              message:nextProps.message
+            })
+      });
     }
 
     render() {
@@ -36,8 +50,8 @@ export default class ChatWindow extends React.Component {
                     <div className="panel-heading panel-heading-chatwindow">
                         <div className="media">
                             <div className="media-left">
-                              <Link to={"profile/"+this.state._id}>
-                                <img className="media-object" src={this.state.avatar } alt="image" height="45" width="45"></img>
+                              <Link to={"profile/"+this.state.targetUser._id}>
+                                <img className="media-object" src={this.state.targetUser.avatar } alt="image" height="45" width="45"></img>
                                 </Link>
                           </div>
                             <div className="media-body">
@@ -45,23 +59,30 @@ export default class ChatWindow extends React.Component {
 
                                     <div className="media">
                                         <div className="media-left media-body">
-                                            <font size="3">{this.state.firstname} {this.state.lastname}</font>
+                                            <font size="3">{this.state.targetUser.firstname} {this.state.targetUser.lastname}</font>
                                         </div>
 
                                     </div>
                                 </div>
                                 <font size="2" color="grey ">
-                                    {this.state.description}</font>
+                                    {this.state.targetUser.description}</font>
                             </div>
                         </div>
                     </div>
 
                     <div className="panel-body panel-body-chatwindow" style={{'height': '60vh'}}>
 
-                      {React.Children.map(this.props.children,function(child){
-                        return (
-                            child
-                        );
+                      {this.state.message === undefined ? 0: this.state.message.map((msg,i)=>{
+                        if(msg.sender._id===this.props.curUser){
+                          return (
+                            <ChatRightBubble key={i} data={msg} />
+                          )
+                        }
+                        else{
+                          return (
+                            <ChatLeftBubble key={i} data={msg} />
+                          )
+                        }
                       })}
 
                     </div>
