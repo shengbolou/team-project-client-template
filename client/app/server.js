@@ -181,34 +181,34 @@ export function postStatus(user, text, cb){
   });
 }
 
-export function createActivity(data,cb){
-  var activityItem = {
-    "type": data.type,
-    "author":data.userData._id,
-    "title": data.title,
-    "description":data.description,
-    "img":data.img === null ? "./img/HackUMass.jpg" : data.img,
-    "startTime": moment(data.startTime).valueOf(),
-    "endTime": moment(data.endTime).valueOf(),
-    "location": data.location,
-    "country": "USA",
-    "state": "MA",
-    "city": "Amherst",
-    "participants": [],
-    "likeCounter": [],
-    "comments":[
-    ],
-    "contents": {
-      "img": data.img === null ? "./img/HackUMass-detail-1.png":data.img,
-      "text": data.detail
-    }
-  }
-  activityItem = addDocument('activityItems',activityItem);
 
-  var activities = readDocument('activities',data.userData.activity);
-  activities.contents.unshift(activityItem._id);
-  writeDocument('activities', activities);
-  emulateServerReturn(activities,cb);
+export function createActivity(user,data,cb){
+    sendXHR('POST','/postActivity', {
+        type:data.type,
+        author:user,
+        title:data.title,
+        description:data.description,
+        img: data.img === null ? "./img/HackUMass.jpg" : data.img,
+        startTime: moment(data.startTime).valueOf(),
+        endTime: moment(data.endTime).valueOf(),
+        location: data.location,
+        country: data.country,
+        state: data.state,
+        city: data.city,
+        participants: [],
+        likeCounter: [],
+        comments:[
+        ],
+        contents: {
+          img: data.contents.img === null ? "./img/HackUMass-detail-1.png":contents.img,
+          text: data.contents.detail
+        }
+    }
+    , (xhr) => {
+      // Call the callback with the data.
+      cb(JSON.parse(xhr.responseText));
+    });
+
 }
 
 
