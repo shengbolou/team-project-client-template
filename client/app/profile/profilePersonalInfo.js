@@ -1,5 +1,4 @@
 import React from 'react';
-import {getUserData} from '../server';
 var moment = require('moment');
 
 export default class ProfilePersonalInfo extends React.Component{
