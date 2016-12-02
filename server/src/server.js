@@ -17,6 +17,7 @@ var readDocument = database.readDocument;
 var addDocument = database.addDocument;
 var writeDocument = database.writeDocument;
 var deleteDocument = database.deleteDocument;
+var getCollection = database.getCollection;
 
 //schemas
 var statusUpdateSchema = require('./schemas/statusUpdate.json');
@@ -501,6 +502,38 @@ app.use(function(err, req, res, next) {
   } else {
     // It's some other sort of error; pass it to next error middleware handler
     next(err);
+  }
+});
+
+//get search result.
+app.get('/search/userid/:userid/querytext/:querytext',function(req,res){
+  var fromUser = getUserIdFromToken(req.get('Authorization'));
+  var querytext = req.params.querytext.toLowerCase();
+  var userid = parseInt(req.params.userid, 10);
+  if(userid == fromUser){
+    var userItems= getCollection("users");
+    var activityItems=getCollection("activityItems");
+    var postFeedItems=getCollection("postFeedItems");
+
+    var data=[
+      Object.keys(userItems).map((k)=>{return userItems[k]}).filter((userItem)=>{
+          return userItem.firstname.toLowerCase().indexOf(querytext)!==-1 ||
+          userItem.lastname.toLowerCase().indexOf(querytext)!==-1 || userItem.nickname.toLowerCase().indexOf(querytext)!==-1;
+      }),
+      Object.keys(activityItems).map((k)=>{return activityItems[k]}).filter((activityItem)=>{
+          return activityItem.title.toLowerCase().indexOf(querytext)!==-1 ||
+          activityItem.description.toLowerCase().indexOf(querytext)!==-1;
+      })
+      ,
+      Object.keys(postFeedItems).map((k)=>{return postFeedItems[k]}).filter((postFeedItem)=>{
+          return postFeedItem.contents.text.toLowerCase().indexOf(querytext)!==-1;
+      })
+    ];
+    res.send(data);
+  }
+  else{
+    console.log(fromUser);
+    res.status(401).end();
   }
 });
 

@@ -280,3 +280,9 @@ export function postMessage(sessionId,sender,target, text, cb){
   // emulateServerReturn(getMessageSync(sessionId).messages,cb);
 
 }
+
+export function searchquery(userid,querytext,cb){
+  sendXHR('GET','/search/userid/'+userid+'/querytext/'+querytext, undefined, (xhr) => {
+    cb(JSON.parse(xhr.responseText));
+  });
+}

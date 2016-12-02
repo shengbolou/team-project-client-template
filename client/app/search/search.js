@@ -23,7 +23,7 @@ export default class Search extends React.Component{
         <div className="container">
           <div className="row">
             <div className="col-md-8 col-md-offset-2 main-feed">
-              <SearchFeed/>
+              <SearchFeed user={this.props.user}/>
             </div>
           </div>
         </div>

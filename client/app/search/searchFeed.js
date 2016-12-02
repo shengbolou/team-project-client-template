@@ -12,7 +12,7 @@ export default class SearchFeed extends React.Component{
   render(){
     return(
       <div>
-        <SearchEntry/>
+        <SearchEntry user={this.props.user}/>
         <SearchFeedUserFeed/>
         <SearchFeedPartyFeed/>
       </div>
