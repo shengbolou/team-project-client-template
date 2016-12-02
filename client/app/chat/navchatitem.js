@@ -1,5 +1,6 @@
 import React from 'React';
-import {Link} from 'react-router'
+import {Link} from 'react-router';
+
 export default class NavChatItem extends React.Component {
     constructor(props) {
         super(props);
