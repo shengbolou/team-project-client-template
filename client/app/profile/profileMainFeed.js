@@ -1,5 +1,4 @@
 import React from 'react';
-import {getUserData} from '../server';
 
 export default class ProfileMainFeed extends React.Component{
 
