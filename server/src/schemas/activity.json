@@ -26,15 +26,6 @@
     "location": {
       "type": "string"
     },
-    "country": {
-      "type": "string"
-    },
-    "state": {
-      "type": "string"
-    },
-    "city": {
-      "type": "string"
-    },
     "contents": {
       "type": "object",
       "properties": {
@@ -60,9 +51,6 @@
     "startTime",
     "endTime",
     "location",
-    "country",
-    "state",
-    "city",
     "contents"
   ]
 }

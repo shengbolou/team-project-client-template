@@ -1,6 +1,6 @@
-import {readDocument, writeDocument, addDocument} from './database.js';
-var moment = require('moment');
+import {} from './database.js';
 var token = 'eyJpZCI6MX0=';
+var moment = require('moment');
 
 
 /**
@@ -90,17 +90,6 @@ export function setlocation(userId,location){
 }
 
 
-/**
- * Emulates how a REST call is *asynchronous* -- it calls your function back
- * some time in the future with data.
- */
-function emulateServerReturn(data, cb) {
-  setTimeout(() => {
-    cb(data);
-  }, 4);
-}
-
-
 export function deleteNotification(id, user ,cb){
   sendXHR('DELETE','/notification/'+id+'/'+user,undefined,(xhr)=>{
     cb(JSON.parse(xhr.responseText));
@@ -182,30 +171,24 @@ export function postStatus(user, text, cb){
 }
 
 
-export function createActivity(user,data,cb){
-    sendXHR('POST','/postActivity', {
-        type:data.type,
-        author:user,
-        title:data.title,
-        description:data.description,
-        img: data.img === null ? "./img/HackUMass.jpg" : data.img,
-        startTime: moment(data.startTime).valueOf(),
-        endTime: moment(data.endTime).valueOf(),
-        location: data.location,
-        country: data.country,
-        state: data.state,
-        city: data.city,
-        participants: [],
-        likeCounter: [],
-        comments:[
-        ],
-        contents: {
-          img: data.contents.img === null ? "./img/HackUMass-detail-1.png":contents.img,
-          text: data.contents.detail
-        }
-    }
+export function createActivity(data,cb){
+  var debug = require('react-debug');
+  debug(data);
+    sendXHR('POST','/postActivity',{
+         "type": data.type,
+         "author":data.userData._id,
+         "title": data.title,
+         "description":data.description,
+         "img":data.img === null ? "./img/HackUMass.jpg" : data.img,
+         "startTime": moment(data.startTime).valueOf(),
+         "endTime": moment(data.endTime).valueOf(),
+         "location": data.location,
+         "contents": {
+           "img": data.img === null ? "./img/HackUMass-detail-1.png":data.img,
+           "text": data.detail
+          }
+      }
     , (xhr) => {
-      // Call the callback with the data.
       cb(JSON.parse(xhr.responseText));
     });
 

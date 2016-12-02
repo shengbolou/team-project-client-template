@@ -102,9 +102,6 @@ var initialData = {
       "endTime": 1479940314000,
       "description": "Hack Umass",
       "location": "University of Massachusetts Amherst",
-      "country": "USA",
-      "state": "MA",
-      "city": "Amherst",
       "participants": [1,2],
       "likeCounter": [1,2,3],
       "comments":[
@@ -129,9 +126,6 @@ var initialData = {
       "endTime": 1479940314000,
       "description": "Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis.",
       "location": "University of Massachusetts Amherst",
-      "country": "USA",
-      "state": "MA",
-      "city": "Amherst",
       "participants": [],
       "likeCounter": [],
       "comments":[
@@ -156,9 +150,6 @@ var initialData = {
       "endTime": 1479940314000,
       "description": "Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis.",
       "location": "University of Massachusetts Amherst",
-      "country": "USA",
-      "state": "MA",
-      "city": "Amherst",
       "participants": [2,3],
       "likeCounter": [1,2,3],
       "comments":[

@@ -8,7 +8,7 @@ var app = express();
 var bodyParser = require('body-parser');
 // Support receiving JSON in HTTP request bodies
 
-var moment = require('moment');
+// var moment = require('moment');
 app.use(bodyParser.json());
 app.use(bodyParser.text());
 app.use(express.static('../client/build'));
@@ -22,12 +22,11 @@ var deleteDocument = database.deleteDocument;
 var getCollection = database.getCollection;
 
 //schemas
-var activitySchema = require('./schemas/activity.json')
 var statusUpdateSchema = require('./schemas/statusUpdate.json');
 var commentSchema = require('./schemas/comment.json');
 var userInfoSchema = require('./schemas/userInfo.json');
 var emailChangeSchema = require('./schemas/emailChange.json');
-//var activitySchema = require('./schemas/activity.json');
+var activitySchema = require('./schemas/activity.json');
 var validate = require('express-jsonschema').validate;
 
 //get post feed data
@@ -260,49 +259,37 @@ app.get('/user/:userid/activity', function(req, res) {
 });
 
 
-function activityStatus(type,user,title,description,img,startTime,
-                        endTime,location,country,state,city,contents){
-  var activity ={
-      "type":type,
-      "author":user,
-      "title":title,
-      "description":description,
-      "img": img === null ? "./img/HackUMass.jpg" : img,
-      "startTime": moment(startTime).valueOf(),
-      "endTime": moment(endTime).valueOf(),
-      "location": location,
-      "country": country,
-      "state": state,
-      "city": city,
-      "participants": [],
-      "likeCounter": [],
-      "comments":[
-      ],
-      "contents": {
-        "img": contents.img === null ? "./img/HackUMass-detail-1.png":contents.img,
-        "text": contents.detail
-      }
+function postActivity(data){
+    var activityItem = {
+     "type": data.type,
+     "author":data.author,
+     "title": data.title,
+     "description":data.description,
+     "img":data.img,
+     "startTime": data.startTime,
+     "endTime": data.endTime,
+     "location": data.location,
+     "participants": [],
+     "likeCounter": [],
+     "comments":[
+     ],
+     "contents": data.contents
   }
-  activity = addDocument('postActivityItem',activity);
-
-  var userData = readDocument('users',user);
-  var postActivityData = readDocument('postActivity',userData.activity);
-
-  postActivityData.contents.unshift(activity._id);
-
-  writeDocument('postActivity', postActivityData);
-
-  return activity;
+  activityItem = addDocument('activityItems',activityItem);
+  var userData = readDocument('users',activityItem.author);
+  var activities = readDocument('activities',userData.activity);
+  activities.contents.unshift(activityItem._id);
+  writeDocument('activities', activities);
+  return activities;
 }
 //post activity
-app.post('/postActivity', validate({ body: activitySchema }),function(req,res){
+app.post('/postActivity',validate({body:activitySchema}),function(req,res){
   var body = req.body;
   var fromUser = getUserIdFromToken(req.get('Authorization'));
-  if(fromUser === body.author._id){
-    var newPost = activityStatus(body.type,body.author._id,body.title,body.description,body.img,body.startTime,
-                            body.endTime,body.location,body.country,body.this.state,body.city,body.contents);
+  if(fromUser === body.author){
+    var activities = postActivity(body);
     res.status(201);
-    res.send(newPost);
+    res.send(activities);
   }
   else{
     res.status(401).end();
