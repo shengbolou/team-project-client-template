@@ -7,6 +7,8 @@ var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
 // Support receiving JSON in HTTP request bodies
+
+var moment = require('moment');
 app.use(bodyParser.json());
 app.use(bodyParser.text());
 app.use(express.static('../client/build'));
@@ -20,6 +22,7 @@ var deleteDocument = database.deleteDocument;
 var getCollection = database.getCollection;
 
 //schemas
+var activitySchema = require('./schemas/activity.json')
 var statusUpdateSchema = require('./schemas/statusUpdate.json');
 var commentSchema = require('./schemas/comment.json');
 var userInfoSchema = require('./schemas/userInfo.json');
@@ -86,19 +89,8 @@ function postStatus(user, text,location){
   return post;
 }
 
-//create post
-app.post('/postItem', validate({ body: statusUpdateSchema }),function(req,res){
-  var body = req.body;
-  var fromUser = getUserIdFromToken(req.get('Authorization'));
-  if(fromUser === body.userId){
-    var newPost = postStatus(body.userId,body.text,body.location);
-    res.status(201);
-    res.send(newPost);
-  }
-  else{
-    res.status(401).end();
-  }
-});
+
+
 
 //like post
 app.put('/postItem/:postItemId/likelist/:userId',function(req,res){
@@ -255,6 +247,74 @@ app.get('/user/:userid/activity', function(req, res) {
   // }
 });
 
+
+function activityStatus(type,user,title,description,img,startTime,
+                        endTime,location,country,state,city,contents){
+  var activity ={
+      "type":type,
+      "author":user,
+      "title":title,
+      "description":description,
+      "img": img === null ? "./img/HackUMass.jpg" : img,
+      "startTime": moment(startTime).valueOf(),
+      "endTime": moment(endTime).valueOf(),
+      "location": location,
+      "country": country,
+      "state": state,
+      "city": city,
+      "participants": [],
+      "likeCounter": [],
+      "comments":[
+      ],
+      "contents": {
+        "img": contents.img === null ? "./img/HackUMass-detail-1.png":contents.img,
+        "text": contents.detail
+      }
+  }
+//create post
+app.post('/postItem', validate({ body: statusUpdateSchema }),function(req,res){
+  var body = req.body;
+  var fromUser = getUserIdFromToken(req.get('Authorization'));
+  if(fromUser === body.userId){
+    var newPost = postStatus(body.userId,body.text,body.location);
+    res.status(201);
+    res.send(newPost);
+  }
+  else{
+    res.status(401).end();
+  }
+});
+
+
+
+  activity = addDocument('postActivityItem',activity);
+
+  var userData = readDocument('users',user);
+  var postActivityData = readDocument('postActivity',userData.activity);
+
+  postActivityData.contents.unshift(activity._id);
+
+  writeDocument('postActivity', postActivityData);
+
+  return activity;
+}
+
+
+//post activity
+app.post('/postActivity', validate({ body: activitySchema }),function(req,res){
+  var body = req.body;
+  var fromUser = getUserIdFromToken(req.get('Authorization'));
+  if(fromUser === body.userId){
+    var newPost = activityStatus(body.type,body.userId,body.title,body.description,body.img,body.startTime,
+                            body.endTime,body.location,body.country,body.this.state,body.city,body.contents);
+    res.status(201);
+    res.send(newPost);
+  }
+  else{
+    res.status(401).end();
+  }
+});
+
 //get activity detail
 app.get('/activityItem/:activityId',function(req,res){
   var activityId = parseInt(req.params.activityId);
@@ -262,6 +322,7 @@ app.get('/activityItem/:activityId',function(req,res){
   res.status(201);
   res.send(activityData);
 });
+
 
 function getActivityFeedItemSync(activityId){
   var activityItem = readDocument('activityItems', activityId);
