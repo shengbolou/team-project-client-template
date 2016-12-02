@@ -2,7 +2,7 @@ import React from 'React';
 import Ad_comment from './ad_comment';
 import Ad_commentThread from './ad_commentThread';
 import Ad_participates_item from './ad_participates_item';
-import Ad_signeduser from './Ad_signeduser'
+import Ad_signeduser from './ad_signeduser'
 import {getActivityDetail} from '../server';
 import {adpostComment} from '../server';
 import {likeActivity} from '../server';
