@@ -298,8 +298,8 @@ function activityStatus(type,user,title,description,img,startTime,
 app.post('/postActivity', validate({ body: activitySchema }),function(req,res){
   var body = req.body;
   var fromUser = getUserIdFromToken(req.get('Authorization'));
-  if(fromUser === body.userId){
-    var newPost = activityStatus(body.type,body.userId,body.title,body.description,body.img,body.startTime,
+  if(fromUser === body.author._id){
+    var newPost = activityStatus(body.type,body.author._id,body.title,body.description,body.img,body.startTime,
                             body.endTime,body.location,body.country,body.this.state,body.city,body.contents);
     res.status(201);
     res.send(newPost);
