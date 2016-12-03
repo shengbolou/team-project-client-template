@@ -44,7 +44,12 @@ export default class Chat extends React.Component {
       postMessage(this.state.sessionId, this.props.user, this.state.friend ,message, (newMessage)=>{
         this.setState({message:newMessage});
       })
-    }
+    getUserData(this.props.user, (userData) => {
+      this.setState({
+        user:userData
+      })
+    });
+  }
 
     handleSwitchFriends(friendId){
       this.setState({friend:friendId},
@@ -80,7 +85,7 @@ export default class Chat extends React.Component {
                                       </li>
                                   </ul>
                               </div>
-                              <NavBody data={this.state.user} messages={this.state.message} switchUser={(id)=>this.handleSwitchFriends(id)}/>
+                              <NavBody data={this.state.user}  messages={this.state.message} switchUser={(id)=>this.handleSwitchFriends(id)}/>
                             </div>
                         </div>
                         <ChatWindow target={this.state.friend} curUser={this.props.user}onPost={(message)=>this.handlePostMessage(message)}

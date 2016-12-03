@@ -269,6 +269,8 @@ export function getSessionId(userid,targetid,cb){
   });
 }
 
+
+
 export function searchquery(userid,querytext,cb){
   sendXHR('GET','/search/userid/'+userid+'/querytext/'+querytext, undefined, (xhr) => {
     cb(JSON.parse(xhr.responseText));

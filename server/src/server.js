@@ -150,6 +150,7 @@ app.get('/user/:userId',function(req,res){
   // if(fromUser === userId){
     var userData = readDocument('users',userId);
     userData.friends = userData.friends.map((id)=>readDocument('users',id));
+    userData.sessions = userData.sessions.map((id)=>readDocument('messageSession',id));
     res.status(201);
     res.send(userData);
   // }
@@ -478,6 +479,10 @@ app.post('/user/:userid/chatsession/:id',function(req,res){
      "text": text
      });
      writeDocument('message',message);
+
+     var sessions = readDocument('messageSession',id);
+     sessions.lastmessage = text;
+     writeDocument('messageSession',sessions)
      res.status(201);
      res.send(getMessageSync(id).messages);
   }

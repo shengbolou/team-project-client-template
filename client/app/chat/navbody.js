@@ -5,15 +5,14 @@ export default class NavBody extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = props.data;
+        this.state = {};
+    }
+
+    componentWillReceiveProps(newProps){
+      this.state = newProps;
     }
 
     render() {
-      var list =this.props.messages;
-      var lastmessage;
-      list.map((item)=>{
-        lastmessage = item.text;
-      })
         return (
             <div className="panel-body">
                 <ul className="list-group friends" style={{
@@ -22,8 +21,13 @@ export default class NavBody extends React.Component {
                 }}>
 
                   {this.props.data.firstname === undefined ? 0:this.props.data.friends.map((item)=>{
-                  return <NavChatItem key={item._id} data={item}
-                    currentUser={this.props.data._id} last={lastmessage} switchUser={this.props.switchUser}/>
+                  return <NavChatItem key={item._id}
+                                      data={item}
+                                      currentUser={this.props.data._id}
+                                      last={this.props.data.sessions.map((item2)=>{
+                                        if(item._id==item2.users[0]||item._id==item2.users[1]){
+                                        return item2.lastmessage;}  })}
+                                      switchUser={this.props.switchUser}/>
                 })}
 
                 </ul>

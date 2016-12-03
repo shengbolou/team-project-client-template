@@ -15,7 +15,8 @@ var initialData = {
       "activity":1,
       "notification":1,
       "email": "upao@umass.edu",
-      "birthday":147812931
+      "birthday":147812931,
+      "sessions":[1,2]
     },
     "2": {
       "_id":2,
@@ -30,7 +31,8 @@ var initialData = {
       "activity":2,
       "notification":2,
       "email": "test@umass.edu",
-      "birthday":1478129314000
+      "birthday":1478129314000,
+      "sessions":[1]
     },
     "3": {
       "_id":3,
@@ -45,7 +47,8 @@ var initialData = {
       "activity":3,
       "notification":3,
       "email": "test2@umass.edu",
-      "birthday":1478129314000
+      "birthday":1478129314000,
+      "sessions":[2]
     }
   },
   //notification collections
@@ -218,12 +221,14 @@ var initialData = {
       "1": {
         "_id": 1,
         "users": [1,2],
-        "contents": [1]
+        "contents": [1],
+        "lastmessage":"cool"
       },
       "2": {
         "_id": 2,
         "users": [1,3],
-        "contents": [2]
+        "contents": [2],
+        "lastmessage":"Good night!"
       }
     },
     //message table
