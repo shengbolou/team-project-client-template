@@ -7,6 +7,8 @@ var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
 // Support receiving JSON in HTTP request bodies
+
+// var moment = require('moment');
 app.use(bodyParser.json());
 app.use(bodyParser.text());
 app.use(express.static('../client/build'));
@@ -24,7 +26,7 @@ var statusUpdateSchema = require('./schemas/statusUpdate.json');
 var commentSchema = require('./schemas/comment.json');
 var userInfoSchema = require('./schemas/userInfo.json');
 var emailChangeSchema = require('./schemas/emailChange.json');
-//var activitySchema = require('./schemas/activity.json');
+var activitySchema = require('./schemas/activity.json');
 var validate = require('express-jsonschema').validate;
 
 //get post feed data
@@ -85,7 +87,6 @@ function postStatus(user, text,location){
 
   return post;
 }
-
 //create post
 app.post('/postItem', validate({ body: statusUpdateSchema }),function(req,res){
   var body = req.body;
@@ -99,6 +100,8 @@ app.post('/postItem', validate({ body: statusUpdateSchema }),function(req,res){
     res.status(401).end();
   }
 });
+
+
 
 //like post
 app.put('/postItem/:postItemId/likelist/:userId',function(req,res){
@@ -255,6 +258,44 @@ app.get('/user/:userid/activity', function(req, res) {
   // }
 });
 
+
+function postActivity(data){
+    var activityItem = {
+     "type": data.type,
+     "author":data.author,
+     "title": data.title,
+     "description":data.description,
+     "img":data.img,
+     "startTime": data.startTime,
+     "endTime": data.endTime,
+     "location": data.location,
+     "participants": [],
+     "likeCounter": [],
+     "comments":[
+     ],
+     "contents": data.contents
+  }
+  activityItem = addDocument('activityItems',activityItem);
+  var userData = readDocument('users',activityItem.author);
+  var activities = readDocument('activities',userData.activity);
+  activities.contents.unshift(activityItem._id);
+  writeDocument('activities', activities);
+  return activities;
+}
+//post activity
+app.post('/postActivity',validate({body:activitySchema}),function(req,res){
+  var body = req.body;
+  var fromUser = getUserIdFromToken(req.get('Authorization'));
+  if(fromUser === body.author){
+    var activities = postActivity(body);
+    res.status(201);
+    res.send(activities);
+  }
+  else{
+    res.status(401).end();
+  }
+});
+
 //get activity detail
 app.get('/activityItem/:activityId',function(req,res){
   var activityId = parseInt(req.params.activityId);
@@ -262,6 +303,7 @@ app.get('/activityItem/:activityId',function(req,res){
   res.status(201);
   res.send(activityData);
 });
+
 
 function getActivityFeedItemSync(activityId){
   var activityItem = readDocument('activityItems', activityId);
@@ -539,6 +581,21 @@ app.get('/search/userid/:userid/querytext/:querytext',function(req,res){
     var userItems= getCollection("users");
     var activityItems=getCollection("activityItems");
     var postFeedItems=getCollection("postFeedItems");
+    var resultUsers = Object.keys(userItems).map((k)=>{return userItems[k]}).filter((userItem)=>{
+        return userItem.firstname.toLowerCase().indexOf(querytext)!==-1 ||
+        userItem.lastname.toLowerCase().indexOf(querytext)!==-1 ||
+        userItem.nickname.toLowerCase().indexOf(querytext)!==-1;
+    });
+
+    var activitiesResult = Object.keys(activityItems).map((k)=>{return activityItems[k]}).filter((activityItem)=>{
+        return activityItem.title.toLowerCase().indexOf(querytext)!==-1 ||
+        activityItem.description.toLowerCase().indexOf(querytext)!==-1;
+    });
+
+    var postReuslt = Object.keys(postFeedItems).map((k)=>{return postFeedItems[k]}).filter((postFeedItem)=>{
+        return postFeedItem.contents.text.toLowerCase().indexOf(querytext)!==-1;
+    });
+
 
     // var data=[
     //   Object.keys(userItems).map((k)=>{return userItems[k]}).filter((userItem)=>{
@@ -567,7 +624,12 @@ app.get('/search/userid/:userid/querytext/:querytext',function(req,res){
           return postFeedItem.contents.text.toLowerCase().indexOf(querytext)!==-1;
       })
     )
-    res.send(data2);
+    var data={
+      users: Object.keys(resultUsers).map((k)=>{return resultUsers[k]}),
+      activities: Object.keys(activitiesResult).map((k)=>{return activitiesResult[k]}),
+      posts: Object.keys(postReuslt).map((k)=>{return postReuslt[k]})
+    };
+    res.send(data);
   }
   else{
     console.log(fromUser);

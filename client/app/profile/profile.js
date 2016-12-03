@@ -10,23 +10,37 @@ export default class Profile extends React.Component{
 
   constructor(props){
     super(props);
-    this.state = {};
+    this.state = {
+      currUser: {},
+      user: {}
+    };
   }
 
-  getData(){
-    getUserData(this.props.currUser, (userData)=>{
-        this.setState(userData);
+  getData(currUser,user){
+    getUserData(currUser, (userData)=>{
+        this.setState({
+          currUser: userData
+        });
+    });
+    getUserData(user, (userData)=>{
+        this.setState({
+          user:userData
+        });
     });
   }
 
   componentDidMount(){
-    this.getData();
+    this.getData(this.props.currUser,this.props.user);
+  }
+
+  componentWillReceiveProps(newProps){
+    this.getData(newProps.currUser,newProps.user);
   }
 
   render(){
     return(
       <div>
-        <Navbar user={this.state}/>
+        <Navbar user={this.state.currUser}/>
         <div className="container profile">
           <div className="row">
             <div className="col-md-11 col-md-offset-1">
@@ -39,14 +53,14 @@ export default class Profile extends React.Component{
                 </div>
               </div>
 
-              <ProfileMainFeed user={this.props.user} />
+              <ProfileMainFeed user={this.state.user} />
             </div>
           </div>
 
           <div className="row">
             <div className="col-md-7 col-md-offset-1">
               <h4>Personal Info</h4>
-              <ProfilePersonalInfo user={this.props.user} />
+              <ProfilePersonalInfo user={this.state.user} />
             </div>
             <div className="col-md-4">
               Recent Activities

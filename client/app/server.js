@@ -1,6 +1,6 @@
-import {readDocument, writeDocument, addDocument} from './database.js';
-var moment = require('moment');
+import {} from './database.js';
 var token = 'eyJpZCI6MX0=';
+var moment = require('moment');
 
 
 /**
@@ -90,17 +90,6 @@ export function setlocation(userId,location){
 }
 
 
-/**
- * Emulates how a REST call is *asynchronous* -- it calls your function back
- * some time in the future with data.
- */
-function emulateServerReturn(data, cb) {
-  setTimeout(() => {
-    cb(data);
-  }, 4);
-}
-
-
 export function deleteNotification(id, user ,cb){
   sendXHR('DELETE','/notification/'+id+'/'+user,undefined,(xhr)=>{
     cb(JSON.parse(xhr.responseText));
@@ -181,34 +170,28 @@ export function postStatus(user, text, cb){
   });
 }
 
-export function createActivity(data,cb){
-  var activityItem = {
-    "type": data.type,
-    "author":data.userData._id,
-    "title": data.title,
-    "description":data.description,
-    "img":data.img === null ? "./img/HackUMass.jpg" : data.img,
-    "startTime": moment(data.startTime).valueOf(),
-    "endTime": moment(data.endTime).valueOf(),
-    "location": data.location,
-    "country": "USA",
-    "state": "MA",
-    "city": "Amherst",
-    "participants": [],
-    "likeCounter": [],
-    "comments":[
-    ],
-    "contents": {
-      "img": data.img === null ? "./img/HackUMass-detail-1.png":data.img,
-      "text": data.detail
-    }
-  }
-  activityItem = addDocument('activityItems',activityItem);
 
-  var activities = readDocument('activities',data.userData.activity);
-  activities.contents.unshift(activityItem._id);
-  writeDocument('activities', activities);
-  emulateServerReturn(activities,cb);
+export function createActivity(data,cb){
+  var debug = require('react-debug');
+  debug(data);
+    sendXHR('POST','/postActivity',{
+         "type": data.type,
+         "author":data.userData._id,
+         "title": data.title,
+         "description":data.description,
+         "img":data.img === null ? "./img/HackUMass.jpg" : data.img,
+         "startTime": moment(data.startTime).valueOf(),
+         "endTime": moment(data.endTime).valueOf(),
+         "location": data.location,
+         "contents": {
+           "img": data.img === null ? "./img/HackUMass-detail-1.png":data.img,
+           "text": data.detail
+          }
+      }
+    , (xhr) => {
+      cb(JSON.parse(xhr.responseText));
+    });
+
 }
 
 

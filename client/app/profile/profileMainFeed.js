@@ -1,21 +1,14 @@
 import React from 'react';
-import {getUserData} from '../server';
 
 export default class ProfileMainFeed extends React.Component{
 
   constructor(props){
     super(props);
-    this.state = {};
+    this.state = props.user;
   }
 
-  getData(){
-    getUserData(this.props.user,(userData)=>{
-        this.setState(userData);
-    });
-  }
-
-  componentDidMount(){
-    this.getData();
+  componentWillReceiveProps(newProps){
+    this.setState(newProps.user);
   }
 
   render(){

@@ -11,16 +11,18 @@ export default class ProfileRecentPostFeed extends React.Component{
     };
   }
 
-  getData(){
-    getPostFeedData(this.props.user, (post) => {
+  getData(user){
+    getPostFeedData(user, (post) => {
         this.setState(post);
     });
   }
 
   componentDidMount(){
-    this.getData();
+    this.getData(this.props.user);
   }
-
+  componentWillReceiveProps(newProps){
+    this.getData(newProps.user);
+  }
   render(){
     return(
       <div>

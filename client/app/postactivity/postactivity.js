@@ -3,7 +3,7 @@ import Navbar from '../component/navbar';
 import {getUserData,createActivity} from '../server';
 import FriendItem from './friendItem';
 import {hashHistory} from 'react-router';
-var debug = require('react-debug');
+// var debug = require('react-debug');
 
 export default class PostActivity extends React.Component {
 

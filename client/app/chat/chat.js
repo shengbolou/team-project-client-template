@@ -1,6 +1,5 @@
 import React from 'react';
 import Navbar from '../component/navbar';
-import NavHeading from './navheading';
 import NavBody from './navbody';
 import ChatWindow from './chatwindow';
 import {getUserData,getMessages,postMessage,getSessionId} from '../server';
@@ -17,11 +16,6 @@ export default class Chat extends React.Component {
         };
     }
     componentDidMount() {
-      getSessionId(this.props.user,this.state.friend,(session)=>{
-        this.setState({
-          sessionId:session._id
-        })
-      });
       this.getData();
     }
 
@@ -38,6 +32,12 @@ export default class Chat extends React.Component {
         })
       });
 
+      getSessionId(this.props.user,this.state.friend,(session)=>{
+        this.setState({
+          sessionId:session._id
+        })
+      });
+
     }
 
     handlePostMessage(message){
@@ -47,11 +47,13 @@ export default class Chat extends React.Component {
     }
 
     handleSwitchFriends(friendId){
-      this.setState({friend:friendId},()=>{
+      this.setState({friend:friendId},
+        ()=>{
         getSessionId(this.props.user,this.state.friend,(session)=>{
           this.setState({
             sessionId:session._id
-          },()=>{
+          },
+          ()=>{
             getMessages(this.props.user,this.state.sessionId,(message)=>{
               this.setState({
                 message:message
@@ -71,8 +73,14 @@ export default class Chat extends React.Component {
                     <div className="row">
                         <div className="col-md-4 col-sm-4 col-xs-4 col-md-offset-1 col-sm-offset-1 col-xs-offset-1 chat-left">
                             <div className="panel panel-dafault">
-                                <NavHeading chat="active"/>
-                                <NavBody data={this.state.user} messages={this.state.message} switchUser={(id)=>this.handleSwitchFriends(id)}/>
+                              <div className="panel-heading panel-heading-chat" style={{paddingBottom:"3px"}}>
+                                  <ul className="nav nav-pills nav-justified" >
+                                      <li role="presentation" className="active">
+                                          <a>Friends</a>
+                                      </li>
+                                  </ul>
+                              </div>
+                              <NavBody data={this.state.user} messages={this.state.message} switchUser={(id)=>this.handleSwitchFriends(id)}/>
                             </div>
                         </div>
                         <ChatWindow target={this.state.friend} curUser={this.props.user}onPost={(message)=>this.handlePostMessage(message)}
