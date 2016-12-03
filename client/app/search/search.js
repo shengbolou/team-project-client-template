@@ -1,5 +1,5 @@
 import React from 'react';
-import SearchFeed from './searchFeed';
+import SearchEntry from './searchEntry';
 import Navbar from '../component/navbar';
 import {getUserData} from '../server';
 
@@ -23,7 +23,7 @@ export default class Search extends React.Component{
         <div className="container">
           <div className="row">
             <div className="col-md-7 col-md-offset-2 main-feed">
-              <SearchFeed user={this.props.user}/>
+              <SearchEntry user={this.props.user}/>
             </div>
           </div>
         </div>

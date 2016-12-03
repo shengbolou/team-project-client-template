@@ -600,15 +600,18 @@ app.get('/search/userid/:userid/querytext/:querytext',function(req,res){
     var postReuslt = Object.keys(postFeedItems).map((k)=>{return postFeedItems[k]}).filter((postFeedItem)=>{
         return postFeedItem.contents.text.toLowerCase().indexOf(querytext)!==-1;
     });
+    var post = Object.keys(postReuslt).map((k)=>{return postReuslt[k]});
+
 
 
     var data={
       users: Object.keys(resultUsers).map((k)=>{return resultUsers[k]}),
       activities: Object.keys(activitiesResult).map((k)=>{return activitiesResult[k]}),
-      posts: Object.keys(postReuslt).map((k)=>{return postReuslt[k]})
+      posts: post
     };
 
     data.posts.map((i)=>i.contents.author=readDocument('users',i.contents.author));
+    data.posts.map((i)=>(i.comments.map((j)=>j.author=readDocument('users',j.author))));
     res.send(data);
   }
   else{

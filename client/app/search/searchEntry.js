@@ -2,14 +2,15 @@ import React from 'react';
 import {searchquery} from '../server';
 import ActivityFeedItem from '../activity/activityFeedItem';
 import SearchFeedUserFeedItem from './searchFeedUserFeedItem';
-import SearchFeedPostFeedItem from './searchFeedPostFeedItem';
+import PostFeedItem from '../post/postFeedItem';
 
 export default class SearchEntry extends React.Component{
   constructor(props){
     super(props);
     this.state = {
       value: "",
-      searchDataResult:{}
+      searchDataResult:{},
+      title: ""
     }
   }
   handleChange(e) {
@@ -20,15 +21,17 @@ export default class SearchEntry extends React.Component{
   handleKeyUp(e) {
     e.preventDefault();
     if (e.key === "Enter") {
-      this.search();
-    }
-  }
-  search() {
-    var trimmedTerm = this.state.value.trim();
-    if (trimmedTerm !== "") {
-      searchquery(this.props.user,trimmedTerm,(searchData)=>
-        this.setState({searchDataResult:searchData})
-      )
+      var query = this.state.value.trim();
+      if (query !== "") {
+        searchquery(this.props.user,query,(searchData)=>
+            this.setState(
+              {
+                searchDataResult:searchData,
+                title: "Search result for "+query+": "
+              }
+            )
+        )
+      }
     }
   }
 
@@ -46,6 +49,7 @@ export default class SearchEntry extends React.Component{
             </div>
           </div>
         </div>
+        <h4 style={{marginBottom:'10'}}>{this.state.title}</h4>
           {
             this.state.searchDataResult.users=== undefined ? [] : this.state.searchDataResult.users.map((users,i)=>{
               return (
@@ -64,7 +68,7 @@ export default class SearchEntry extends React.Component{
           {
             this.state.searchDataResult.posts === undefined ? [] : this.state.searchDataResult.posts.map((post,i)=>{
               return (
-                <SearchFeedPostFeedItem key={i} data={post}/>
+                <PostFeedItem key={i} data={post} currentUser={this.props.user}/>
               )
             })
           }

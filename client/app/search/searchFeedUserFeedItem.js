@@ -7,9 +7,14 @@ export default class SearchFeedUserFeedItem extends React.Component{
     this.state = props.data;
   }
 
+
+  componentWillReceiveProps(nextProps){
+    this.setState(nextProps.data);
+  }
+
   render(){
     return(
-        <div className="panel panel-default">
+        <div className="panel panel-default" style={{padding: '10'}}>
           <div className="media">
             <div className="media-left">
               <Link to={"profile/"+this.state._id}>
@@ -28,15 +33,11 @@ export default class SearchFeedUserFeedItem extends React.Component{
                       <a href=""><i className="fa fa-user-plus pull-right" aria-hidden="true"></i></a>
                     </div>
                   </div>
-                  <div className="location pull-right">
-                    <span className="glyphicon glyphicon-map-marker"></span>
-                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-
     );
   }
 }

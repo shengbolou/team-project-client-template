@@ -15,6 +15,4 @@ export default class SearchFeed extends React.Component{
     );
   }
 
-
-
 }
