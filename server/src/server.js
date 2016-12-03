@@ -602,6 +602,8 @@ app.get('/search/userid/:userid/querytext/:querytext',function(req,res){
       activities: Object.keys(activitiesResult).map((k)=>{return activitiesResult[k]}),
       posts: Object.keys(postReuslt).map((k)=>{return postReuslt[k]})
     };
+
+    data.posts.map((i)=>i.contents.author=readDocument('users',i.contents.author));
     res.send(data);
   }
   else{
