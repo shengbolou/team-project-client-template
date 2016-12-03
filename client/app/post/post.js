@@ -22,7 +22,7 @@ export default class Post extends React.Component{
         <Navbar post="active" user={this.state}/>
         <div className="container">
           <div className="row">
-            <div className="col-md-7 col-md-offset-2 main-feed">
+            <div className="col-md-8 col-md-offset-2 main-feed">
               <PostFeed user={this.state} userId={this.props.user}/>
             </div>
           </div>

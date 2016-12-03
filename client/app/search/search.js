@@ -22,7 +22,7 @@ export default class Search extends React.Component{
         <Navbar search="active" user={this.state}/>
         <div className="container">
           <div className="row">
-            <div className="col-md-8 col-md-offset-2 main-feed">
+            <div className="col-md-7 col-md-offset-2 main-feed">
               <SearchFeed user={this.props.user}/>
             </div>
           </div>

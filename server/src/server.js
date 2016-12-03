@@ -581,21 +581,27 @@ app.get('/search/userid/:userid/querytext/:querytext',function(req,res){
     var userItems= getCollection("users");
     var activityItems=getCollection("activityItems");
     var postFeedItems=getCollection("postFeedItems");
+    var resultUsers = Object.keys(userItems).map((k)=>{return userItems[k]}).filter((userItem)=>{
+        return userItem.firstname.toLowerCase().indexOf(querytext)!==-1 ||
+        userItem.lastname.toLowerCase().indexOf(querytext)!==-1 ||
+        userItem.nickname.toLowerCase().indexOf(querytext)!==-1;
+    });
 
-    var data=[
-      Object.keys(userItems).map((k)=>{return userItems[k]}).filter((userItem)=>{
-          return userItem.firstname.toLowerCase().indexOf(querytext)!==-1 ||
-          userItem.lastname.toLowerCase().indexOf(querytext)!==-1 || userItem.nickname.toLowerCase().indexOf(querytext)!==-1;
-      }),
-      Object.keys(activityItems).map((k)=>{return activityItems[k]}).filter((activityItem)=>{
-          return activityItem.title.toLowerCase().indexOf(querytext)!==-1 ||
-          activityItem.description.toLowerCase().indexOf(querytext)!==-1;
-      })
-      ,
-      Object.keys(postFeedItems).map((k)=>{return postFeedItems[k]}).filter((postFeedItem)=>{
-          return postFeedItem.contents.text.toLowerCase().indexOf(querytext)!==-1;
-      })
-    ];
+    var activitiesResult = Object.keys(activityItems).map((k)=>{return activityItems[k]}).filter((activityItem)=>{
+        return activityItem.title.toLowerCase().indexOf(querytext)!==-1 ||
+        activityItem.description.toLowerCase().indexOf(querytext)!==-1;
+    });
+
+    var postReuslt = Object.keys(postFeedItems).map((k)=>{return postFeedItems[k]}).filter((postFeedItem)=>{
+        return postFeedItem.contents.text.toLowerCase().indexOf(querytext)!==-1;
+    });
+
+
+    var data={
+      users: Object.keys(resultUsers).map((k)=>{return resultUsers[k]}),
+      activities: Object.keys(activitiesResult).map((k)=>{return activitiesResult[k]}),
+      posts: Object.keys(postReuslt).map((k)=>{return postReuslt[k]})
+    };
     res.send(data);
   }
   else{
