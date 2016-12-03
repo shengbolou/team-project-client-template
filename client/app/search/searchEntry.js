@@ -1,6 +1,8 @@
 import React from 'react';
 import {searchquery} from '../server';
 import ActivityFeedItem from '../activity/activityFeedItem';
+import SearchFeedUserFeedItem from './searchFeedUserFeedItem';
+
 
 export default class SearchEntry extends React.Component{
   constructor(props){
@@ -27,6 +29,7 @@ export default class SearchEntry extends React.Component{
       searchquery(this.props.user,trimmedTerm,(searchData)=>
         this.setState({searchDataResult:searchData})
       )
+      this.refresh();
     }
   }
 
@@ -44,6 +47,14 @@ export default class SearchEntry extends React.Component{
             </div>
           </div>
         </div>
+          {
+            this.state.searchDataResult.users=== undefined ? [] : this.state.searchDataResult.users.map((users,i)=>{
+              return (
+                <SearchFeedUserFeedItem key={i} data={users}/>
+              )
+            })
+          }
+
           {
             this.state.searchDataResult.activities === undefined ? [] : this.state.searchDataResult.activities.map((activity,i)=>{
               return (
