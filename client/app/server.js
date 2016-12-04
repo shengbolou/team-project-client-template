@@ -252,15 +252,6 @@ export function postMessage(sessionId,sender,target, text, cb){
   },(xhr)=>{
     cb(JSON.parse(xhr.responseText));
   })
-  // var message = readDocument('message',sessionId);
-  // message.messages.push({
-  //   "sender": sender,
-  //   "target":target,
-  //   "date":(new Date()).getTime(),
-  //   "text": text
-  // });
-  // writeDocument('message',message);
-  // emulateServerReturn(getMessageSync(sessionId).messages,cb);
 }
 
 export function getSessionId(userid,targetid,cb){
