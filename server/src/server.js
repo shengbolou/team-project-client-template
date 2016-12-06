@@ -14,7 +14,7 @@ var MongoClient = MongoDB.MongoClient;
 var ObjectID = MongoDB.ObjectID;
 var url = 'mongodb://localhost:27017/Upao';
 app.use(bodyParser.json({limit: '20mb'}));
-app.use(bodyParser.urlencoded({limit: '20mb', extended: true}));
+app.use(bodyParser.urlencoded({limit: '10mb', extended: true}));
 
 MongoClient.connect(url, function(err, db) {
   // var moment = require('moment');
@@ -350,29 +350,37 @@ function sendDatabaseError(res, err) {
   res.status(500).send("A database error occurred: " + err);
 }
 
+function getUserData(userId,callback){
+  db.collection('users').findOne({_id:userId},function(err,userData){
+    if(err)
+    callback(err);
+    else{
+      resolveUserObjects(userData.friends,function(err,userMap){
+        if(err)
+        callback(err);
+        else{
+          userData.friends = userData.friends.map((id)=>userMap[id]);
+          resolveSessionObject(userData.sessions,function(err,sessionMap){
+            if(err)
+            callback(err);
+            else{
+              userData.sessions = userData.sessions.map((id)=>sessionMap[id]);
+              callback(null,userData);
+            }
+          });
+        }
+      });
+    }
+  });
+}
+
   //get user data
   app.get('/user/:userId',function(req,res){
     var userId = req.params.userId;
-    db.collection('users').findOne({_id:new ObjectID(userId)},function(err,userData){
+    getUserData(new ObjectID(userId),function(err,userData){
       if(err)
-      sendDatabaseError(res,err);
-      else{
-        resolveUserObjects(userData.friends,function(err,userMap){
-          if(err)
-          sendDatabaseError(res,err);
-          else{
-            userData.friends = userData.friends.map((id)=>userMap[id]);
-            resolveSessionObject(userData.sessions,function(err,sessionMap){
-              if(err)
-              sendDatabaseError(res,err);
-              else{
-                userData.sessions = userData.sessions.map((id)=>sessionMap[id]);
-                res.send(userData);
-              }
-            });
-          }
-        });
-      }
+        return sendDatabaseError(res,err);
+      res.send(userData);
     });
   });
 
@@ -415,21 +423,27 @@ function sendDatabaseError(res, err) {
   app.put('/settings/user/:userId',validate({body:userInfoSchema}),function(req,res){
     var data = req.body;
     var moment = require('moment');
-    var userId = parseInt(req.params.userId);
-    var fromUser = getUserIdFromToken(req.get('Authorization'));
-
-    if(fromUser == userId){
-      var userData = readDocument('users',userId);
-      userData.lastname = data.lastname;
-      userData.firstname = data.firstname;
-      userData.nickname = data.nickname;
-      userData.description = data.description;
-      userData.location = data.location;
-      userData.birthday = moment(data.birthday).valueOf();
-
-      writeDocument('users', userData);
-      res.status(201);
-      res.send(userData);
+    var userId = new ObjectID(req.params.userId);
+    var fromUser = new ObjectID(getUserIdFromToken(req.get('Authorization')));
+    if(fromUser.str === userId.str){
+      db.collection('users').updateOne({_id:userId},{
+        $set:{
+          lastname:data.lastname,
+          firstname:data.firstname,
+          nickname:data.nickname,
+          description:data.description,
+          location:data.location,
+          birthday:moment(data.birthday).valueOf()
+        }
+      },function(err){
+        if(err)
+          return sendDatabaseError(res,err);
+        getUserData(userId,function(err,userData){
+          if(err)
+            return sendDatabaseError(res,err);
+          res.send(userData);
+        });
+      });
     }
     else{
       res.status(401).end();
@@ -443,20 +457,36 @@ function sendDatabaseError(res, err) {
     return activityData;
   }
 
+  function validateEmail(email) {
+      var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      return re.test(email);
+  }
+  
   app.put('/settings/emailChange/user/:userId',validate({body:emailChangeSchema}),function(req,res){
     var data = req.body;
-    var userId = parseInt(req.params.userId);
-    var fromUser = getUserIdFromToken(req.get('Authorization'));
-    if(fromUser === userId){
-      var userData = readDocument('users',userId);
-      if(userData.email === data.oldEmail){
-        userData.email = data.newEmail;
-        writeDocument('users', userData);
-        res.send(false);
-      }
-      else{
-        res.send(true);
-      }
+    var userId = new ObjectID(req.params.userId);
+    var fromUser = new ObjectID(getUserIdFromToken(req.get('Authorization')));
+    if(fromUser.str === userId.str){
+      getUserData(userId,function(err,userData){
+        if(err)
+          return sendDatabaseError(res,err);
+        else if(userData.email === data.oldEmail && validateEmail(data.newEmail)){
+          db.collection('users').updateOne({_id:userId},{
+            $set:{
+              email: data.newEmail
+            }
+          },function(err){
+              if(err)
+                return sendDatabaseError(res,err);
+              else{
+                res.send(false);
+              }
+          });
+        }
+        else {
+          res.send(true);
+        }
+      });
     }
     else{
       res.statsus(401).end();

@@ -103,7 +103,7 @@ export default class Settings extends React.Component{
         },(error)=>{
           if(error){
             emailAlert = (<div className="alert alert-warning" role="alert">
-                          <strong>Old email is wrong</strong>
+                          <strong>Old email is wrong or new email has wrong format</strong>
                         </div>);
           }
           else{
