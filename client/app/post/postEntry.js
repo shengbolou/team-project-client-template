@@ -1,12 +1,14 @@
 import React from 'react';
 import {Link} from 'react-router';
+import {hideElement} from '../util';
 
 export default class PostEntry extends React.Component{
 
   constructor(props){
     super(props);
     this.state = {
-      text: ""
+      text: "",
+      img: null
     }
   }
 
@@ -19,9 +21,31 @@ export default class PostEntry extends React.Component{
     e.preventDefault();
     var text = this.state.text.trim();
     if(text !== ""){
-      this.setState({text:""});
-      this.props.onPost(text);
+      this.props.onPost(text,this.state.img);
+      this.setState(
+        {
+          text:"",
+          img:null
+        }
+      );
     }
+  }
+
+  uploadImg(e){
+    e.preventDefault();
+    // Read the first file that the user selected (if the user selected multiple
+    // files, we ignore the others).
+    var reader = new FileReader();
+    var file = e.target.files[0];
+    // Called once the browser finishes loading the image.
+    reader.onload = (upload) => {
+      this.setState({
+        img: upload.target.result
+      });
+    };
+
+    // Tell the brower to read the image in as a data URL!
+    reader.readAsDataURL(file);
   }
 
   render(){
@@ -41,9 +65,12 @@ export default class PostEntry extends React.Component{
                 <label htmlFor="pic">
                   <a><i className="fa fa-camera" aria-hidden="true"></i></a>
                 </label>
-                <input type="file" name="name" id="pic" value=""></input>
+                <input type="file" accept=".jpg,.jpeg,.png,.gif" id="pic" onChange={(e)=>this.uploadImg(e)}></input>
               </div>
               <button type="button" className="btn btn-blue-grey pull-right" name="button" onClick={(e)=>this.handlePost(e)}>Submit</button>
+            </div>
+            <div className="media-footer">
+              <img className={hideElement(this.state.img === null)} src={this.state.img} style={{width: "100%"}} />
             </div>
           </div>
         </div>

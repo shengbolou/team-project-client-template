@@ -1,5 +1,5 @@
 import {} from './database.js';
-var token = 'eyJpZCI6MX0=';
+var token = 'eyJpZCI6IjAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMSJ9';
 var moment = require('moment');
 
 
@@ -158,11 +158,12 @@ export function postComment(feedItemId, author, comment, cb){
   })
 }
 
-export function postStatus(user, text, cb){
+export function postStatus(user, text, img, cb){
   getlocation((res)=>{
     sendXHR('POST', '/postItem', {
       userId:user,
       text:text,
+      img: img,
       location:res!="error"&&res.status==="OK" && res.results.length>0 ? res.results[0] : {}
     }, (xhr)=>{
       cb(JSON.parse(xhr.responseText));

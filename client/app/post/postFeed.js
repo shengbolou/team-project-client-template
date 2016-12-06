@@ -21,8 +21,8 @@ export default class PostFeed extends React.Component{
     });
   }
 
-  onPost(text){
-    postStatus(this.props.userId, text, ()=>{
+  onPost(text,img){
+    postStatus(this.props.userId, text, img,()=>{
       this.getData();
     });
   }
@@ -30,7 +30,7 @@ export default class PostFeed extends React.Component{
   render(){
     return (
       <div>
-        <PostEntry userData={this.props.user} onPost={(text)=>this.onPost(text)}/>
+        <PostEntry userData={this.props.user} onPost={(text,img)=>this.onPost(text,img)}/>
         {this.state.contents.map((postFeedItem)=>{
           return <PostFeedItem key={postFeedItem._id} data={postFeedItem} currentUser={this.props.user._id}/>
         })}

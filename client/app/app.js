@@ -23,7 +23,7 @@ class ActivityPage extends React.Component{
 }
 class ThrendPage extends React.Component{
   render(){
-    return (<Post user={1} />);
+    return (<Post user={"000000000000000000000001"} />);
   }
 }
 
@@ -45,7 +45,7 @@ class App extends React.Component {
 class SettingsPage extends React.Component {
   render() {
     return (
-      <Settings user={1} />
+      <Settings user={"000000000000000000000001"} />
     );
   }
 }
@@ -84,7 +84,7 @@ class SearchPage extends React.Component{
 class ProfilePage extends React.Component{
   render(){
     return(
-      <Profile user={parseInt(this.props.params.user)} currUser={1}/>
+      <Profile user={parseInt(this.props.params.user)} currUser={"000000000000000000000001"}/>
     );
   }
 }

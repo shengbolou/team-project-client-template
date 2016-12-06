@@ -3,13 +3,17 @@
   "type": "object",
   "properties": {
     "userId": {
-      "type": "integer"
+      "type": "string"
     },
     "text": {
       "type": "string"
     },
     "location": {
       "type": "object"
+    },
+    "image": {
+      "id": "image",
+      "type": ["string", "null"]
     }
   },
   "required": [
