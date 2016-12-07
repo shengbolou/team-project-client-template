@@ -17,7 +17,7 @@ export default class Ad_body extends React.Component{
     super(props);
     this.state = {
       activity: {},
-      ishost: "!"
+      ishost: ""
     };
   }
 
@@ -37,7 +37,11 @@ export default class Ad_body extends React.Component{
 
     if(e.button === 0){
       var cb = (likeCounter) => {
-        this.setState({likeCounter:likeCounter});
+        var activity = this.state.activity;
+        activity.likeCounter = likeCounter;
+        this.setState(
+          {activity:activity}
+        );
       };
 
       if(!this.didUserLike(this.props.currentUser)){
@@ -58,9 +62,9 @@ export default class Ad_body extends React.Component{
   getData(){
     getActivityDetail(this.props.id,(activitydata)=>{
       this.setState({activity:activitydata},()=>{
-        this.CheckHost("",(result)=>{
-          this.setState({ishost:result});
-        });
+        if(this.checkHost() === "disabled"){
+          this.setState({ishost:"disabled"});
+        }
       });
     });
 
@@ -68,23 +72,15 @@ export default class Ad_body extends React.Component{
 
 
 
-  CheckHost(result,cb){
+  checkHost(){
     var participants = this.state.activity.participants === undefined ? 0:this.state.activity.participants;
-    if(participants === 0){
-      result = "undifined"
-    }
-    else{
-     result = "Click to sign up!";
-
-  //   ?????????????????????????
+    var result = "";
     for (var i = 0; i < participants.length; i++) {
-
       if (participants[i]._id === this.props.currentUser){
-        result = "You are the host!";
+        result = "disabled";
         }
     }
-cb( result);
-  }
+   return result;
 }
 
 
@@ -93,7 +89,7 @@ cb( result);
   }
 
   render(){
-
+    var buttonText = this.state.ishost==="disabled" ? "You are the host" : "Click to sign up";
     var data = this.state.activity
     var contents;
     var img;
@@ -212,8 +208,8 @@ cb( result);
                 </div>
                 <div className="row">
                   <div className = "col-md-12 col-sm-12 col-xs-12 remain-places" style={{'paddingTop':'25px',textAlign:"center"}} >
-                    <a><span className="btn btn-default sign-up-btn"  align="center" disabled>
-                    {this.state.ishost}
+                    <a><span className={"btn btn-default sign-up-btn "+this.state.ishost}  align="center">
+                    {buttonText}
                     </span></a>
                   </div>
                 </div>

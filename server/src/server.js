@@ -701,7 +701,15 @@ function getUserData(userId,callback){
                     // Filter didn't match anything: Bad request.
                     res.status(400).end();
                 } else {
-                    res.send(result.value.likeCounter);
+                  resolveUserObjects(result.value.likeCounter,function(err,userMap){
+                    if(err){
+                      sendDatabaseError(res,err);
+                    }
+                    else{
+                      result.value.likeCounter = result.value.likeCounter.map((id)=>userMap[id]);
+                      res.send(result.value.likeCounter);
+                    }
+                  });
                 }
             });
         }
@@ -736,7 +744,15 @@ function getUserData(userId,callback){
                     // Filter didn't match anything: Bad request.
                     res.status(400).end();
                 } else {
-                    res.send(result.value.likeCounter);
+                  resolveUserObjects(result.value.likeCounter,function(err,userMap){
+                    if(err){
+                      sendDatabaseError(res,err);
+                    }
+                    else{
+                      result.value.likeCounter = result.value.likeCounter.map((id)=>userMap[id]);
+                      res.send(result.value.likeCounter);
+                    }
+                  });
                 }
             });
         }
