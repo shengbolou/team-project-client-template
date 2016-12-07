@@ -450,18 +450,87 @@ function getUserData(userId,callback){
     }
   });
 
-  function getActivityFeedData(user){
-    var userData = readDocument('users',user);
-    var activityData = readDocument('activities', userData.activity);
-    activityData.contents = activityData.contents.map(getActivityFeedItemSync);
-    return activityData;
+  function getActivityFeedItem(activityId,callback){
+    db.collection('activityItems').findOne({_id:activityId},function(err,activityItem){
+      if(err)
+        return callback(err);
+
+      var userList = [activityItem.author];
+      activityItem.comments.forEach((comment)=>{
+        userList.push(comment.author);
+      });
+      activityItem.likeCounter.map((id)=>userList.push(id));
+      activityItem.participants.map((id)=>userList.push(id));
+      resolveUserObjects(userList,function(err,userMap){
+        if(err)
+          return callback(err);
+
+        activityItem.author = userMap[activityItem.author];
+        activityItem.participants = activityItem.participants.map((id) => userMap[id]);
+        activityItem.likeCounter = activityItem.likeCounter.map((id) => userMap[id]);
+        activityItem.comments.forEach((comment) => {
+          comment.author = userMap[comment.author];
+        });
+
+        callback(null,activityItem);
+      });
+
+    });
+  }
+
+
+  function getActivityFeedData(userId, callback){
+    db.collection('users').findOne({_id:userId},function(err,userData){
+      if(err)
+        return callback(err);
+      else if(userData === null)
+        return callback(null,null);
+      else{
+        db.collection('activities').findOne({_id:userData.activity},function(err,activity){
+          if(err)
+            return callback(err);
+          else if(activity === null)
+            return callback(null,null);
+
+            var resolvedContents = [];
+
+            function processNextFeedItem(i) {
+              // Asynchronously resolve a feed item.
+              getActivityFeedItem(activity.contents[i], function(err, feedItem) {
+                if (err) {
+                  // Pass an error to the callback.
+                  callback(err);
+                } else {
+                  // Success!
+                  resolvedContents.push(feedItem);
+                  if (resolvedContents.length === activity.contents.length) {
+                    // I am the final feed item; all others are resolved.
+                    // Pass the resolved feed document back to the callback.
+                    activity.contents = resolvedContents;
+                    callback(null, activity);
+                  } else {
+                    // Process the next feed item.
+                    processNextFeedItem(i + 1);
+                  }
+                }
+              });
+            }
+
+            if (activity.contents.length === 0) {
+              callback(null, activity);
+            } else {
+              processNextFeedItem(0);
+            }
+        });
+      }
+    });
   }
 
   function validateEmail(email) {
       var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       return re.test(email);
   }
-  
+
   app.put('/settings/emailChange/user/:userId',validate({body:emailChangeSchema}),function(req,res){
     var data = req.body;
     var userId = new ObjectID(req.params.userId);
@@ -494,24 +563,36 @@ function getUserData(userId,callback){
   });
 
   app.put('/settings/location/user/:userId',function(req,res){
-    var userId = parseInt(req.params.userId);
-    var fromUser = getUserIdFromToken(req.get('Authorization'));
+    var userId = new ObjectID(req.params.userId);
+    var fromUser = new ObjectID(getUserIdFromToken(req.get('Authorization')));
     var body = req.body;
-    if(fromUser === userId){
-      var userData = readDocument('users',userId);
-      userData.location = body;
-      writeDocument('users', userData);
-      res.status(201);
-      res.send(true);
+    if(fromUser.str === userId.str){
+      db.collection('users').updateOne({_id:userId},{
+        $set:{
+          location: body
+        }
+      },function(err){
+        if(err)
+          return sendDatabaseError(res,err);
+        else{
+          res.send(true);
+        }
+      });
     }
   });
 
   // get activity Feed data
   app.get('/user/:userid/activity', function(req, res) {
-    var userId = parseInt(req.params.userid,10);
+    var userId = new ObjectID(req.params.userid);
     // var fromUser = getUserIdFromToken(req.get('Authorization'));
     // if(userId === fromUser){
-    res.send(getActivityFeedData(userId));
+    getActivityFeedData(userId,function(err,activityData){
+      if(err)
+        sendDatabaseError(res,err);
+      else{
+        res.send(activityData);
+      }
+    });
     // }
     // else{
     // res.status(401).end();
@@ -558,24 +639,12 @@ function getUserData(userId,callback){
 
   //get activity detail
   app.get('/activityItem/:activityId',function(req,res){
-    var activityId = parseInt(req.params.activityId);
-    var activityData = getActivityFeedItemSync(activityId);
-    res.status(201);
-    res.send(activityData);
-  });
-
-
-  function getActivityFeedItemSync(activityId){
-    var activityItem = readDocument('activityItems', activityId);
-    activityItem.author = readDocument('users', activityItem.author);
-    activityItem.participants = activityItem.participants.map((id) => readDocument('users', id));
-    activityItem.likeCounter = activityItem.likeCounter.map((id) => readDocument('users', id));
-    activityItem.comments.forEach((comment) => {
-      comment.author = readDocument('users', comment.author);
+    var activityId = new ObjectID(req.params.activityId);
+    getActivityFeedItem(activityId,function(err,activityData){
+      res.status(201);
+      res.send(activityData);
     });
-
-    return activityItem;
-  }
+  });
 
   //like activity
   app.put('/activityItem/:activityId/likelist/:userId',function(req, res){

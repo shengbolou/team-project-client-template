@@ -190,7 +190,8 @@ export default class Settings extends React.Component{
                     </div>
                   </div>
                 </div>
-
+                <div>
+                </div>
                 <div className="panel-footer">
                   <div className="row">
                     <div className="col-md-12">

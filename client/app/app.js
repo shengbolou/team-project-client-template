@@ -17,7 +17,7 @@ import { IndexRoute, Router, Route, hashHistory } from 'react-router';
 class ActivityPage extends React.Component{
   render(){
     return(
-      <Activity user={1}/>
+      <Activity user={"000000000000000000000001"}/>
     );
   }
 }
@@ -69,7 +69,7 @@ class NotificationPage extends React.Component{
 class Activity_detailPage extends React.Component{
   render(){
     return(
-      <Activity_detail user={1} id={this.props.params.id}/>
+      <Activity_detail user={"000000000000000000000001"} id={this.props.params.id}/>
     )
   }
 }
