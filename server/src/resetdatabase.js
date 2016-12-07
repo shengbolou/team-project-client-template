@@ -150,7 +150,7 @@ var initialData = {
     "3": {
       "_id":new ObjectID("000000000000000000000003"),
       "type": "Party",
-      "author":new ObjectID("000000000000000000000001"),
+      "author":new ObjectID("000000000000000000000003"),
       "title": "dance party",
       "img":"img/parties.jpg",
       "startTime": 1478129314000,
