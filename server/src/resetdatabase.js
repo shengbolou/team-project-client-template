@@ -108,7 +108,7 @@ var initialData = {
       "endTime": 1479940314000,
       "description": "Hack Umass",
       "location": "University of Massachusetts Amherst",
-      "participants": [new ObjectID("000000000000000000000001"),new ObjectID("000000000000000000000002")],
+      "participants": [new ObjectID("000000000000000000000003"),new ObjectID("000000000000000000000002")],
       "likeCounter": [new ObjectID("000000000000000000000001"),
       new ObjectID("000000000000000000000002"),new ObjectID("000000000000000000000003")],
       "comments":[

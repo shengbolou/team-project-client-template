@@ -7,7 +7,9 @@ var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
 // Support receiving JSON in HTTP request bodies
-
+var mongo_express = require('mongo-express/lib/middleware');
+// Import the default Mongo Express configuration
+var mongo_express_config = require('mongo-express/config.default.js');
 
 var MongoDB = require('mongodb');
 var MongoClient = MongoDB.MongoClient;
@@ -22,6 +24,8 @@ MongoClient.connect(url, function(err, db) {
   app.use(bodyParser.json());
   app.use(bodyParser.text());
   app.use(express.static('../client/build'));
+  app.use('/mongo_express', mongo_express(mongo_express_config));
+
 
   console.log(bodyParser.limit);
   if(err)
@@ -674,38 +678,80 @@ function getUserData(userId,callback){
 
   //like activity
   app.put('/activityItem/:activityId/likelist/:userId',function(req, res){
-    var activityId = parseInt(req.params.activityId, 10);
-    var userId = parseInt(req.params.userId, 10);
-    var activityItem = readDocument('activityItems', activityId);
-    if(activityItem.likeCounter.indexOf(userId) === -1){
-      activityItem.likeCounter.push(userId);
-      writeDocument('activityItems', activityItem);
-    }
-    res.status(201);
-    res.send(activityItem.likeCounter.map((id) => readDocument('users', id)));
-  });
+    var fromUser = getUserIdFromToken(req.get('Authorization'));
+    var activityId = new ObjectID(req.params.activityId);
+    var userId = req.params.userId;
+    if (userId === fromUser) {
+        var update = {
+            $addToSet: {}
+        };
+        update.$addToSet["likeCounter"] = new ObjectID(userId);
+        db.collection('activityItems').findAndModify({
+                _id: activityId
+            }, [
+                ['_id', 'asc']
+            ],
+            update, {
+                "new": true
+            },
+            function(err, result) {
+                if (err) {
+                    return sendDatabaseError(res, err);
+                } else if (result.value === null) {
+                    // Filter didn't match anything: Bad request.
+                    res.status(400).end();
+                } else {
+                    res.send(result.value.likeCounter);
+                }
+            });
+        }
+        else {
+            // Unauthorized.
+            res.status(401).end();
+        }
+    });
 
   //unlike activity
   app.delete('/activityItem/:activityId/likelist/:userId', function(req, res){
-    var activityId = parseInt(req.params.activityId, 10);
-    var userId = parseInt(req.params.userId, 10);
-    var activityItem = readDocument('activityItems', activityId);
-    var index = activityItem.likeCounter.indexOf(userId);
-    if(index !== -1){
-      activityItem.likeCounter.splice(index, 1);
-      writeDocument('activityItems', activityItem);
-    }
-    res.status(201);
-    res.send(activityItem.likeCounter.map((id) => readDocument('users', id)));
-
-  });
+    var fromUser = getUserIdFromToken(req.get('Authorization'));
+    var activityId = new ObjectID(req.params.activityId);
+    var userId = req.params.userId;
+    if (userId === fromUser) {
+        var update = {
+            $pull: {}
+        };
+        update.$pull["likeCounter"] = new ObjectID(userId);
+        db.collection('activityItems').findAndModify({
+                _id: activityId
+            }, [
+                ['_id', 'asc']
+            ],
+            update, {
+                "new": true
+            },
+            function(err, result) {
+                if (err) {
+                    return sendDatabaseError(res, err);
+                } else if (result.value === null) {
+                    // Filter didn't match anything: Bad request.
+                    res.status(400).end();
+                } else {
+                    res.send(result.value.likeCounter);
+                }
+            });
+        }
+        else {
+            // Unauthorized.
+            res.status(401).end();
+        }
+    });
 
   //post ADcomments
   app.post('/activityItem/:activityId/commentThread/comment',validate({body:commentSchema}),
   function(req,res){
     var fromUser = getUserIdFromToken(req.get('Authorization'));
     var body = req.body;
-    var activityItemId = parseInt(req.params.activityId, 10);
+    var activityItemId = new ObjectID(parseInt(req.params.activityId, 10));
     var userId = body.author;
     if(fromUser === userId){
       var activityFeedItem = readDocument('activityItems',activityItemId);
@@ -716,7 +762,10 @@ function getUserData(userId,callback){
       });
       writeDocument('activityItems',activityFeedItem);
       res.status(201);
-      res.send(getActivityFeedItemSync(activityItemId));
+      getActivityFeedItem(activityItemId,function(err,activityData){
+        res.status(201);
+        res.send(activityData);
+      });
     }
     else{
       res.status(401).end();

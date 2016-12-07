@@ -10,14 +10,21 @@ import {unLikeActivity} from '../server';
 import {Link} from 'react-router';
 var moment = require('moment');
 
+
+
 export default class Ad_body extends React.Component{
   constructor(props){
     super(props);
-    this.state = {};
+    this.state = {
+      activity: {},
+      ishost: "!"
+    };
   }
 
+
+
   didUserLike(user) {
-    var likeCounter = this.state.likeCounter;
+    var likeCounter = this.state.activity.likeCounter;
     for (var i = 0; i < likeCounter.length; i++) {
       if (likeCounter[i]._id === user)
         return true;
@@ -34,25 +41,51 @@ export default class Ad_body extends React.Component{
       };
 
       if(!this.didUserLike(this.props.currentUser)){
-        likeActivity(this.state._id,this.props.currentUser,cb);
+        likeActivity(this.state.activity._id,this.props.currentUser,cb);
       }
       else{
-        unLikeActivity(this.state._id,this.props.currentUser,cb);
+        unLikeActivity(this.state.activity._id,this.props.currentUser,cb);
       }
     }
   }
 
   handlePostComment(comment){
-    adpostComment(this.state._id, this.props.currentUser ,comment, (newFeedItem)=>{
+    adpostComment(this.state.activity._id, this.props.currentUser ,comment, (newFeedItem)=>{
       this.setState(newFeedItem);
     })
   }
 
   getData(){
     getActivityDetail(this.props.id,(activitydata)=>{
-      this.setState(activitydata);
+      this.setState({activity:activitydata},()=>{
+        this.CheckHost("",(result)=>{
+          this.setState({ishost:result});
+        });
+      });
     });
+
   }
+
+
+
+  CheckHost(result,cb){
+    var participants = this.state.activity.participants === undefined ? 0:this.state.activity.participants;
+    if(participants === 0){
+      result = "undifined"
+    }
+    else{
+     result = "Click to sign up!";
+
+  //   ?????????????????????????
+    for (var i = 0; i < participants.length; i++) {
+
+      if (participants[i]._id === this.props.currentUser){
+        result = "You are the host!";
+        }
+    }
+cb( result);
+  }
+}
 
 
   componentDidMount(){
@@ -60,7 +93,8 @@ export default class Ad_body extends React.Component{
   }
 
   render(){
-    var data = this.state;
+
+    var data = this.state.activity
     var contents;
     var img;
     var text;
@@ -68,12 +102,32 @@ export default class Ad_body extends React.Component{
     var authorid;
     switch(data.type){
       case "Event":
-      case "Entertainment":
+      contents = data.contents;
+      img = <img src={contents.img} width="100%" alt="" />;
+      name = this.state.activity.author.firstname + " "+this.state.activity.author.lastname;
+      authorid = this.state.activity.author._id;
+        text = contents.text.split("\n").map((line, i) => {
+          return (
+            <p key={"line" + i}>{line}</p>
+          )                       ;
+        })
+          break;
+      case "Party":
+      contents = data.contents;
+      img = <img src={contents.img} width="100%" alt="" />;
+      name = this.state.activity.author.firstname + " "+this.state.activity.author.lastname;
+      authorid = this.state.activity.author._id;
+        text = contents.text.split("\n").map((line, i) => {
+          return (
+            <p key={"line" + i}>{line}</p>
+          )                       ;
+        })
+          break;
       case "Study":
         contents = data.contents;
         img = <img src={contents.img} width="100%" alt="" />;
-        name = this.state.author.firstname + " "+this.state.author.lastname;
-        authorid = this.state.author._id;
+        name = this.state.activity.author.firstname + " "+this.state.activity.author.lastname;
+        authorid = this.state.activity.author._id;
           text = contents.text.split("\n").map((line, i) => {
             return (
               <p key={"line" + i}>{line}</p>
@@ -99,9 +153,9 @@ export default class Ad_body extends React.Component{
               </div>
               <div className="modal-body">
                 <ul className="media-list">
-                  {this.state.participants === undefined ? 0:
-                    (this.state.participants.length === 0 ? "No one has signed up yet!" :
-                    this.state.participants.map((p,i)=>{
+                  {this.state.activity.participants === undefined ? 0:
+                    (this.state.activity.participants.length === 0 ? "No one has signed up yet!" :
+                    this.state.activity.participants.map((p,i)=>{
                     return (
                       <Ad_participates_item key={i} data={p} />
                     )
@@ -112,7 +166,7 @@ export default class Ad_body extends React.Component{
           </div>
         </div>
         <div className= "adbackground">
-          <img src={this.state.img} />
+          <img src={this.state.activity.img} />
         </div>
         <div className = "container">
           <div className="row">
@@ -122,17 +176,17 @@ export default class Ad_body extends React.Component{
 
                   <div className = "row">
                     <div className = "col-md-8" >
-                      <h2 style={{'paddingLeft':'15px'}}>{this.state.title}</h2>
+                      <h2 style={{'paddingLeft':'15px'}}>{this.state.activity.title}</h2>
 
                       <span className="glyphicon glyphicon-time" style={
                           {'paddingRight':'10px','paddingLeft': '15px'}
                         }></span>
-                        {moment(this.state.startTime).format('MMMM Do YYYY, h:mm:ss a')}<br />
+                        {moment(this.state.activity.startTime).format('MMMM Do YYYY, h:mm:ss a')}<br />
 
                       <span className="glyphicon glyphicon-map-marker"
                         style={{'paddingRight':'10px','paddingTop':'5px','paddingLeft': '15px'}}>
                       </span>
-                      {this.state.location}<br />
+                      {this.state.activity.location}<br />
                       <span className="glyphicon glyphicon-user"
                         style={{'paddingRight':'10px','paddingTop':'5px','paddingLeft': '15px'}}>
                       </span>
@@ -143,13 +197,13 @@ export default class Ad_body extends React.Component{
 
                     <div className = "col-md-4" style={{'paddingTop': '20px'}} >
                       <div className = "col-md-12 col-sm-12 col-xs-12 body-title-signed-in" align="left">
-                        {this.state.participants === undefined ? 0:this.state.participants.length} people <font style={{'color':'grey'}}>signed up</font>
+                        {this.state.activity.participants === undefined ? 0:this.state.activity.participants.length} people <font style={{'color':'grey'}}>signed up</font>
 
                       <font style={{'color':'#61B4E4','fontSize':'10px','paddingLeft':'10px','cursor':'pointer'}}
                         data-toggle="modal" data-target="#myModal"  >View All</font>
                       <br/>
 
-                      {this.state.participants === undefined ? 0:this.state.participants.map((p,i)=>{
+                      {this.state.activity.participants === undefined ? 0:this.state.activity.participants.map((p,i)=>{
                         return (<Ad_signeduser key={i} data={p} />)
                       })}
 
@@ -158,17 +212,19 @@ export default class Ad_body extends React.Component{
                 </div>
                 <div className="row">
                   <div className = "col-md-12 col-sm-12 col-xs-12 remain-places" style={{'paddingTop':'25px',textAlign:"center"}} >
-                    <a href="#"><span className="btn btn-default sign-up-btn"  align="center">Click to Sign Up</span></a>
+                    <a><span className="btn btn-default sign-up-btn"  align="center" disabled>
+                    {this.state.ishost}
+                    </span></a>
                   </div>
                 </div>
 
                 <div className="row">
                   <div className = "col-md-12 col-sm-12 col-xs-12 body-title-icon" style={{textAlign:"right"}}>
                     <a href="#" onClick={(e)=>this.handleLikeClick(e)}><span className="glyphicon glyphicon-heart" style={{'marginRight':'5px'}}></span>
-                      {this.state.likeCounter === undefined ? 0:this.state.likeCounter.length}
+                      {this.state.activity.likeCounter === undefined ? 0:this.state.activity.likeCounter.length}
                     </a>
                     <span className="glyphicon glyphicon-comment" style={{'marginRight':'5px','marginLeft':'20px'}}></span>
-                    {this.state.comments === undefined ? 0:this.state.comments.length}
+                    {this.state.activity.comments === undefined ? 0:this.state.activity.comments.length}
                   </div>
                 </div>
               </div>
@@ -198,8 +254,8 @@ export default class Ad_body extends React.Component{
         </div>
       </div>
     </div>
-    <Ad_commentThread count={this.state.comments === undefined ? 0:this.state.comments.length} user={this.props.currentUser} avatar={this.props.avatar} onPost={(comment)=>this.handlePostComment(comment)}>
-      {this.state.comments === undefined ? 0:this.state.comments.map((comment,i)=>{
+    <Ad_commentThread count={this.state.activity.comments === undefined ? 0:this.state.activity.comments.length} user={this.props.currentUser} avatar={this.props.avatar} onPost={(comment)=>this.handlePostComment(comment)}>
+      {this.state.activity.comments === undefined ? 0:this.state.activity.comments.map((comment,i)=>{
         return (
           <Ad_comment key={i} data={comment} />
         )
