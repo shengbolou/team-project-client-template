@@ -1,9 +1,12 @@
 import React from 'react';
 import Navbar from '../component/navbar';
-import {getUserData,changeEmail,changeUserInfo} from '../server';
+import {getUserData,changeEmail,changeUserInfo,ChangeAvatar} from '../server';
 var alert = null;
 var emailAlert = null;
 var moment = require('moment');
+import AvatarCropper from "react-avatar-cropper";
+import {hideElement} from '../util';
+
 
 export default class Settings extends React.Component{
 
@@ -17,7 +20,53 @@ export default class Settings extends React.Component{
       description: "",
       birthday:"",
       oldEmail:"",
-      newEmail:""
+      newEmail:"",
+      img: null,
+      cropperOpen: false
+    }
+  }
+
+  handleFile(e){
+    e.preventDefault();
+    // Read the first file that the user selected (if the user selected multiple
+    // files, we ignore the others).
+    var reader = new FileReader();
+    var file = e.target.files[0];
+    // Called once the browser finishes loading the image.
+    reader.onload = (upload) => {
+      this.setState({
+        img: upload.target.result,
+        cropperOpen:true
+      });
+    };
+
+    reader.readAsDataURL(file);
+  }
+
+  handleFileClick(e){
+    e.target.value = null;
+  }
+
+  handleRequestHide(e){
+    e.preventDefault();
+    this.setState({
+      cropperOpen: false
+    })
+  }
+
+  handleCrop(dataURI) {
+    this.setState({
+      cropperOpen: false,
+      img: dataURI
+    });
+  }
+
+  handleAvatarChange(e){
+    e.preventDefault();
+    if(this.state.img !== null){
+      ChangeAvatar(this.state.userData._id,this.state.img,(userData)=>{
+        this.setState({userData: userData});
+      });
     }
   }
 
@@ -133,6 +182,16 @@ export default class Settings extends React.Component{
   render(){
     return(
       <div>
+        {this.state.cropperOpen &&
+          <AvatarCropper
+            onRequestHide={(e)=>this.handleRequestHide(e)}
+            cropperOpen={this.state.cropperOpen}
+            onCrop={(e)=>this.handleCrop(e)}
+            image={this.state.img}
+            width={400}
+            height={350}
+            />
+        }
         <Navbar user={this.state.userData}/>
         <div className="container settings">
           <div className="row">
@@ -239,6 +298,38 @@ export default class Settings extends React.Component{
                         <label htmlFor="Form1" className="">New Email</label>
                     </div>
                     <button type="button" className="btn btn-blue-grey pull-right" name="button" onClick={(e)=>this.handleEmailChange(e)}>Submit</button>
+                  </div>
+                </div>
+
+                <a className="list-group-item"data-toggle="collapse" data-parent="#accordion" href="#change-avatar" aria-expanded="true" aria-controls="reset-password">
+                  Change Avatar <span className="pull-right"><i className="fa fa-angle-right" aria-hidden="true"></i></span>
+                </a>
+
+                <div id="change-avatar" className="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+                  <div className="panel-body">
+                    <div className="row">
+                      <div className="col-md-8 col-md-offset-3">
+                        <div className="btn-group" role="group">
+                          <label htmlFor="pic">
+                            <a>
+                              <div className="thumbnail" style={{
+                                  border: "1px dashed black",
+                                  width: "100px",
+                                  height: "110px"
+                                }}>
+                                <i className="fa fa-camera" aria-hidden="true"></i>
+                                <img src={this.state.img} className={hideElement(this.state.cropperOpen)}
+                                  width="100px" height="100px"/>
+                              </div>
+                            </a>
+                          </label>
+                          <input type="file" accept=".jpg,.jpeg,.png,.gif" id="pic" onClick={(e)=>this.handleFileClick(e)}
+                            onChange={(e)=>this.handleFile(e)}></input>
+                        </div>
+                      </div>
+                    </div>
+                    <button type="button" className="btn btn-blue-grey pull-right" name="button"
+                      onClick={(e)=>this.handleAvatarChange(e)}>Submit</button>
                   </div>
                 </div>
               </div>

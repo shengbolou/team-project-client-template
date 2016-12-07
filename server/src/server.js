@@ -14,7 +14,8 @@ var MongoClient = MongoDB.MongoClient;
 var ObjectID = MongoDB.ObjectID;
 var url = 'mongodb://localhost:27017/Upao';
 app.use(bodyParser.json({limit: '20mb'}));
-app.use(bodyParser.urlencoded({limit: '10mb', extended: true}));
+app.use(bodyParser.urlencoded({limit: '20mb', extended: true}));
+
 
 MongoClient.connect(url, function(err, db) {
   // var moment = require('moment');
@@ -22,6 +23,7 @@ MongoClient.connect(url, function(err, db) {
   app.use(bodyParser.text());
   app.use(express.static('../client/build'));
 
+  console.log(bodyParser.limit);
   if(err)
   console.log(err);
   else{
@@ -559,6 +561,30 @@ function getUserData(userId,callback){
     }
     else{
       res.statsus(401).end();
+    }
+  });
+
+  app.put('/settings/avatar/user/:userId',function(req,res){
+    var userId = new ObjectID(req.params.userId);
+    var fromUser = new ObjectID(getUserIdFromToken(req.get('Authorization')));
+    var body = req.body;
+    if(fromUser.str === userId.str){
+      db.collection('users').findAndModify(
+        {_id:userId},
+        [['_id','asc']],
+        {$set:{
+          avatar: body.img
+        }},
+        {"new":true},function(err,result){
+        if(err)
+          return sendDatabaseError(res,err);
+        else{
+          res.send(result.value);
+        }
+      });
+    }
+    else{
+      res.status(401).end();
     }
   });
 

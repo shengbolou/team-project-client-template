@@ -74,7 +74,7 @@ export default class PostFeedItem extends React.Component{
           <div className="media">
             <div className="media-left">
               <Link to={"profile/"+contents.author._id}>
-                <img className="media-object" src={contents.author.avatar} width="50px" height="50px" alt="..."></img>
+                <img className="media-object" src={contents.author.avatar} height="50px" alt="..."></img>
               </Link>
             </div>
             <div className="media-body">

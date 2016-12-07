@@ -17,7 +17,7 @@ export default class Ad_participates_item extends React.Component{
         <li className="media">
           <div className="media-left">
             <a onClick={(e)=>this.handleRedirect(e)} data-dismiss="modal" aria-label="Close">
-              <img className="media-object" src={this.state.avatar} width="55px" alt="..."/>
+              <img className="media-object" src={this.state.avatar} height="55px" alt="..."/>
             </a>
           </div>
           <div className="media-body media-top">

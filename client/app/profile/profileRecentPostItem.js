@@ -64,7 +64,7 @@ export default class ProfileRecentPostItem extends React.Component{
         <div className="panel-body">
           <div className="row">
             <div className="col-md-2">
-              <img src="img/user.png" width="50px" height="50px" alt="" />
+              <img src={contents.author.avatar} height="50px" alt="" />
             </div>
             <div className="col-md-10">
               <div className="media">

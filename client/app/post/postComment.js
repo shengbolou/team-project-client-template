@@ -20,7 +20,7 @@ export default class PostComment extends React.Component{
       <div>
         <div className="media-left">
           <Link to={"profile/"+this.state.author._id}>
-            <img className="media-object" src={this.state.author.avatar} width="45px" height="45px" alt="..."></img>
+            <img className="media-object" src={this.state.author.avatar} height="45px" alt="..."></img>
           </Link>
         </div>
         <div className="media-body">

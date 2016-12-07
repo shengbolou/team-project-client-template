@@ -27,10 +27,9 @@ export default class PostCommentEntry extends React.Component{
       <div className="panel-heading">
         <div className="media">
           <div className="media-left">
-
             <Link to={"profile/"+this.props.user}>
-            <img className="media-object" src={this.props.avatar} width="45px" alt="..."/>
-          </Link>
+              <img className="media-object" src={this.props.avatar} height="45px" style={{marginTop:'10'}}/>
+            </Link>
           </div>
           <div className="media-body">
             <textarea name="name" rows="8" cols="40" placeholder="Post your comments" value={this.state.text} onChange={(e)=>this.handleChange(e)}></textarea>
