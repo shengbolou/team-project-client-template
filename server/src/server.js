@@ -794,7 +794,6 @@ app.put('/settings/avatar/user/:userId',function(req,res){
       }
     });
 
-<<<<<<< HEAD
   function getNotificationItem(notificationId,callback){
     db.collection('notificationItems').findOne({_id:notificationId},function(err,notification){
       if(err)
@@ -876,38 +875,9 @@ app.put('/settings/avatar/user/:userId',function(req,res){
     }
     else{
       res.status(401).end();
-=======
-
-    function getNotificationDataSync(notificationId){
-      var notification = readDocument('notificationItems',notificationId);
-      if(notification.type === "FR"){
-        notification.sender = readDocument("users",notification.sender);
-      }
-      else{
-        notification.author = readDocument("users",notification.author);
-      }
-
-      return notification;
->>>>>>> 565598e3e13adeae872816fd53666b20ddcfb7e1
     }
+  });
 
-    //get notification
-    app.get('/user/:userId/notification',function(req,res){
-      var fromUser = getUserIdFromToken(req.get('Authorization'));
-      var userId = parseInt(req.params.userId);
-      if(fromUser === userId){
-        var userData = readDocument('users',userId);
-        var notificationData = readDocument('notifications',userData.notification);
-        notificationData.contents = notificationData.contents.map(getNotificationDataSync);
-        res.status(201);
-        res.send(notificationData);
-      }
-      else{
-        res.status(401).end();
-      }
-    });
-
-<<<<<<< HEAD
   function deleteNotification(notificationId, userId, callback){
     db.collection('users').findOne({_id:userId},function(err,userData){
       if(err)
@@ -974,73 +944,27 @@ app.put('/settings/avatar/user/:userId',function(req,res){
     }
     else{
       res.status(401).end();
-=======
-
-    function deleteNotification(id, user){
-      var userData = readDocument('users',user);
-      var notificationData = readDocument('notifications',userData.notification);
-      var index = notificationData.contents.indexOf(id);
-      if(index !== -1)
-      notificationData.contents.splice(index,1);
-
-      writeDocument("notifications",notificationData);
-      deleteDocument("notificationItems",id);
-      return notificationData;
->>>>>>> 565598e3e13adeae872816fd53666b20ddcfb7e1
-    }
-
-<<<<<<< HEAD
-  //deleteNotification
-  app.delete('/notification/:notificationId/:userId',function(req,res){
-    var fromUser = new ObjectID(getUserIdFromToken(req.get('Authorization')));
-    var userId = new ObjectID(req.params.userId);
-    var notificationId = new ObjectID(req.params.notificationId);
-    if(fromUser.str === userId.str){
-      deleteNotification(notificationId,userId,function(err,notificationData){
-        if(err)
-          sendDatabaseError(res,err);
-        else{
-          res.send(notificationData);
-        }
-      });
-    }
-    else{
-      res.status(401).end();
     }
   });
-=======
-    //acceptRequest
-    app.put('/notification/:notificationId/:userId',function(req,res){
-      var fromUser = getUserIdFromToken(req.get('Authorization'));
-      var userId = parseInt(req.params.userId);
-      var notificationId = parseInt(req.params.notificationId);
-      if(fromUser === userId){
-        var userData = readDocument('users',userId);
-        var notificationItem = readDocument('notificationItems',notificationId);
-        userData.friends.push(notificationItem.sender);
-        writeDocument("users",userData);
-        res.status(201);
-        res.send(deleteNotification(notificationId,userId));
-      }
-      else{
-        res.status(401).end();
-      }
-    });
->>>>>>> 565598e3e13adeae872816fd53666b20ddcfb7e1
 
-    //deleteNotification
-    app.delete('/notification/:notificationId/:userId',function(req,res){
-      var fromUser = getUserIdFromToken(req.get('Authorization'));
-      var userId = parseInt(req.params.userId);
-      var notificationId = parseInt(req.params.notificationId);
-      if(fromUser === userId){
-        res.status(201);
-        res.send(deleteNotification(notificationId,userId));
-      }
-      else{
-        res.status(401).end();
-      }
-    });
+  //deleteNotification
+ app.delete('/notification/:notificationId/:userId',function(req,res){
+   var fromUser = new ObjectID(getUserIdFromToken(req.get('Authorization')));
+   var userId = new ObjectID(req.params.userId);
+   var notificationId = new ObjectID(req.params.notificationId);
+   if(fromUser.str === userId.str){
+     deleteNotification(notificationId,userId,function(err,notificationData){
+       if(err)
+         sendDatabaseError(res,err);
+       else{
+         res.send(notificationData);
+       }
+     });
+   }
+   else{
+     res.status(401).end();
+   }
+ });
 
     //getMessage
     app.get('/user/:userId/chatsession/:id',function(req,res){
