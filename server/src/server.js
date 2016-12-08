@@ -39,7 +39,6 @@ MongoClient.connect(url, function(err, db) {
   var readDocument = database.readDocument;
   var addDocument = database.addDocument;
   var writeDocument = database.writeDocument;
-  var deleteDocument = database.deleteDocument;
   var getCollection = database.getCollection;
 
   //schemas
@@ -789,28 +788,84 @@ function getUserData(userId,callback){
   });
 
 
-  function getNotificationDataSync(notificationId){
-    var notification = readDocument('notificationItems',notificationId);
-    if(notification.type === "FR"){
-      notification.sender = readDocument("users",notification.sender);
-    }
-    else{
-      notification.author = readDocument("users",notification.author);
-    }
+  function getNotificationItem(notificationId,callback){
+    db.collection('notificationItems').findOne({_id:notificationId},function(err,notification){
+      if(err)
+        return callback(err);
+      else if(notification === null)
+        return callback(null,null);
+      else{
+        if(notification.type === "FR"){
+          getUserData(new ObjectID(notification.sender),function(err,userData){
+            notification.sender = userData;
+            callback(null,notification);
+          });
+        }
+        else{
+          getUserData(new ObjectID(notification.author),function(err,userData){
+            notification.author = userData;
+            callback(null,notification);
+          });
+        }
+      }
+    });
+  }
 
-    return notification;
+  function getNotificationData(notificationId,callback){
+    db.collection('notifications').findOne({_id:notificationId},function(err,notifications){
+      if(err)
+       return callback(err);
+
+       var resolvedContents = [];
+
+       function processNextFeedItem(i) {
+         // Asynchronously resolve a feed item.
+         getNotificationItem(notifications.contents[i], function(err, notification) {
+           if (err) {
+             // Pass an error to the callback.
+             callback(err);
+           } else {
+             // Success!
+             resolvedContents.push(notification);
+             if (resolvedContents.length === notifications.contents.length) {
+               // I am the final feed item; all others are resolved.
+               // Pass the resolved feed document back to the callback.
+               notifications.contents = resolvedContents;
+               callback(null, notifications);
+             } else {
+               // Process the next feed item.
+               processNextFeedItem(i + 1);
+             }
+           }
+         });
+       }
+
+       if (notifications.contents.length === 0) {
+         callback(null, notifications);
+       } else {
+         processNextFeedItem(0);
+       }
+    });
   }
 
   //get notification
   app.get('/user/:userId/notification',function(req,res){
-    var fromUser = getUserIdFromToken(req.get('Authorization'));
-    var userId = parseInt(req.params.userId);
-    if(fromUser === userId){
-      var userData = readDocument('users',userId);
-      var notificationData = readDocument('notifications',userData.notification);
-      notificationData.contents = notificationData.contents.map(getNotificationDataSync);
-      res.status(201);
-      res.send(notificationData);
+    var fromUser = new ObjectID(getUserIdFromToken(req.get('Authorization')));
+    var userId = new ObjectID(req.params.userId);
+    if(fromUser.str === userId.str){
+      db.collection('users').findOne({_id:userId},function(err,userData){
+        if(err)
+          return sendDatabaseError(res,err);
+        else if(userData === null)
+          return res.status(400).end();
+        else{
+          getNotificationData(new ObjectID(userData.notification),function(err,notificationData){
+            if(err)
+              return sendDatabaseError(res,err);
+            res.send(notificationData);
+          });
+        }
+      });
     }
     else{
       res.status(401).end();
@@ -818,30 +873,69 @@ function getUserData(userId,callback){
   });
 
 
-  function deleteNotification(id, user){
-    var userData = readDocument('users',user);
-    var notificationData = readDocument('notifications',userData.notification);
-    var index = notificationData.contents.indexOf(id);
-    if(index !== -1)
-    notificationData.contents.splice(index,1);
-
-    writeDocument("notifications",notificationData);
-    deleteDocument("notificationItems",id);
-    return notificationData;
+  function deleteNotification(notificationId, userId, callback){
+    db.collection('users').findOne({_id:userId},function(err,userData){
+      if(err)
+        callback(err);
+      else if(userData === null)
+        callback(null,null);
+      else{
+        db.collection('notifications').updateOne({_id:userData.notification},{
+          $pull:{
+            contents:notificationId
+          }
+        },function(err){
+          if(err)
+            return callback(err);
+          else{
+              db.collection('notificationItems').remove({_id:notificationId},function(err){
+                if(err)
+                  return callback(err);
+                else{
+                  getNotificationData(userData.notification,function(err,notificationData){
+                    if(err)
+                      return callback(err);
+                    else{
+                      callback(null,notificationData);
+                    }
+                  });
+                }
+              });
+          }
+        });
+      }
+    });
   }
 
   //acceptRequest
   app.put('/notification/:notificationId/:userId',function(req,res){
-    var fromUser = getUserIdFromToken(req.get('Authorization'));
-    var userId = parseInt(req.params.userId);
-    var notificationId = parseInt(req.params.notificationId);
-    if(fromUser === userId){
-      var userData = readDocument('users',userId);
-      var notificationItem = readDocument('notificationItems',notificationId);
-      userData.friends.push(notificationItem.sender);
-      writeDocument("users",userData);
-      res.status(201);
-      res.send(deleteNotification(notificationId,userId));
+    var fromUser = new ObjectID(getUserIdFromToken(req.get('Authorization')));
+    var userId = new ObjectID(req.params.userId);
+    var notificationId = new ObjectID(req.params.notificationId);
+    if(fromUser.str === userId.str){
+      getNotificationItem(notificationId,function(err,notification){
+        if(err)
+        return sendDatabaseError(res,err);
+        else{
+          db.collection('users').updateOne({_id:userId},{
+            $addToSet:{
+              friends: notification.sender
+            }
+          },function(err){
+            if(err)
+            return sendDatabaseError(res,err);
+            else{
+              deleteNotification(notificationId,userId,function(err,notificationData){
+                if(err)
+                sendDatabaseError(res,err);
+                else{
+                  res.send(notificationData);
+                }
+              });
+            }
+          })
+        }
+      });
     }
     else{
       res.status(401).end();
@@ -850,12 +944,17 @@ function getUserData(userId,callback){
 
   //deleteNotification
   app.delete('/notification/:notificationId/:userId',function(req,res){
-    var fromUser = getUserIdFromToken(req.get('Authorization'));
-    var userId = parseInt(req.params.userId);
-    var notificationId = parseInt(req.params.notificationId);
-    if(fromUser === userId){
-      res.status(201);
-      res.send(deleteNotification(notificationId,userId));
+    var fromUser = new ObjectID(getUserIdFromToken(req.get('Authorization')));
+    var userId = new ObjectID(req.params.userId);
+    var notificationId = new ObjectID(req.params.notificationId);
+    if(fromUser.str === userId.str){
+      deleteNotification(notificationId,userId,function(err,notificationData){
+        if(err)
+          sendDatabaseError(res,err);
+        else{
+          res.send(notificationData);
+        }
+      });
     }
     else{
       res.status(401).end();

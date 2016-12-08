@@ -61,7 +61,7 @@ class ChatPage extends React.Component{
 class NotificationPage extends React.Component{
   render(){
     return(
-      <Notification user={1} id={this.props.params.id}/>
+      <Notification user={"000000000000000000000001"} id={this.props.params.id}/>
     );
   }
 }
