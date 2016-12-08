@@ -25,9 +25,6 @@ MongoClient.connect(url, function(err, db) {
   app.use(bodyParser.text());
   app.use(express.static('../client/build'));
   app.use('/mongo_express', mongo_express(mongo_express_config));
-
-
-  console.log(bodyParser.limit);
   if(err)
   console.log(err);
   else{
@@ -53,7 +50,7 @@ MongoClient.connect(url, function(err, db) {
   function getPostFeedItem(feedItemId,callback){
     db.collection('postFeedItems').findOne({_id:feedItemId},function(err,postFeedItem){
       if(err)
-        callback(err);
+      callback(err);
       else if(postFeedItem===null){
         callback(null,null);
       }
@@ -66,7 +63,7 @@ MongoClient.connect(url, function(err, db) {
 
         resolveUserObjects(userList,function(err,userMap){
           if(err)
-           callback(err);
+          callback(err);
           else{
             postFeedItem.likeCounter = postFeedItem.likeCounter.map((id)=>userMap[id]);
             postFeedItem.contents.author =userMap[postFeedItem.contents.author];
@@ -81,67 +78,67 @@ MongoClient.connect(url, function(err, db) {
   }
 
   function getPostFeedData(user, callback) {
-  db.collection('users').findOne({
-    _id: user
-  }, function(err, userData) {
-    if (err) {
-      return callback(err);
-    } else if (userData === null) {
-      // User not found.
-      return callback(null, null);
-    }
-
-    db.collection('postFeeds').findOne({
-      _id: userData.post
-    }, function(err, feedData) {
+    db.collection('users').findOne({
+      _id: user
+    }, function(err, userData) {
       if (err) {
         return callback(err);
-      } else if (feedData === null) {
-        // Feed not found.
+      } else if (userData === null) {
+        // User not found.
         return callback(null, null);
       }
 
-      // We will place all of the resolved FeedItems here.
-      // When done, we will put them into the Feed object
-      // and send the Feed to the client.
-      var resolvedContents = [];
+      db.collection('postFeeds').findOne({
+        _id: userData.post
+      }, function(err, feedData) {
+        if (err) {
+          return callback(err);
+        } else if (feedData === null) {
+          // Feed not found.
+          return callback(null, null);
+        }
 
-      // processNextFeedItem is like an asynchronous for loop:
-      // It performs processing on one feed item, and then triggers
-      // processing the next item once the first one completes.
-      // When all of the feed items are processed, it completes
-      // a final action: Sending the response to the client.
-      function processNextFeedItem(i) {
-        // Asynchronously resolve a feed item.
-        getPostFeedItem(feedData.contents[i], function(err, feedItem) {
-          if (err) {
-            // Pass an error to the callback.
-            callback(err);
-          } else {
-            // Success!
-            resolvedContents.push(feedItem);
-            if (resolvedContents.length === feedData.contents.length) {
-              // I am the final feed item; all others are resolved.
-              // Pass the resolved feed document back to the callback.
-              feedData.contents = resolvedContents;
-              callback(null, feedData);
+        // We will place all of the resolved FeedItems here.
+        // When done, we will put them into the Feed object
+        // and send the Feed to the client.
+        var resolvedContents = [];
+
+        // processNextFeedItem is like an asynchronous for loop:
+        // It performs processing on one feed item, and then triggers
+        // processing the next item once the first one completes.
+        // When all of the feed items are processed, it completes
+        // a final action: Sending the response to the client.
+        function processNextFeedItem(i) {
+          // Asynchronously resolve a feed item.
+          getPostFeedItem(feedData.contents[i], function(err, feedItem) {
+            if (err) {
+              // Pass an error to the callback.
+              callback(err);
             } else {
-              // Process the next feed item.
-              processNextFeedItem(i + 1);
+              // Success!
+              resolvedContents.push(feedItem);
+              if (resolvedContents.length === feedData.contents.length) {
+                // I am the final feed item; all others are resolved.
+                // Pass the resolved feed document back to the callback.
+                feedData.contents = resolvedContents;
+                callback(null, feedData);
+              } else {
+                // Process the next feed item.
+                processNextFeedItem(i + 1);
+              }
             }
-          }
-        });
-      }
+          });
+        }
 
-      // Special case: Feed is empty.
-      if (feedData.contents.length === 0) {
-        callback(null, feedData);
-      } else {
-        processNextFeedItem(0);
-      }
+        // Special case: Feed is empty.
+        if (feedData.contents.length === 0) {
+          callback(null, feedData);
+        } else {
+          processNextFeedItem(0);
+        }
+      });
     });
-  });
-}
+  }
 
   // function getPostFeedData(user){
   //   var userData = readDocument('users',user);
@@ -156,11 +153,11 @@ MongoClient.connect(url, function(err, db) {
     // if(userId === fromUser){
     getPostFeedData(new ObjectID(userId),function(err,feedData){
       if(err)
-        sendDatabaseError(res,err);
+      sendDatabaseError(res,err);
       else if(feedData === null){
-          res.status(400);
-          res.send("Could not look up feed for user " + userId);
-        }
+        res.status(400);
+        res.send("Could not look up feed for user " + userId);
+      }
       else{
         res.send(feedData);
       }
@@ -188,12 +185,12 @@ MongoClient.connect(url, function(err, db) {
     };
     db.collection('postFeedItems').insertOne(post,function(err,result){
       if(err)
-       callback(err);
+      callback(err);
       else{
         post._id = result.insertedId;
         db.collection("users").findOne({_id:user},function(err,userData){
           if(err)
-            callback(err);
+          callback(err);
           else{
             db.collection('postFeeds').updateOne({_id:userData.post},
               {
@@ -210,57 +207,57 @@ MongoClient.connect(url, function(err, db) {
                   callback(null,post);
                 }
               });
-          }
-        });
-      }
-    });
-  }
-  //create post
-  app.post('/postItem', validate({ body: statusUpdateSchema }),function(req,res){
-    var body = req.body;
-    var fromUser = getUserIdFromToken(req.get('Authorization'));
-    if(fromUser === body.userId){
-      postStatus(new ObjectID(body.userId),body.text,body.location, body.img,function(err,newPost){
-        if(err)
-          sendDatabaseError(res,err);
-        else{
-          res.status(201);
-          res.send(newPost);
+            }
+          });
         }
       });
     }
-    else{
-      res.status(401).end();
-    }
-  });
-
-
-  //like post
-  app.put('/postItem/:postItemId/likelist/:userId',function(req,res){
-    var fromUser = getUserIdFromToken(req.get('Authorization'));
-    var postItemId = req.params.postItemId;
-    var userId = req.params.userId;
-
-    if(userId === fromUser){
-      db.collection('postFeedItems').updateOne({_id:new ObjectID(postItemId)},{
-        $addToSet:{
-          likeCounter: new ObjectID(userId)
-        }
-      },function(err){
-        if(err)
-        sendDatabaseError(res,err);
-        else{
-          getPostFeedItem(new ObjectID(postItemId),function(err,postItem){
-            if(err)
-            sendDatabaseError(res,err);
-            else{
-              res.send(postItem.likeCounter);
-            }
+    //create post
+    app.post('/postItem', validate({ body: statusUpdateSchema }),function(req,res){
+      var body = req.body;
+      var fromUser = getUserIdFromToken(req.get('Authorization'));
+      if(fromUser === body.userId){
+        postStatus(new ObjectID(body.userId),body.text,body.location, body.img,function(err,newPost){
+          if(err)
+          sendDatabaseError(res,err);
+          else{
+            res.status(201);
+            res.send(newPost);
           }
-        )
+        });
+      }
+      else{
+        res.status(401).end();
       }
     });
-  }
+
+
+    //like post
+    app.put('/postItem/:postItemId/likelist/:userId',function(req,res){
+      var fromUser = getUserIdFromToken(req.get('Authorization'));
+      var postItemId = req.params.postItemId;
+      var userId = req.params.userId;
+
+      if(userId === fromUser){
+        db.collection('postFeedItems').updateOne({_id:new ObjectID(postItemId)},{
+          $addToSet:{
+            likeCounter: new ObjectID(userId)
+          }
+        },function(err){
+          if(err)
+          sendDatabaseError(res,err);
+          else{
+            getPostFeedItem(new ObjectID(postItemId),function(err,postItem){
+              if(err)
+              sendDatabaseError(res,err);
+              else{
+                res.send(postItem.likeCounter);
+              }
+            }
+          )
+        }
+      });
+    }
     else{
       res.status(401).end();
     }
@@ -278,7 +275,7 @@ MongoClient.connect(url, function(err, db) {
         }
       },function(err){
         if(err)
-          sendDatabaseError(res,err);
+        sendDatabaseError(res,err);
         else{
           getPostFeedItem(new ObjectID(postItemId),function(err,postItem){
             if(err)
@@ -288,69 +285,69 @@ MongoClient.connect(url, function(err, db) {
             }
           }
         )
-        }
-      });
-    }
-    else{
-      res.status(401).end();
-    }
-  });
-
-  function resolveUserObjects(userList, callback) {
-    // Special case: userList is empty.
-    // It would be invalid to query the database with a logical OR
-    // query with an empty array.
-    if (userList.length === 0) {
-      callback(null, {});
-    } else {
-      // Build up a MongoDB "OR" query to resolve all of the user objects
-      // in the userList.
-      var query = {
-        $or: userList.map((id) => { return {_id: id } })
-      };
-      // Resolve 'like' counter
-      db.collection('users').find(query).toArray(function(err, users) {
-        if (err) {
-          return callback(err);
-        }
-        // Build a map from ID to user object.
-        // (so userMap["4"] will give the user with ID 4)
-        var userMap = {};
-        users.forEach((user) => {
-          userMap[user._id] = user;
-        });
-        callback(null, userMap);
-      });
-    }
+      }
+    });
   }
-
-  function resolveSessionObject(sessionList, callback){
-    if (sessionList.length === 0) {
-      callback(null, {});
-    } else {
-      var query = {
-        $or: sessionList.map((id) => { return {_id: id } })
-      };
-      // Resolve 'like' counter
-      db.collection('messageSession').find(query).toArray(function(err, sessions) {
-        if (err) {
-          return callback(err);
-        }
-        // Build a map from ID to user object.
-        // (so userMap["4"] will give the user with ID 4)
-        var sessionMap = {};
-        sessions.forEach((session) => {
-          sessionMap[session._id] = session;
-        });
-        callback(null, sessionMap);
-      });
-    }
+  else{
+    res.status(401).end();
   }
+});
 
-  /**
- * Helper function: Sends back HTTP response with error code 500 due to
- * a database error.
- */
+function resolveUserObjects(userList, callback) {
+  // Special case: userList is empty.
+  // It would be invalid to query the database with a logical OR
+  // query with an empty array.
+  if (userList.length === 0) {
+    callback(null, {});
+  } else {
+    // Build up a MongoDB "OR" query to resolve all of the user objects
+    // in the userList.
+    var query = {
+      $or: userList.map((id) => { return {_id: id } })
+    };
+    // Resolve 'like' counter
+    db.collection('users').find(query).toArray(function(err, users) {
+      if (err) {
+        return callback(err);
+      }
+      // Build a map from ID to user object.
+      // (so userMap["4"] will give the user with ID 4)
+      var userMap = {};
+      users.forEach((user) => {
+        userMap[user._id] = user;
+      });
+      callback(null, userMap);
+    });
+  }
+}
+
+function resolveSessionObject(sessionList, callback){
+  if (sessionList.length === 0) {
+    callback(null, {});
+  } else {
+    var query = {
+      $or: sessionList.map((id) => { return {_id: id } })
+    };
+    // Resolve 'like' counter
+    db.collection('messageSession').find(query).toArray(function(err, sessions) {
+      if (err) {
+        return callback(err);
+      }
+      // Build a map from ID to user object.
+      // (so userMap["4"] will give the user with ID 4)
+      var sessionMap = {};
+      sessions.forEach((session) => {
+        sessionMap[session._id] = session;
+      });
+      callback(null, sessionMap);
+    });
+  }
+}
+
+/**
+* Helper function: Sends back HTTP response with error code 500 due to
+* a database error.
+*/
 function sendDatabaseError(res, err) {
   res.status(500).send("A database error occurred: " + err);
 }
@@ -379,208 +376,208 @@ function getUserData(userId,callback){
   });
 }
 
-  //get user data
-  app.get('/user/:userId',function(req,res){
-    var userId = req.params.userId;
-    getUserData(new ObjectID(userId),function(err,userData){
-      if(err)
-        return sendDatabaseError(res,err);
-      res.send(userData);
-    });
+//get user data
+app.get('/user/:userId',function(req,res){
+  var userId = req.params.userId;
+  getUserData(new ObjectID(userId),function(err,userData){
+    if(err)
+    return sendDatabaseError(res,err);
+    res.send(userData);
   });
+});
 
-  //post comments
-  app.post('/postItem/:postItemId/commentThread/comment',validate({body:commentSchema}),
-  function(req,res){
-    var fromUser = getUserIdFromToken(req.get('Authorization'));
-    var body = req.body;
-    var postItemId = req.params.postItemId;
-    var userId = body.author;
-    if(fromUser === userId){
-      db.collection('postFeedItems').updateOne({_id:new ObjectID(postItemId)},{
-        $push:{
-          comments:{
-            "author": userId,
-            "text": body.text,
-            "postDate": (new Date()).getTime()
-          }
+//post comments
+app.post('/postItem/:postItemId/commentThread/comment',validate({body:commentSchema}),
+function(req,res){
+  var fromUser = getUserIdFromToken(req.get('Authorization'));
+  var body = req.body;
+  var postItemId = req.params.postItemId;
+  var userId = body.author;
+  if(fromUser === userId){
+    db.collection('postFeedItems').updateOne({_id:new ObjectID(postItemId)},{
+      $push:{
+        comments:{
+          "author": new ObjectID(userId),
+          "text": body.text,
+          "postDate": (new Date()).getTime()
         }
-      },function(err){
-        if(err)
-          sendDatabaseError(res.err);
-        else{
-          getPostFeedItem(new ObjectID(postItemId),function(err,postItem){
-            if(err)
-              sendDatabaseError(res,err);
-            else {
-              res.send(postItem);
-            }
-          });
-        }
-      });
-    }
-    else{
-      res.status(401).end();
-    }
-  });
-
-  //change user info
-  app.put('/settings/user/:userId',validate({body:userInfoSchema}),function(req,res){
-    var data = req.body;
-    var moment = require('moment');
-    var userId = new ObjectID(req.params.userId);
-    var fromUser = new ObjectID(getUserIdFromToken(req.get('Authorization')));
-    if(fromUser.str === userId.str){
-      db.collection('users').updateOne({_id:userId},{
-        $set:{
-          lastname:data.lastname,
-          firstname:data.firstname,
-          nickname:data.nickname,
-          description:data.description,
-          location:data.location,
-          birthday:moment(data.birthday).valueOf()
-        }
-      },function(err){
-        if(err)
-          return sendDatabaseError(res,err);
-        getUserData(userId,function(err,userData){
-          if(err)
-            return sendDatabaseError(res,err);
-          res.send(userData);
-        });
-      });
-    }
-    else{
-      res.status(401).end();
-    }
-  });
-
-  function getActivityFeedItem(activityId,callback){
-    db.collection('activityItems').findOne({_id:activityId},function(err,activityItem){
+      }
+    },function(err){
       if(err)
-        return callback(err);
-
-      var userList = [activityItem.author];
-      activityItem.comments.forEach((comment)=>{
-        userList.push(comment.author);
-      });
-      activityItem.likeCounter.map((id)=>userList.push(id));
-      activityItem.participants.map((id)=>userList.push(id));
-      resolveUserObjects(userList,function(err,userMap){
-        if(err)
-          return callback(err);
-
-        activityItem.author = userMap[activityItem.author];
-        activityItem.participants = activityItem.participants.map((id) => userMap[id]);
-        activityItem.likeCounter = activityItem.likeCounter.map((id) => userMap[id]);
-        activityItem.comments.forEach((comment) => {
-          comment.author = userMap[comment.author];
-        });
-
-        callback(null,activityItem);
-      });
-
-    });
-  }
-
-
-  function getActivityFeedData(userId, callback){
-    db.collection('users').findOne({_id:userId},function(err,userData){
-      if(err)
-        return callback(err);
-      else if(userData === null)
-        return callback(null,null);
+      sendDatabaseError(res.err);
       else{
-        db.collection('activities').findOne({_id:userData.activity},function(err,activity){
+        getPostFeedItem(new ObjectID(postItemId),function(err,postItem){
           if(err)
-            return callback(err);
-          else if(activity === null)
-            return callback(null,null);
-
-            var resolvedContents = [];
-
-            function processNextFeedItem(i) {
-              // Asynchronously resolve a feed item.
-              getActivityFeedItem(activity.contents[i], function(err, feedItem) {
-                if (err) {
-                  // Pass an error to the callback.
-                  callback(err);
-                } else {
-                  // Success!
-                  resolvedContents.push(feedItem);
-                  if (resolvedContents.length === activity.contents.length) {
-                    // I am the final feed item; all others are resolved.
-                    // Pass the resolved feed document back to the callback.
-                    activity.contents = resolvedContents;
-                    callback(null, activity);
-                  } else {
-                    // Process the next feed item.
-                    processNextFeedItem(i + 1);
-                  }
-                }
-              });
-            }
-
-            if (activity.contents.length === 0) {
-              callback(null, activity);
-            } else {
-              processNextFeedItem(0);
-            }
+          sendDatabaseError(res,err);
+          else {
+            res.send(postItem);
+          }
         });
       }
     });
   }
-
-  function validateEmail(email) {
-      var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-      return re.test(email);
+  else{
+    res.status(401).end();
   }
+});
 
-  app.put('/settings/emailChange/user/:userId',validate({body:emailChangeSchema}),function(req,res){
-    var data = req.body;
-    var userId = new ObjectID(req.params.userId);
-    var fromUser = new ObjectID(getUserIdFromToken(req.get('Authorization')));
-    if(fromUser.str === userId.str){
+//change user info
+app.put('/settings/user/:userId',validate({body:userInfoSchema}),function(req,res){
+  var data = req.body;
+  var moment = require('moment');
+  var userId = new ObjectID(req.params.userId);
+  var fromUser = new ObjectID(getUserIdFromToken(req.get('Authorization')));
+  if(fromUser.str === userId.str){
+    db.collection('users').updateOne({_id:userId},{
+      $set:{
+        lastname:data.lastname,
+        firstname:data.firstname,
+        nickname:data.nickname,
+        description:data.description,
+        location:data.location,
+        birthday:moment(data.birthday).valueOf()
+      }
+    },function(err){
+      if(err)
+      return sendDatabaseError(res,err);
       getUserData(userId,function(err,userData){
         if(err)
-          return sendDatabaseError(res,err);
-        else if(userData.email === data.oldEmail && validateEmail(data.newEmail)){
-          db.collection('users').updateOne({_id:userId},{
-            $set:{
-              email: data.newEmail
-            }
-          },function(err){
-              if(err)
-                return sendDatabaseError(res,err);
-              else{
-                res.send(false);
+        return sendDatabaseError(res,err);
+        res.send(userData);
+      });
+    });
+  }
+  else{
+    res.status(401).end();
+  }
+});
+
+function getActivityFeedItem(activityId,callback){
+  db.collection('activityItems').findOne({_id:activityId},function(err,activityItem){
+    if(err)
+    return callback(err);
+
+    var userList = [activityItem.author];
+    activityItem.comments.forEach((comment)=>{
+      userList.push(comment.author);
+    });
+    activityItem.likeCounter.map((id)=>userList.push(id));
+    activityItem.participants.map((id)=>userList.push(id));
+    resolveUserObjects(userList,function(err,userMap){
+      if(err)
+      return callback(err);
+
+      activityItem.author = userMap[activityItem.author];
+      activityItem.participants = activityItem.participants.map((id) => userMap[id]);
+      activityItem.likeCounter = activityItem.likeCounter.map((id) => userMap[id]);
+      activityItem.comments.forEach((comment) => {
+        comment.author = userMap[comment.author];
+      });
+
+      callback(null,activityItem);
+    });
+
+  });
+}
+
+
+function getActivityFeedData(userId, callback){
+  db.collection('users').findOne({_id:userId},function(err,userData){
+    if(err)
+    return callback(err);
+    else if(userData === null)
+    return callback(null,null);
+    else{
+      db.collection('activities').findOne({_id:userData.activity},function(err,activity){
+        if(err)
+        return callback(err);
+        else if(activity === null)
+        return callback(null,null);
+
+        var resolvedContents = [];
+
+        function processNextFeedItem(i) {
+          // Asynchronously resolve a feed item.
+          getActivityFeedItem(activity.contents[i], function(err, feedItem) {
+            if (err) {
+              // Pass an error to the callback.
+              callback(err);
+            } else {
+              // Success!
+              resolvedContents.push(feedItem);
+              if (resolvedContents.length === activity.contents.length) {
+                // I am the final feed item; all others are resolved.
+                // Pass the resolved feed document back to the callback.
+                activity.contents = resolvedContents;
+                callback(null, activity);
+              } else {
+                // Process the next feed item.
+                processNextFeedItem(i + 1);
               }
+            }
           });
         }
-        else {
-          res.send(true);
+
+        if (activity.contents.length === 0) {
+          callback(null, activity);
+        } else {
+          processNextFeedItem(0);
         }
       });
     }
-    else{
-      res.statsus(401).end();
-    }
   });
+}
 
-  app.put('/settings/avatar/user/:userId',function(req,res){
-    var userId = new ObjectID(req.params.userId);
-    var fromUser = new ObjectID(getUserIdFromToken(req.get('Authorization')));
-    var body = req.body;
-    if(fromUser.str === userId.str){
-      db.collection('users').findAndModify(
-        {_id:userId},
-        [['_id','asc']],
-        {$set:{
-          avatar: body.img
-        }},
-        {"new":true},function(err,result){
-        if(err)
+function validateEmail(email) {
+  var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  return re.test(email);
+}
+
+app.put('/settings/emailChange/user/:userId',validate({body:emailChangeSchema}),function(req,res){
+  var data = req.body;
+  var userId = new ObjectID(req.params.userId);
+  var fromUser = new ObjectID(getUserIdFromToken(req.get('Authorization')));
+  if(fromUser.str === userId.str){
+    getUserData(userId,function(err,userData){
+      if(err)
+      return sendDatabaseError(res,err);
+      else if(userData.email === data.oldEmail && validateEmail(data.newEmail)){
+        db.collection('users').updateOne({_id:userId},{
+          $set:{
+            email: data.newEmail
+          }
+        },function(err){
+          if(err)
           return sendDatabaseError(res,err);
+          else{
+            res.send(false);
+          }
+        });
+      }
+      else {
+        res.send(true);
+      }
+    });
+  }
+  else{
+    res.statsus(401).end();
+  }
+});
+
+app.put('/settings/avatar/user/:userId',function(req,res){
+  var userId = new ObjectID(req.params.userId);
+  var fromUser = new ObjectID(getUserIdFromToken(req.get('Authorization')));
+  var body = req.body;
+  if(fromUser.str === userId.str){
+    db.collection('users').findAndModify(
+      {_id:userId},
+      [['_id','asc']],
+      {$set:{
+        avatar: body.img
+      }},
+      {"new":true},function(err,result){
+        if(err)
+        return sendDatabaseError(res,err);
         else{
           res.send(result.value);
         }
@@ -602,7 +599,7 @@ function getUserData(userId,callback){
         }
       },function(err){
         if(err)
-          return sendDatabaseError(res,err);
+        return sendDatabaseError(res,err);
         else{
           res.send(true);
         }
@@ -617,7 +614,7 @@ function getUserData(userId,callback){
     // if(userId === fromUser){
     getActivityFeedData(userId,function(err,activityData){
       if(err)
-        sendDatabaseError(res,err);
+      sendDatabaseError(res,err);
       else{
         res.send(activityData);
       }
@@ -681,42 +678,42 @@ function getUserData(userId,callback){
     var activityId = new ObjectID(req.params.activityId);
     var userId = req.params.userId;
     if (userId === fromUser) {
-        var update = {
-            $addToSet: {}
-        };
-        update.$addToSet["likeCounter"] = new ObjectID(userId);
-        db.collection('activityItems').findAndModify({
-                _id: activityId
-            }, [
-                ['_id', 'asc']
-            ],
-            update, {
-                "new": true
-            },
-            function(err, result) {
-                if (err) {
-                    return sendDatabaseError(res, err);
-                } else if (result.value === null) {
-                    // Filter didn't match anything: Bad request.
-                    res.status(400).end();
-                } else {
-                  resolveUserObjects(result.value.likeCounter,function(err,userMap){
-                    if(err){
-                      sendDatabaseError(res,err);
-                    }
-                    else{
-                      result.value.likeCounter = result.value.likeCounter.map((id)=>userMap[id]);
-                      res.send(result.value.likeCounter);
-                    }
-                  });
-                }
-            });
+      var update = {
+        $addToSet: {}
+      };
+      update.$addToSet["likeCounter"] = new ObjectID(userId);
+      db.collection('activityItems').findAndModify({
+        _id: activityId
+      }, [
+        ['_id', 'asc']
+      ],
+      update, {
+        "new": true
+      },
+      function(err, result) {
+        if (err) {
+          return sendDatabaseError(res, err);
+        } else if (result.value === null) {
+          // Filter didn't match anything: Bad request.
+          res.status(400).end();
+        } else {
+          resolveUserObjects(result.value.likeCounter,function(err,userMap){
+            if(err){
+              sendDatabaseError(res,err);
+            }
+            else{
+              result.value.likeCounter = result.value.likeCounter.map((id)=>userMap[id]);
+              res.send(result.value.likeCounter);
+            }
+          });
         }
-        else {
-            // Unauthorized.
-            res.status(401).end();
-        }
-    });
+      });
+    }
+    else {
+      // Unauthorized.
+      res.status(401).end();
+    }
+  });
 
   //unlike activity
   app.delete('/activityItem/:activityId/likelist/:userId', function(req, res){
@@ -724,70 +721,80 @@ function getUserData(userId,callback){
     var activityId = new ObjectID(req.params.activityId);
     var userId = req.params.userId;
     if (userId === fromUser) {
-        var update = {
-            $pull: {}
-        };
-        update.$pull["likeCounter"] = new ObjectID(userId);
-        db.collection('activityItems').findAndModify({
-                _id: activityId
-            }, [
-                ['_id', 'asc']
-            ],
-            update, {
-                "new": true
-            },
-            function(err, result) {
-                if (err) {
-                    return sendDatabaseError(res, err);
-                } else if (result.value === null) {
-                    // Filter didn't match anything: Bad request.
-                    res.status(400).end();
-                } else {
-                  resolveUserObjects(result.value.likeCounter,function(err,userMap){
-                    if(err){
-                      sendDatabaseError(res,err);
-                    }
-                    else{
-                      result.value.likeCounter = result.value.likeCounter.map((id)=>userMap[id]);
-                      res.send(result.value.likeCounter);
-                    }
-                  });
-                }
-            });
+      var update = {
+        $pull: {}
+      };
+      update.$pull["likeCounter"] = new ObjectID(userId);
+      db.collection('activityItems').findAndModify({
+        _id: activityId
+      }, [
+        ['_id', 'asc']
+      ],
+      update, {
+        "new": true
+      },
+      function(err, result) {
+        if (err) {
+          return sendDatabaseError(res, err);
+        } else if (result.value === null) {
+          // Filter didn't match anything: Bad request.
+          res.status(400).end();
+        } else {
+          resolveUserObjects(result.value.likeCounter,function(err,userMap){
+            if(err){
+              sendDatabaseError(res,err);
+            }
+            else{
+              result.value.likeCounter = result.value.likeCounter.map((id)=>userMap[id]);
+              res.send(result.value.likeCounter);
+            }
+          });
         }
-        else {
-            // Unauthorized.
-            res.status(401).end();
-        }
-    });
+      });
+    }
+    else {
+      // Unauthorized.
+      res.status(401).end();
+    }
+  });
 
   //post ADcomments
   app.post('/activityItem/:activityId/commentThread/comment',validate({body:commentSchema}),
   function(req,res){
     var fromUser = getUserIdFromToken(req.get('Authorization'));
     var body = req.body;
-    var activityItemId = new ObjectID(parseInt(req.params.activityId, 10));
+    var activityItemId = new ObjectID(req.params.activityId);
     var userId = body.author;
     if(fromUser === userId){
-      var activityFeedItem = readDocument('activityItems',activityItemId);
-      activityFeedItem.comments.push({
-        "author": userId,
-        "text": body.text,
-        "postDate": (new Date()).getTime()
-      });
-      writeDocument('activityItems',activityFeedItem);
-      res.status(201);
-      getActivityFeedItem(activityItemId,function(err,activityData){
-        res.status(201);
-        res.send(activityData);
-      });
-    }
-    else{
-      res.status(401).end();
-    }
-  });
+      db.collection('activityItems').updateOne({_id: activityItemId},{
+        $push:{
+          comments:{
+            "author":new ObjectID(userId),
+            "postDate":(new Date()).getTime(),
+              "text": body.text
+          }}
+        },function(err){
+          if(err){
+            sendDatabaseError(res.err);
+          }
+          else{
+            getActivityFeedItem(activityItemId,function(err,activityData){
+              if(err){
+                sendDatabaseError(res,err);
+              }
+              else{
+                res.send(activityData);
+              }
+            });
+          }
+        });
+      }
+      else{
+        res.status(401).end();
+      }
+    });
 
-
+<<<<<<< HEAD
   function getNotificationItem(notificationId,callback){
     db.collection('notificationItems').findOne({_id:notificationId},function(err,notification){
       if(err)
@@ -869,10 +876,38 @@ function getUserData(userId,callback){
     }
     else{
       res.status(401).end();
+=======
+
+    function getNotificationDataSync(notificationId){
+      var notification = readDocument('notificationItems',notificationId);
+      if(notification.type === "FR"){
+        notification.sender = readDocument("users",notification.sender);
+      }
+      else{
+        notification.author = readDocument("users",notification.author);
+      }
+
+      return notification;
+>>>>>>> 565598e3e13adeae872816fd53666b20ddcfb7e1
     }
-  });
 
+    //get notification
+    app.get('/user/:userId/notification',function(req,res){
+      var fromUser = getUserIdFromToken(req.get('Authorization'));
+      var userId = parseInt(req.params.userId);
+      if(fromUser === userId){
+        var userData = readDocument('users',userId);
+        var notificationData = readDocument('notifications',userData.notification);
+        notificationData.contents = notificationData.contents.map(getNotificationDataSync);
+        res.status(201);
+        res.send(notificationData);
+      }
+      else{
+        res.status(401).end();
+      }
+    });
 
+<<<<<<< HEAD
   function deleteNotification(notificationId, userId, callback){
     db.collection('users').findOne({_id:userId},function(err,userData){
       if(err)
@@ -939,9 +974,22 @@ function getUserData(userId,callback){
     }
     else{
       res.status(401).end();
-    }
-  });
+=======
 
+    function deleteNotification(id, user){
+      var userData = readDocument('users',user);
+      var notificationData = readDocument('notifications',userData.notification);
+      var index = notificationData.contents.indexOf(id);
+      if(index !== -1)
+      notificationData.contents.splice(index,1);
+
+      writeDocument("notifications",notificationData);
+      deleteDocument("notificationItems",id);
+      return notificationData;
+>>>>>>> 565598e3e13adeae872816fd53666b20ddcfb7e1
+    }
+
+<<<<<<< HEAD
   //deleteNotification
   app.delete('/notification/:notificationId/:userId',function(req,res){
     var fromUser = new ObjectID(getUserIdFromToken(req.get('Authorization')));
@@ -960,187 +1008,248 @@ function getUserData(userId,callback){
       res.status(401).end();
     }
   });
-
-  //getMessage
-  app.get('/user/:userId/chatsession/:id',function(req,res){
-    var fromUser = getUserIdFromToken(req.get('Authorization'));
-    var id = parseInt(req.params.id, 10);
-    var userid = parseInt(req.params.userId, 10);
-    if(userid == fromUser){
-      var message = readDocument('messageSession',id);
-      message.contents = message.contents.map(getMessageSync);
-      res.status(201);
-      res.send(getMessageSync(id).messages);
-    }
-    else{
-      console.log(fromUser);
-      res.status(401).end();
-    }
-  });
-
-  //post message
-  app.post('/user/:userid/chatsession/:id',function(req,res){
-    var fromUser = getUserIdFromToken(req.get('Authorization'));
-    var id = parseInt(req.params.id, 10);
-    var userid = parseInt(req.params.userid, 10);
-    var body = req.body;
-    if(userid == fromUser){
-      var senderid = body.sender;
-      var targetid = body.target;
-      var text = body.text;
-
-      var message = readDocument('message',id);
-      message.messages.push({
-        "sender": senderid,
-        "target":targetid,
-        "date":(new Date()).getTime(),
-        "text": text
-      });
-      writeDocument('message',message);
-
-      var sessions = readDocument('messageSession',id);
-      sessions.lastmessage = text;
-      writeDocument('messageSession',sessions)
-      res.status(201);
-      res.send(getMessageSync(id).messages);
-    }
-    else{
-      res.status(401).end();
-    }
-  });
-
-
-  function getMessageSync(sessionId){
-    var message = readDocument("message",sessionId);
-    message.messages.forEach((message)=>{
-      message.sender = readDocument('users', message.sender);
-      message.target = readDocument('users', message.target);
-    });
-    return message;
-  }
-
-  app.get('/getsession/:userid/:targetid',function(req,res){
-    var fromUser = getUserIdFromToken(req.get('Authorization'));
-    var userid = parseInt(req.params.userid, 10);
-    if(userid == fromUser){
-      var targetid = parseInt(req.params.targetid, 10);
-      res.status(201);
-      res.send(getSessionId(userid,targetid));
-    }
-    else{
-      console.log(fromUser);
-      res.status(401).end();
-    }
-  });
-
-  function getSessionId(userid,targetid){
-    var sessions = getCollection('messageSession');
-    var arr = Object.keys(sessions).map(function(k) { return sessions[k] });
-    var sessionId = arr.filter(function(sessionObject){
-      var users = sessionObject.users;
-      if(users.indexOf(userid)!==-1 && users.indexOf(targetid)!==-1){
-        return sessionObject._id;
+=======
+    //acceptRequest
+    app.put('/notification/:notificationId/:userId',function(req,res){
+      var fromUser = getUserIdFromToken(req.get('Authorization'));
+      var userId = parseInt(req.params.userId);
+      var notificationId = parseInt(req.params.notificationId);
+      if(fromUser === userId){
+        var userData = readDocument('users',userId);
+        var notificationItem = readDocument('notificationItems',notificationId);
+        userData.friends.push(notificationItem.sender);
+        writeDocument("users",userData);
+        res.status(201);
+        res.send(deleteNotification(notificationId,userId));
+      }
+      else{
+        res.status(401).end();
       }
     });
-    return sessionId[0];
-  }
+>>>>>>> 565598e3e13adeae872816fd53666b20ddcfb7e1
+
+    //deleteNotification
+    app.delete('/notification/:notificationId/:userId',function(req,res){
+      var fromUser = getUserIdFromToken(req.get('Authorization'));
+      var userId = parseInt(req.params.userId);
+      var notificationId = parseInt(req.params.notificationId);
+      if(fromUser === userId){
+        res.status(201);
+        res.send(deleteNotification(notificationId,userId));
+      }
+      else{
+        res.status(401).end();
+      }
+    });
+
+    //getMessage
+    app.get('/user/:userId/chatsession/:id',function(req,res){
+      var fromUser = getUserIdFromToken(req.get('Authorization'));
+      var id = req.params.id;
+      var userid = req.params.userId;
+      if(userid == fromUser){
+        db.collection('messageSession').findOne({_id:new ObjectID(id)},function(err,message){
+          if(err)
+            sendDatabaseError(res,err);
+          else{
+            //message.contents = message.contents.map(getMessage);
+
+            getMessage(message.contents[0],function(err,data){
+              if(err)
+              sendDatabaseError(res,err);
+              else {
+                res.status(201);
+                res.send(data.messages);
+              }
+            })
+          }
+        })
+       }
+    });
+
+    //post message
+    app.post('/user/:userid/chatsession/:id',function(req,res){
+      var fromUser = getUserIdFromToken(req.get('Authorization'));
+      var id = parseInt(req.params.id, 10);
+      var userid = parseInt(req.params.userid, 10);
+      var body = req.body;
+      if(userid == fromUser){
+        var senderid = body.sender;
+        var targetid = body.target;
+        var text = body.text;
+
+        var message = readDocument('message',id);
+        message.messages.push({
+          "sender": senderid,
+          "target":targetid,
+          "date":(new Date()).getTime(),
+          "text": text
+        });
+        writeDocument('message',message);
+
+        var sessions = readDocument('messageSession',id);
+        sessions.lastmessage = text;
+        writeDocument('messageSession',sessions)
+        res.status(201);
+        res.send(getMessage(id).messages);
+      }
+      else{
+        res.status(401).end();
+      }
+    });
+
+
+    function getMessage(sessionId,cb){
+      //var message = readDocument("message",sessionId);
+      db.collection('message').findOne({_id:sessionId},function(err,messages){
+        if(err){
+          return cb(err);
+        }
+        else{
+
+          var userList = [messages.messages[0].sender,messages.messages[0].target];
+          resolveUserObjects(userList,function(err,userMap){
+            if(err)
+            return cb(err);
+            messages.messages.forEach((message)=>{
+              message.target = userMap[message.target];
+              message.sender = userMap[message.sender];
+            });
+            cb(null,messages);
+          })
+        }
+      });
+    }
+
+    app.get('/getsession/:userid/:targetid',function(req,res){
+      var fromUser = getUserIdFromToken(req.get('Authorization'));
+      var userid = req.params.userid;
+      if(userid == fromUser){
+        var targetid = req.params.targetid;
+        getSessionId(new ObjectID(userid), new ObjectID(targetid),function(err,session){
+          if(err)
+          sendDatabaseError(res,err);
+          else {
+            res.status(201);
+            console.log(session);
+            res.send(session);
+          }
+        });
+      }
+      else{
+        res.status(401).end();
+      }
+    });
+
+    function getSessionId(userid,targetid,cb){
+      db.collection("messageSession").findOne(
+        {
+          users:{
+            $all:[userid,targetid]
+          }
+        },function(err,session){
+          if(err)
+          return cb(err);
+          cb(null,session);
+        })
+    }
 
 
 
-  /**
-  * Get the user ID from a token. Returns -1 (an invalid ID)
-  * if it fails.
-  */
-  function getUserIdFromToken(authorizationLine) {
-    try {
-      // Cut off "Bearer " from the header value.
-      var token = authorizationLine.slice(7);
-      // Convert the base64 string to a UTF-8 string.
-      var regularString = new Buffer(token, 'base64').toString('utf8');
-      // Convert the UTF-8 string into a JavaScript object.
-      var tokenObj = JSON.parse(regularString);
-      var id = tokenObj['id'];
-      // Check that id is a number.
-      if (typeof id === 'string') {
-        return id;
+    /**
+    * Get the user ID from a token. Returns -1 (an invalid ID)
+    * if it fails.
+    */
+    function getUserIdFromToken(authorizationLine) {
+      try {
+        // Cut off "Bearer " from the header value.
+        var token = authorizationLine.slice(7);
+        // Convert the base64 string to a UTF-8 string.
+        var regularString = new Buffer(token, 'base64').toString('utf8');
+        // Convert the UTF-8 string into a JavaScript object.
+        var tokenObj = JSON.parse(regularString);
+        var id = tokenObj['id'];
+        // Check that id is a number.
+        if (typeof id === 'string') {
+          return id;
+        } else {
+          // Not a number. Return -1, an invalid ID.
+          return "";
+        }
+      } catch (e) {
+        // Return an invalid ID.
+        return -1;
+      }
+    }
+
+    var ResetDatabase = require('./resetdatabase');
+    // Reset database.
+    app.post('/resetdb', function(req, res) {
+      console.log("Resetting database...");
+      ResetDatabase(db, function() {
+        res.send();
+      });
+    });
+
+    /**
+    * Translate JSON Schema Validation failures into error 400s.
+    */
+    app.use(function(err, req, res, next) {
+      if (err.name === 'JsonSchemaValidation') {
+        // Set a bad request http response status
+        res.status(400).end();
       } else {
-        // Not a number. Return -1, an invalid ID.
-        return "";
+        // It's some other sort of error; pass it to next error middleware handler
+        next(err);
       }
-    } catch (e) {
-      // Return an invalid ID.
-      return -1;
-    }
-  }
-
-  var ResetDatabase = require('./resetdatabase');
-  // Reset database.
-  app.post('/resetdb', function(req, res) {
-    console.log("Resetting database...");
-    ResetDatabase(db, function() {
-      res.send();
     });
+
+    //get search result.
+    app.get('/search/userid/:userid/querytext/:querytext',function(req,res){
+      var fromUser = getUserIdFromToken(req.get('Authorization'));
+      var querytext = req.params.querytext.toLowerCase();
+      var userid = parseInt(req.params.userid, 10);
+      if(userid == fromUser){
+        var userItems= getCollection("users");
+        var activityItems=getCollection("activityItems");
+        var postFeedItems=getCollection("postFeedItems");
+        var resultUsers = Object.keys(userItems).map((k)=>{return userItems[k]}).filter((userItem)=>{
+          return userItem.firstname.toLowerCase().indexOf(querytext)!==-1 ||
+          userItem.lastname.toLowerCase().indexOf(querytext)!==-1 ||
+          userItem.nickname.toLowerCase().indexOf(querytext)!==-1;
+        });
+
+        var activitiesResult = Object.keys(activityItems).map((k)=>{return activityItems[k]}).filter((activityItem)=>{
+          return activityItem.title.toLowerCase().indexOf(querytext)!==-1 ||
+          activityItem.description.toLowerCase().indexOf(querytext)!==-1;
+        });
+
+        var postReuslt = Object.keys(postFeedItems).map((k)=>{return postFeedItems[k]}).filter((postFeedItem)=>{
+          return postFeedItem.contents.text.toLowerCase().indexOf(querytext)!==-1;
+        });
+        var post = Object.keys(postReuslt).map((k)=>{return postReuslt[k]});
+
+
+
+        var data={
+          users: Object.keys(resultUsers).map((k)=>{return resultUsers[k]}),
+          activities: Object.keys(activitiesResult).map((k)=>{return activitiesResult[k]}),
+          posts: post
+        };
+
+        data.posts.map((i)=>i.contents.author=readDocument('users',i.contents.author));
+        data.posts.map((i)=>(i.comments.map((j)=>j.author=readDocument('users',j.author))));
+        res.send(data);
+      }
+      else{
+        res.status(401).end();
+      }
+    });
+
+
+    // Starts the server on port 3000!
+    app.listen(3000, function () {
+      console.log('app listening on port 3000!');
+    });
+
   });
-
-  /**
-  * Translate JSON Schema Validation failures into error 400s.
-  */
-  app.use(function(err, req, res, next) {
-    if (err.name === 'JsonSchemaValidation') {
-      // Set a bad request http response status
-      res.status(400).end();
-    } else {
-      // It's some other sort of error; pass it to next error middleware handler
-      next(err);
-    }
-  });
-
-  //get search result.
-  app.get('/search/userid/:userid/querytext/:querytext',function(req,res){
-    var fromUser = getUserIdFromToken(req.get('Authorization'));
-    var querytext = req.params.querytext.toLowerCase();
-    var userid = parseInt(req.params.userid, 10);
-    if(userid == fromUser){
-      var userItems= getCollection("users");
-      var activityItems=getCollection("activityItems");
-      var postFeedItems=getCollection("postFeedItems");
-      var resultUsers = Object.keys(userItems).map((k)=>{return userItems[k]}).filter((userItem)=>{
-        return userItem.firstname.toLowerCase().indexOf(querytext)!==-1 ||
-        userItem.lastname.toLowerCase().indexOf(querytext)!==-1 ||
-        userItem.nickname.toLowerCase().indexOf(querytext)!==-1;
-      });
-
-      var activitiesResult = Object.keys(activityItems).map((k)=>{return activityItems[k]}).filter((activityItem)=>{
-        return activityItem.title.toLowerCase().indexOf(querytext)!==-1 ||
-        activityItem.description.toLowerCase().indexOf(querytext)!==-1;
-      });
-
-      var postReuslt = Object.keys(postFeedItems).map((k)=>{return postFeedItems[k]}).filter((postFeedItem)=>{
-        return postFeedItem.contents.text.toLowerCase().indexOf(querytext)!==-1;
-      });
-      var post = Object.keys(postReuslt).map((k)=>{return postReuslt[k]});
-
-
-
-      var data={
-        users: Object.keys(resultUsers).map((k)=>{return resultUsers[k]}),
-        activities: Object.keys(activitiesResult).map((k)=>{return activitiesResult[k]}),
-        posts: post
-      };
-
-      data.posts.map((i)=>i.contents.author=readDocument('users',i.contents.author));
-      data.posts.map((i)=>(i.comments.map((j)=>j.author=readDocument('users',j.author))));
-      res.send(data);
-    }
-    else{
-      res.status(401).end();
-    }
-  });
-
-
-  // Starts the server on port 3000!
-  app.listen(3000, function () {
-    console.log('app listening on port 3000!');
-  });
-
-});

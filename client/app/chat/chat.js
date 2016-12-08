@@ -11,8 +11,8 @@ export default class Chat extends React.Component {
         this.state = {
           user: {},
           message :[],
-          friend: 2,
-          sessionId:1
+          friend: "000000000000000000000002",
+          sessionId:"000000000000000000000001"
         };
     }
     componentDidMount() {
