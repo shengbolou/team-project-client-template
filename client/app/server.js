@@ -245,7 +245,7 @@ export function getMessages(userid,id,cb){
   // message.contents = message.contents.map(getMessageSync);
   //
   // emulateServerReturn(getMessageSync(sessionid).messages,cb);
-  
+
   sendXHR('GET','/user/'+userid+'/chatsession/'+id, undefined, (xhr) => {
     cb(JSON.parse(xhr.responseText));
   });
@@ -266,6 +266,8 @@ export function getSessionId(userid,targetid,cb){
     cb(JSON.parse(xhr.responseText));
   });
 }
+
+
 
 
 
