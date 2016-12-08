@@ -76,7 +76,7 @@ class Activity_detailPage extends React.Component{
 class SearchPage extends React.Component{
    render(){
     return(
-      <Search user={1}/>
+      <Search user={"000000000000000000000001"}/>
     );
   }
 }
