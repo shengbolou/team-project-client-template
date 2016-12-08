@@ -55,7 +55,7 @@ export default class Ad_body extends React.Component{
 
   handlePostComment(comment){
     adpostComment(this.state.activity._id, this.props.currentUser ,comment, (newFeedItem)=>{
-      this.setState(newFeedItem);
+      this.setState({activity:newFeedItem});
     })
   }
 

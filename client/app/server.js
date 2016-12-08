@@ -245,7 +245,7 @@ export function getMessages(userid,id,cb){
   // message.contents = message.contents.map(getMessageSync);
   //
   // emulateServerReturn(getMessageSync(sessionid).messages,cb);
-  userid = parseInt(userid, 10);
+  
   sendXHR('GET','/user/'+userid+'/chatsession/'+id, undefined, (xhr) => {
     cb(JSON.parse(xhr.responseText));
   });

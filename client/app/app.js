@@ -53,7 +53,7 @@ class SettingsPage extends React.Component {
 class ChatPage extends React.Component{
   render() {
     return (
-      <Chat user={1} />
+      <Chat user={"000000000000000000000001"} />
     );
   }
 }
