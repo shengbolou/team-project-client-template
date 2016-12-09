@@ -24,19 +24,21 @@ export default class ChatWindow extends React.Component {
     }
 
     getData() {
+      if(!this.props.target==""){
         getUserData(this.props.target, (userData) => {
             this.setState({targetUser:userData})
-        });
+        });}
     }
 
     componentWillReceiveProps(nextProps){
+      if(!this.props.target==""){
       getUserData(this.props.target, (userData) => {
           this.setState(
             {
               targetUser:userData,
               message:nextProps.message
             })
-      });
+      });}
     }
 
     render() {

@@ -11,7 +11,7 @@ export default class Chat extends React.Component {
         this.state = {
           user: {},
           message :[],
-          friend: "000000000000000000000002",
+          friend: "",
           sessionId:"000000000000000000000001"
         };
     }
@@ -23,20 +23,33 @@ export default class Chat extends React.Component {
       getUserData(this.props.user, (userData) => {
         this.setState({
           user:userData
+        },()=>{
+          this.setState({friend:this.state.user.friends[0]._id},()=>{    getSessionId(this.props.user,this.state.friend,(session)=>{
+                this.setState({
+                  sessionId:session._id
+                },
+                ()=>{
+                  getMessages(this.props.user,this.state.sessionId,(message)=>{
+                    this.setState({
+                      message:message
+                    })
+                  });
+                });
+              });})
         })
       });
-
-      getMessages(this.props.user,this.state.sessionId,(message)=>{
-        this.setState({
-          message:message
-        })
-      });
-
-      getSessionId(this.props.user,this.state.friend,(session)=>{
-        this.setState({
-          sessionId:session._id
-        })
-      });
+      // 
+      // getMessages(this.props.user,this.state.sessionId,(message)=>{
+      //   this.setState({
+      //     message:message
+      //   })
+      // });
+      //
+      // getSessionId(this.props.user,this.state.friend,(session)=>{
+      //   this.setState({
+      //     sessionId:session._id
+      //   })
+      // });
 
     }
 
