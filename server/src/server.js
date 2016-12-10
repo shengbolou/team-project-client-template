@@ -32,7 +32,6 @@ MongoClient.connect(url, function(err, db) {
   var readDocument = database.readDocument;
   var addDocument = database.addDocument;
   var writeDocument = database.writeDocument;
-  var getCollection = database.getCollection;
 
   //schemas
   var statusUpdateSchema = require('./schemas/statusUpdate.json');
@@ -1204,7 +1203,7 @@ MongoClient.connect(url, function(err, db) {
     var querytext = req.params.querytext.toLowerCase();
     var userid = parseInt(req.params.userid, 10);
     var data={};
-    if(userid == fromUser){
+    if(userid === fromUser){
       db.collection('users').find({
         $or:
           [
