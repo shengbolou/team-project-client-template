@@ -28,11 +28,11 @@ MongoClient.connect(url, function(err, db) {
   }
 
   //import database functions
-  var database = require('./database.js');
-  var readDocument = database.readDocument;
-  var addDocument = database.addDocument;
-  var writeDocument = database.writeDocument;
- 
+  // var database = require('./database.js');
+  // var readDocument = database.readDocument;
+  // var addDocument = database.addDocument;
+  // var writeDocument = database.writeDocument;
+
   //schemas
   var statusUpdateSchema = require('./schemas/statusUpdate.json');
   var commentSchema = require('./schemas/comment.json');
@@ -638,36 +638,52 @@ MongoClient.connect(url, function(err, db) {
       // }
   });
 
-  function postActivity(data) {
-      var activityItem = {
-          "type": data.type,
-          "author": data.author,
-          "title": data.title,
-          "description": data.description,
-          "img": data.img,
-          "startTime": data.startTime,
-          "endTime": data.endTime,
-          "location": data.location,
-          "participants": [],
-          "likeCounter": [],
-          "comments": [],
-          "contents": data.contents
-      }
-      activityItem = addDocument('activityItems', activityItem);
-      var userData = readDocument('users', activityItem.author);
-      var activities = readDocument('activities', userData.activity);
-      activities.contents.unshift(activityItem._id);
-      writeDocument('activities', activities);
-      return activities;
+  function postActivity(data,callback) {
+      data.participants=[];
+      data.likeCounter=[];
+      data.comments=[];
+      data.author = new ObjectID(data.author);
+      console.log(data);
+      db.collection('activityItems').insertOne(data,function(err,result){
+        if(err)
+          return callback(err);
+        else{
+          data._id=result.insertedId;
+          db.collection('users').findOne({_id:new ObjectID(data.author)},function(err,userData){
+            if(err)
+              return callback(err);
+            else{
+              db.collection('activities').updateOne({_id:userData.activity},{
+                $push: {
+                  contents: {
+                    $each: [data._id],
+                    $position: 0
+                  }
+                }
+              },function(err){
+                if(err)
+                callback(err);
+                else{
+                  callback(null,data);
+                }
+              });
+            }
+          });
+        }
+      });
   }
   //post activity
   app.post('/postActivity', validate({body: activitySchema}), function(req, res) {
       var body = req.body;
       var fromUser = getUserIdFromToken(req.get('Authorization'));
       if (fromUser === body.author) {
-          var activities = postActivity(body);
-          res.status(201);
-          res.send(activities);
+        postActivity(body,function(err,activityData){
+          if(err)
+            return sendDatabaseError(res,err);
+          else{
+            res.send(activityData);
+          }
+        });
       } else {
           res.status(401).end();
       }

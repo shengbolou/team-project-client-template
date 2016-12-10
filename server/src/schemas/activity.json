@@ -6,7 +6,7 @@
       "type": "string"
     },
     "author": {
-      "type": "integer"
+      "type": "string"
     },
     "title": {
       "type": "string"
@@ -29,15 +29,11 @@
     "contents": {
       "type": "object",
       "properties": {
-        "img": {
-          "type": "string"
-        },
         "text": {
           "type": "string"
         }
       },
       "required": [
-        "img",
         "text"
       ]
     }

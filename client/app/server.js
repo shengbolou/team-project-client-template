@@ -191,7 +191,6 @@ export function createActivity(data,cb){
          "endTime": moment(data.endTime).valueOf(),
          "location": data.location,
          "contents": {
-           "img": data.img === null ? "./img/HackUMass-detail-1.png":data.img,
            "text": data.detail
           }
       }

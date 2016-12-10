@@ -91,7 +91,7 @@ class ProfilePage extends React.Component{
 class PostActivityPage extends React.Component {
   render() {
     return (
-      <PostActivity user={1} />
+      <PostActivity user={"000000000000000000000001"} />
     );
   }
 }

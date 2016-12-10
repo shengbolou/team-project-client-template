@@ -115,7 +115,6 @@ var initialData = {
         }
       ],
       "contents": {
-        "img": "./img/HackUMass-detail-1.png",
         "text": "Friday, October 7th\n6 PM - 9 PM: Check-in at Campus Center first floor, dinner at Blue Wall Cafe\n9 PM - 10 PM: Opening ceremony in Campus Center Auditorium\n 10 PM: Move to Integrative Learning Center (ILC) \n12 Midnight: Hacking begins in the ILC \n"
       }
     },
@@ -139,7 +138,6 @@ var initialData = {
         }
       ],
       "contents": {
-        "img": null,
         "text": "acticity detail of activity 2"
       }
     },
@@ -163,7 +161,6 @@ var initialData = {
         }
       ],
       "contents": {
-        "img": null,
         "text": "activity detail of activity 3"
       }
     }
