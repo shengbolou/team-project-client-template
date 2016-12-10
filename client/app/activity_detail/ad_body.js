@@ -62,7 +62,7 @@ export default class Ad_body extends React.Component{
   getData(){
     getActivityDetail(this.props.id,(activitydata)=>{
       this.setState({activity:activitydata},()=>{
-        if(this.checkHost() === "disabled"){
+        if(this.isHost()){
           this.setState({ishost:"disabled"});
         }
       });
@@ -72,16 +72,9 @@ export default class Ad_body extends React.Component{
 
 
 
-  checkHost(){
-    var participants = this.state.activity.participants === undefined ? 0:this.state.activity.participants;
-    var result = "";
-    for (var i = 0; i < participants.length; i++) {
-      if (participants[i]._id === this.props.currentUser){
-        result = "disabled";
-        }
-    }
-   return result;
-}
+  isHost(){
+    return this.props.currentUser === this.state.activity.author._id;
+  }
 
 
   componentDidMount(){
@@ -92,14 +85,12 @@ export default class Ad_body extends React.Component{
     var buttonText = this.state.ishost==="disabled" ? "You are the host" : "Click to sign up";
     var data = this.state.activity
     var contents;
-    var img;
     var text;
     var name;
     var authorid;
     switch(data.type){
       case "Event":
       contents = data.contents;
-      img = <img src={contents.img} width="100%" alt="" />;
       name = this.state.activity.author.firstname + " "+this.state.activity.author.lastname;
       authorid = this.state.activity.author._id;
         text = contents.text.split("\n").map((line, i) => {
@@ -108,9 +99,8 @@ export default class Ad_body extends React.Component{
           )                       ;
         })
           break;
-      case "Party":
+      case "Entertainment":
       contents = data.contents;
-      img = <img src={contents.img} width="100%" alt="" />;
       name = this.state.activity.author.firstname + " "+this.state.activity.author.lastname;
       authorid = this.state.activity.author._id;
         text = contents.text.split("\n").map((line, i) => {
@@ -121,7 +111,6 @@ export default class Ad_body extends React.Component{
           break;
       case "Study":
         contents = data.contents;
-        img = <img src={contents.img} width="100%" alt="" />;
         name = this.state.activity.author.firstname + " "+this.state.activity.author.lastname;
         authorid = this.state.activity.author._id;
           text = contents.text.split("\n").map((line, i) => {
@@ -131,7 +120,6 @@ export default class Ad_body extends React.Component{
           })
         break;
       default:
-        img = null;
         text = null;
         name = null;
     }
@@ -231,17 +219,7 @@ export default class Ad_body extends React.Component{
                   <h4 style={{'color': 'grey'}}>Activity Details</h4>
                   <div className="row">
                     <div className="col-md-12" style={{'paddingTop':'20px'}}>
-                      {img}
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="col-md-12" style={{'paddingTop':'20px'}}>
-                      <br />
-
                       {text}
-
-
-                    <br/>
                   </div>
                 </div>
               </div>

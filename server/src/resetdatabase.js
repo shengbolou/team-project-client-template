@@ -108,7 +108,7 @@ var initialData = {
       "endTime": 1479940314000,
       "description": "Hack Umass",
       "location": "University of Massachusetts Amherst",
-      "participants": [new ObjectID("000000000000000000000001"),new ObjectID("000000000000000000000002"),new ObjectID("000000000000000000000003")],
+      "participants": [new ObjectID("000000000000000000000002"),new ObjectID("000000000000000000000003")],
       "likeCounter": [new ObjectID("000000000000000000000001"),
       new ObjectID("000000000000000000000002"),new ObjectID("000000000000000000000003")],
       "comments":[
@@ -155,7 +155,7 @@ var initialData = {
       "endTime": 1479940314000,
       "description": "Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis.",
       "location": "University of Massachusetts Amherst",
-      "participants": [new ObjectID("000000000000000000000002"),new ObjectID("000000000000000000000003")],
+      "participants": [new ObjectID("000000000000000000000002")],
       "likeCounter": [new ObjectID("000000000000000000000001"),new ObjectID("000000000000000000000002"),
       new ObjectID("000000000000000000000003")],
       "comments":[
