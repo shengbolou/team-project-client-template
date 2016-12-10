@@ -3,6 +3,8 @@ import Navbar from '../component/navbar';
 import {getUserData,createActivity} from '../server';
 import FriendItem from './friendItem';
 import {hashHistory} from 'react-router';
+import AvatarCropper from "react-avatar-cropper";
+import {hideElement} from '../util';
 // var debug = require('react-debug');
 
 export default class PostActivity extends React.Component {
@@ -14,12 +16,48 @@ export default class PostActivity extends React.Component {
       type:"",
       title: "",
       img:null,
+      cropperOpen:false,
       startTime: '',
       endTime: '',
       description: "",
       location: "",
       detail:""
     }
+  }
+
+  handleFile(e){
+    e.preventDefault();
+    // Read the first file that the user selected (if the user selected multiple
+    // files, we ignore the others).
+    var reader = new FileReader();
+    var file = e.target.files[0];
+    // Called once the browser finishes loading the image.
+    reader.onload = (upload) => {
+      this.setState({
+        img: upload.target.result,
+        cropperOpen:true
+      });
+    };
+
+    reader.readAsDataURL(file);
+  }
+
+  handleFileClick(e){
+    e.target.value = null;
+  }
+
+  handleRequestHide(e){
+    e.preventDefault();
+    this.setState({
+      cropperOpen: false
+    })
+  }
+
+  handleCrop(dataURI) {
+    this.setState({
+      cropperOpen: false,
+      img: dataURI
+    });
   }
 
   getData(){
@@ -101,6 +139,16 @@ export default class PostActivity extends React.Component {
   render() {
     return (
       <div className='postactivity'>
+        {this.state.cropperOpen &&
+          <AvatarCropper
+            onRequestHide={(e)=>this.handleRequestHide(e)}
+            cropperOpen={this.state.cropperOpen}
+            onCrop={(e)=>this.handleCrop(e)}
+            image={this.state.img}
+            width={1800}
+            height={500}
+            />
+        }
         <Navbar user={this.state.userData}/>
         <div className="container">
           <div className="row">
@@ -218,10 +266,17 @@ export default class PostActivity extends React.Component {
                       </div>
                     </div>
                     <label type="button" className="btn btn-blue-grey pull-left" name="button">
-                      Upload IMG <input type="file" style={{"display":"none"}}/></label>
+                      Upload activity header <input type="file" style={{"display":"none"}}
+                      onClick={(e)=>this.handleFileClick(e)} onChange={(e)=>this.handleFile(e)}/>
+                    </label>
                   </div>
                   <div className="col-md-6 nopadding">
                     <button type="button" className="btn btn-blue-grey pull-right nomargin" onClick={(e)=>this.handleSubmit(e)}>Submit</button>
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-md-12">
+                    <img src={this.state.img} className={hideElement(this.state.cropperOpen)} width="100%"/>
                   </div>
                 </div>
               </div>

@@ -186,7 +186,7 @@ export function createActivity(data,cb){
          "author":data.userData._id,
          "title": data.title,
          "description":data.description,
-         "img":data.img === null ? "./img/HackUMass.jpg" : data.img,
+         "img":data.img === null ? "./img/default.png" : data.img,
          "startTime": moment(data.startTime).valueOf(),
          "endTime": moment(data.endTime).valueOf(),
          "location": data.location,

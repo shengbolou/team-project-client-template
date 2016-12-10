@@ -643,7 +643,7 @@ MongoClient.connect(url, function(err, db) {
       data.likeCounter=[];
       data.comments=[];
       data.author = new ObjectID(data.author);
-      console.log(data);
+      delete data.cropperOpen;
       db.collection('activityItems').insertOne(data,function(err,result){
         if(err)
           return callback(err);
