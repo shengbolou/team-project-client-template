@@ -32,7 +32,7 @@ MongoClient.connect(url, function(err, db) {
   var readDocument = database.readDocument;
   var addDocument = database.addDocument;
   var writeDocument = database.writeDocument;
-
+ 
   //schemas
   var statusUpdateSchema = require('./schemas/statusUpdate.json');
   var commentSchema = require('./schemas/comment.json');
