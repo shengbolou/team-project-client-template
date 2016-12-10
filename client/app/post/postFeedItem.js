@@ -83,8 +83,8 @@ export default class PostFeedItem extends React.Component{
               <div className="pull-right">
                 <span className="glyphicon glyphicon-map-marker"></span>
                   {Object.keys(contents.location).length>0 ?
-                    (contents.location.address_components[2].short_name+","+
-                    contents.location.address_components[4].short_name) : "Earth"}
+                    (contents.location.address_components[3].short_name+","+
+                    contents.location.address_components[5].short_name) : "Earth"}
               </div>
             </div>
           </div>
