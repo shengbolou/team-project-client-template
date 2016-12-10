@@ -1125,48 +1125,87 @@ MongoClient.connect(url, function(err, db) {
     }
   });
 
-  //get search result.
+  // get search result.
   app.get('/search/userid/:userid/querytext/:querytext',function(req,res){
     var fromUser = getUserIdFromToken(req.get('Authorization'));
     var querytext = req.params.querytext.toLowerCase();
     var userid = parseInt(req.params.userid, 10);
+    var data={};
     if(userid == fromUser){
-      var userItems= getCollection("users");
-      var activityItems=getCollection("activityItems");
-      var postFeedItems=getCollection("postFeedItems");
-      var resultUsers = Object.keys(userItems).map((k)=>{return userItems[k]}).filter((userItem)=>{
-        return userItem.firstname.toLowerCase().indexOf(querytext)!==-1 ||
-        userItem.lastname.toLowerCase().indexOf(querytext)!==-1 ||
-        userItem.nickname.toLowerCase().indexOf(querytext)!==-1;
-      });
+      db.collection('users').find({
+        $or:
+          [
+            {lastname:{$regex:querytext,$options:'i'}},
+            {firstname:{$regex:querytext,$options:'i'}}
+          ]
+      }).toArray(function(err, items) {
+        if (err) {
+          return sendDatabaseError(res, err);
+        }
+        data["users"]=items;
 
-      var activitiesResult = Object.keys(activityItems).map((k)=>{return activityItems[k]}).filter((activityItem)=>{
-        return activityItem.title.toLowerCase().indexOf(querytext)!==-1 ||
-        activityItem.description.toLowerCase().indexOf(querytext)!==-1;
-      });
+        db.collection('activityItems').find({
+          description:{$regex:querytext,$options:'i'}
+        }).toArray(function(err, activityitems) {
+          if (err) {
+            return sendDatabaseError(res, err);
+          }
+          data["activities"]=activityitems;
 
-      var postReuslt = Object.keys(postFeedItems).map((k)=>{return postFeedItems[k]}).filter((postFeedItem)=>{
-        return postFeedItem.contents.text.toLowerCase().indexOf(querytext)!==-1;
-      });
-      var post = Object.keys(postReuslt).map((k)=>{return postReuslt[k]});
+          db.collection('postFeedItems').find({
+            ['contents.text']:{$regex:querytext,$options:'i'}
+          }).toArray(function(err, postitems) {
+            if (err) {
+              return sendDatabaseError(res, err);
+            }
+            var postId=[];
+            postitems.forEach((postitem)=>postId.push(postitem._id));
+            var postfeeditems=[];
+            postId.map((id)=>(getPostFeedItem(id,function(err,postfeeditem){(postfeeditems.push(postfeeditem))}
 
+            )))
 
+            data["posts"]=postfeeditems;
 
-      var data={
-        users: Object.keys(resultUsers).map((k)=>{return resultUsers[k]}),
-        activities: Object.keys(activitiesResult).map((k)=>{return activitiesResult[k]}),
-        posts: post
-      };
+            var resolvedContents = [];
 
-      data.posts.map((i)=>i.contents.author=readDocument('users',i.contents.author));
-      data.posts.map((i)=>(i.comments.map((j)=>j.author=readDocument('users',j.author))));
-      res.send(data);
+            function processNextFeedItem(i) {
+              // Asynchronously resolve a feed item.
+              getPostFeedItem(postId[i], function(err, feedItem) {
+                if (err) {
+                    sendDatabaseError(res, err);
+                } else {
+                  // Success!
+                  resolvedContents.push(feedItem);
+                  if (resolvedContents.length === postId.length) {
+                    // I am the final feed item; all others are resolved.
+                    // Pass the resolved feed document back to the callback.
+                    data["posts"]=resolvedContents;
+                    res.send(data);
+                  } else {
+                    // Process the next feed item.
+                    processNextFeedItem(i + 1);
+                  }
+                }
+              });
+            }
+
+            // Special case: Feed is empty.
+            if (postId.length === 0) {
+              res.send(data);
+            } else {
+              processNextFeedItem(0);
+            }
+
+          })
+
+        })
+      })
     }
     else{
       res.status(401).end();
     }
-  });
-
+  })
 
   // Starts the server on port 3000!
   app.listen(3000, function () {
