@@ -88,6 +88,7 @@ class ProfilePage extends React.Component{
     );
   }
 }
+
 class PostActivityPage extends React.Component {
   render() {
     return (
@@ -96,11 +97,94 @@ class PostActivityPage extends React.Component {
   }
 }
 
+class LoginPage extends React.Component{
+  render(){
+    return(
+    <div className="container index">
+      <div className="row">
+
+        <div className="col-md-6">
+          <div className="panel panel-primary">
+            <div className="panel-heading">
+              <h4>Sign in</h4>
+            </div>
+            <div className="panel-body">
+              <div className="row">
+                <div className="col-md-7 col-md-offset-2">
+                  <div className="md-form">
+                    <input type="text" className="form-control"/>
+                    <label>Email</label>
+                  </div>
+                </div>
+                <div className="col-md-7 col-md-offset-2">
+                  <div className="md-form">
+                    <input type="password" className="form-control"/>
+                    <label>Password</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="panel-footer">
+              <div className="row">
+                <div className="col-md-12">
+                  <button type="button" className="btn btn-default pull-right">
+                    Submit
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="col-md-6">
+          <div className="panel panel-primary">
+            <div className="panel-heading">
+              <h4>Sign up</h4>
+            </div>
+            <div className="panel-body">
+              <div className="row">
+                <div className="col-md-7 col-md-offset-2">
+                  <div className="md-form">
+                    <input type="text" className="form-control"/>
+                    <label>Username</label>
+                  </div>
+                </div>
+                <div className="col-md-7 col-md-offset-2">
+                  <div className="md-form">
+                    <input type="email" className="form-control"/>
+                    <label>Email</label>
+                  </div>
+                </div>
+                <div className="col-md-7 col-md-offset-2">
+                  <div className="md-form">
+                    <input type="password" className="form-control"/>
+                    <label>Password</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="panel-footer">
+              <div className="row">
+                <div className="col-md-12">
+                  <button type="button" className="btn btn-default pull-right">
+                    Submit
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    );
+  }
+}
+
 //render main
 ReactDOM.render((
   <Router history={hashHistory}>
     <Route path="/" component={App}>
-      <IndexRoute component={ActivityPage} />
+      <IndexRoute component={LoginPage} />
       <Route path="post" component={ThrendPage} />
       <Route path="settings" component={SettingsPage} />
       <Route path="chat" component={ChatPage} />

@@ -28,6 +28,7 @@
 .index .panel .panel-heading{
   background-color: #FDFDFD;
   border-bottom-color: #FDFDFD;
+	color:rgb(92, 92, 92)
 }
 .index .panel .panel-heading .badge{
   background-color: #7e929e;
