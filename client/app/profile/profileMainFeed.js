@@ -27,7 +27,7 @@ export default class ProfileMainFeed extends React.Component{
             </div>
             <div className="col-md-8">
               <div className="media">
-                <h3>{this.state.firstname} {this.state.lastname}</h3>
+                <h3>{this.state.fullname}</h3>
                 {this.state.description}
                 <div className="location">
                   <span className="glyphicon glyphicon-map-marker"></span>

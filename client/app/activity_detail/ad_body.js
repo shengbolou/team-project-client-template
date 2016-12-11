@@ -91,7 +91,7 @@ export default class Ad_body extends React.Component{
     switch(data.type){
       case "Event":
       contents = data.contents;
-      name = this.state.activity.author.firstname + " "+this.state.activity.author.lastname;
+      name = this.state.activity.author.fullname;
       authorid = this.state.activity.author._id;
         text = contents.text.split("\n").map((line, i) => {
           return (

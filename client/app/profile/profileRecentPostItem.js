@@ -68,7 +68,7 @@ export default class ProfileRecentPostItem extends React.Component{
             </div>
             <div className="col-md-10">
               <div className="media">
-                {contents.author.firstname}
+                {contents.author.fullname}
                 <br />
                 {time}
               </div>

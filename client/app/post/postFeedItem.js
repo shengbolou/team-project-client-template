@@ -78,7 +78,7 @@ export default class PostFeedItem extends React.Component{
               </Link>
             </div>
             <div className="media-body">
-              <h4 className="media-heading">{contents.author.firstname} {contents.author.lastname}</h4>
+              <h4 className="media-heading">{contents.author.fullname} </h4>
               <span style={{"fontSize":"12"}}>{time}</span>
               <div className="pull-right">
                 <span className="glyphicon glyphicon-map-marker"></span>

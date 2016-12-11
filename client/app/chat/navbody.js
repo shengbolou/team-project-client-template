@@ -20,7 +20,7 @@ export default class NavBody extends React.Component {
                     'marginTop': '-1'
                 }}>
 
-                  {this.props.data.firstname === undefined ? 0:this.props.data.friends.map((item)=>{
+                  {this.props.data.fullname === undefined ? 0:this.props.data.friends.map((item)=>{
                   return <NavChatItem key={item._id}
                                       data={item}
                                       currentUser={this.props.data._id}

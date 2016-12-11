@@ -24,7 +24,7 @@ export default class NavChatItem extends React.Component {
                         <div className="media-heading">
                             <div className="media">
                                 <div className="media-left media-body">
-                                    <font size="3">{this.props.data.firstname} {this.props.data.lastname}</font>
+                                    <font size="3">{this.props.data.fullname}</font>
                                 </div>
                                 <div className="media-body text-right" style={{
                                     'paddingRight': '0px'

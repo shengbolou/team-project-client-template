@@ -7,8 +7,7 @@ var initialData = {
   "users":{
     "1":{
       "_id":new ObjectID("000000000000000000000001"),
-      "firstname": "Vincent",
-      "lastname": "Lou",
+      "fullname":"Vincent Lou",
       "nickname": "crown",
       "avatar": "img/user.png",
       "description": "Hello everyone, I'm a mock user",
@@ -19,12 +18,12 @@ var initialData = {
       "notification":new ObjectID("000000000000000000000001"),
       "email": "upao@umass.edu",
       "birthday":147812931,
-      "sessions":[new ObjectID("000000000000000000000001"),new ObjectID("000000000000000000000002")]
+      "sessions":[new ObjectID("000000000000000000000001"),new ObjectID("000000000000000000000002")],
+      "password":""
     },
     "2": {
       "_id":new ObjectID("000000000000000000000002"),
-      "firstname": "Test",
-      "lastname": "Account2",
+      "fullname":"Test Account2",
       "nickname": "None",
       "avatar": "img/user.png",
       "description": "Hello everyone, I'm a test account",
@@ -35,12 +34,12 @@ var initialData = {
       "notification":new ObjectID("000000000000000000000002"),
       "email": "test@umass.edu",
       "birthday":1478129314000,
-      "sessions":[new ObjectID("000000000000000000000001")]
+      "sessions":[new ObjectID("000000000000000000000001")],
+      "password":""
     },
     "3": {
       "_id":new ObjectID("000000000000000000000003"),
-      "firstname": "Test",
-      "lastname": "Account3",
+      "fullname":"Test Account3",
       "nickname": "None",
       "avatar": "img/user.png",
       "description": "Hello everyone, I'm a test account",
@@ -51,7 +50,8 @@ var initialData = {
       "notification":new ObjectID("000000000000000000000003"),
       "email": "test2@umass.edu",
       "birthday":1478129314000,
-      "sessions":[new ObjectID("000000000000000000000002")]
+      "sessions":[new ObjectID("000000000000000000000002")],
+      "password":""
     }
   },
   //notification collections

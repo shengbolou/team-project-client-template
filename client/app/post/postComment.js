@@ -24,7 +24,7 @@ export default class PostComment extends React.Component{
           </Link>
         </div>
         <div className="media-body">
-          <h5 className="media-heading">{this.state.author.firstname} {this.state.author.lastname}
+          <h5 className="media-heading">{this.state.author.fullname}
             <span className="pull-right">{time}</span></h5>
           <p style={{"marginTop": '10'}}>
             {this.state.text}

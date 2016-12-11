@@ -5,10 +5,7 @@
     "userId": {
       "type": "string"
     },
-    "lastname": {
-      "type": "string"
-    },
-    "firstname": {
+    "fullname": {
       "type": "string"
     },
     "nickname": {
@@ -23,8 +20,7 @@
   },
   "required": [
     "userId",
-    "lastname",
-    "firstname",
+    "fullname",
     "nickname",
     "description",
     "birthday"

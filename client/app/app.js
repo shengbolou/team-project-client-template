@@ -184,7 +184,7 @@ class LoginPage extends React.Component{
 ReactDOM.render((
   <Router history={hashHistory}>
     <Route path="/" component={App}>
-      <IndexRoute component={LoginPage} />
+      <IndexRoute component={ActivityPage} />
       <Route path="post" component={ThrendPage} />
       <Route path="settings" component={SettingsPage} />
       <Route path="chat" component={ChatPage} />

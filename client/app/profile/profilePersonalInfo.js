@@ -14,10 +14,7 @@ export default class ProfilePersonalInfo extends React.Component{
 
   countProgress(){
     var count = 0.0;
-    if (this.state.firstname != null){
-      count += 1;
-    }
-    if (this.state.lastname != null){
+    if (this.state.fullname != null){
       count += 1;
     }
     if (this.state.nickname != null){
@@ -32,7 +29,7 @@ export default class ProfilePersonalInfo extends React.Component{
     if (this.state.birthday != null){
       count += 1;
     }
-    return count / 6 * 100 | 0;
+    return count / 5 * 100 | 0;
   }
 
   render(){
@@ -43,7 +40,7 @@ export default class ProfilePersonalInfo extends React.Component{
         <div className="panel panel-default">
           <div className="panel-body">
             <div className="media">
-              {this.state.firstname} have completed {progress}% of profile.
+              You have completed {progress}% of profile.
               <br />
               <progress value={progress} max="100"></progress>
             </div>

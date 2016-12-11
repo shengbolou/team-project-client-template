@@ -434,8 +434,7 @@ MongoClient.connect(url, function(err, db) {
               _id: userId
           }, {
               $set: {
-                  lastname: data.lastname,
-                  firstname: data.firstname,
+                  fullname:data.fullname,
                   nickname: data.nickname,
                   description: data.description,
                   location: data.location,

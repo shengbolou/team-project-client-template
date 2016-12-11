@@ -14,8 +14,7 @@ export default class Settings extends React.Component{
     super(props);
     this.state = {
       userData: {},
-      lastname: "",
-      firstname: "",
+      username:"",
       nickname: "",
       description: "",
       birthday:"",
@@ -72,14 +71,12 @@ export default class Settings extends React.Component{
 
   handleChangeUserInfo(e){
     e.preventDefault();
-    if(this.state.lastname!==""&&
-        this.state.firstname!=""&&
+    if(this.state.fullname!==""&&
         this.state.nickname!==""&&
         this.state.description!==""){
           changeUserInfo({
             userId: this.state.userData._id,
-            lastname: this.state.lastname,
-            firstname:  this.state.firstname,
+            fullname:this.state.username,
             nickname: this.state.nickname,
             description: this.state.description,
             birthday:this.state.birthday
@@ -102,8 +99,7 @@ export default class Settings extends React.Component{
     getUserData(this.props.user,(userData)=>{
         this.setState({
           userData:userData,
-          lastname: userData.lastname,
-          firstname: userData.firstname,
+          username:userData.fullname,
           nickname: userData.nickname,
           description: userData.description,
           birthday: moment(userData.birthday).format('YYYY-MM-DD')
@@ -111,15 +107,11 @@ export default class Settings extends React.Component{
     });
   }
 
-  handleLastname(e){
+  handleUsername(e){
     e.preventDefault();
-    this.setState({lastname: e.target.value});
+    this.setState({username: e.target.value});
   }
 
-  handleFirstname(e){
-    e.preventDefault();
-    this.setState({firstname: e.target.value});
-  }
 
   handleNickname(e){
     e.preventDefault();
@@ -206,20 +198,12 @@ export default class Settings extends React.Component{
                         {alert}
                       </div>
                       <div className="row">
-                        <div className="col-md-6">
+                        <div className="col-md-12">
                           <div className="md-form">
                               <input type="text" className="form-control"
-                                value={this.state.lastname}
-                                onChange={(e)=>this.handleLastname(e)}/>
-                              <label className="shown">LastName</label>
-                          </div>
-                        </div>
-                        <div className="col-md-6">
-                          <div className="md-form">
-                              <input type="text" id="" className="form-control"
-                                value={this.state.firstname}
-                                onChange={(e)=>this.handleFirstname(e)}/>
-                              <label className="shown">FirstName</label>
+                                value={this.state.username}
+                                onChange={(e)=>this.handleUsername(e)}/>
+                              <label className="shown">Your name</label>
                           </div>
                         </div>
                       </div>

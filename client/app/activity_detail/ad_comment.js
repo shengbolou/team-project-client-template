@@ -24,7 +24,7 @@ export default class Ad_comment extends React.Component{
           </Link>
       </div>
       <div className="media-body media-top">
-        <h5>{this.state.author.firstname} {this.state.author.lastname} <small style={{marginLeft:"5px"}}>{time}</small></h5>
+        <h5>{this.state.author.fullname}<small style={{marginLeft:"5px"}}>{time}</small></h5>
         {this.state.text}
       </div>
     </div>
