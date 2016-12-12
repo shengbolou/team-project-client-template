@@ -19,6 +19,7 @@ var secretKey = null;
 app.use(bodyParser.json({limit: '10mb'}));
 app.use(bodyParser.urlencoded({limit: '10mb', extended: true}));
 
+//generate secretkey
 require('crypto').randomBytes(256, function(err, buffer) {
   secretKey = buffer.toString('hex');
 });

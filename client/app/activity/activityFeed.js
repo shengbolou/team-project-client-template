@@ -1,6 +1,7 @@
 import React from 'react';
 import ActivityFeedItem from './activityFeedItem';
 import {getActivityFeedData} from '../server';
+import {Link} from "react-router";
 
 export default class ActivityFeed extends React.Component{
 
@@ -18,6 +19,15 @@ export default class ActivityFeed extends React.Component{
   }
 
   render(){
+    if(this.state.contents.length === 0){
+      return(
+        <div className="alert alert-info" role="alert">
+          No one has posted any activities yet.
+          Post your first activity
+          <Link to="postactivity"><strong> here</strong></Link>
+        </div>
+      );
+    }
     return(
       <div>
         {this.state.contents.map((activityFeedItem)=>{

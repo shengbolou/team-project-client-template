@@ -38,19 +38,6 @@ export default class Chat extends React.Component {
               });})
         })
       });
-      // 
-      // getMessages(this.props.user,this.state.sessionId,(message)=>{
-      //   this.setState({
-      //     message:message
-      //   })
-      // });
-      //
-      // getSessionId(this.props.user,this.state.friend,(session)=>{
-      //   this.setState({
-      //     sessionId:session._id
-      //   })
-      // });
-
     }
 
     handlePostMessage(message){
@@ -84,6 +71,17 @@ export default class Chat extends React.Component {
     }
 
     render() {
+      var chatwindow =   (<ChatWindow target={this.state.friend} curUser={this.props.user}onPost={(message)=>this.handlePostMessage(message)}
+                                message={this.state.message}>
+                          </ChatWindow>);
+      if(this.state.message.length === 0){
+        chatwindow = (
+          <div className="col-md-7 col-sm-7 col-xs-7">
+            <div className="alert alert-info" role="alert">
+              You don't have any chats yet
+            </div>
+          </div>)
+      }
         return (
             <div>
                 <Navbar chat="active" user={this.state.user}/>
@@ -101,9 +99,7 @@ export default class Chat extends React.Component {
                               <NavBody data={this.state.user}  messages={this.state.message} switchUser={(id)=>this.handleSwitchFriends(id)}/>
                             </div>
                         </div>
-                        <ChatWindow target={this.state.friend} curUser={this.props.user}onPost={(message)=>this.handlePostMessage(message)}
-                          message={this.state.message}>
-                        </ChatWindow>
+                        {chatwindow}
                     </div>
 
                 </div>

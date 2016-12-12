@@ -28,6 +28,16 @@ export default class PostFeed extends React.Component{
   }
 
   render(){
+    if(this.state.contents.length === 0){
+      return(
+        <div>
+          <PostEntry userData={this.props.user} onPost={(text,img)=>this.onPost(text,img)}/>
+          <div className="alert alert-info" role="alert">
+            No one has posted anthing yet!
+          </div>
+        </div>
+      );
+    }
     return (
       <div>
         <PostEntry userData={this.props.user} onPost={(text,img)=>this.onPost(text,img)}/>

@@ -177,6 +177,7 @@ class LandingPage extends React.Component{
   }
 
   hanleSignIn(e){
+    e.preventDefault();
     this.setState({
       submitted:true
     });
