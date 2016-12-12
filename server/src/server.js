@@ -24,23 +24,19 @@ require('crypto').randomBytes(256, function(err, buffer) {
   secretKey = buffer.toString('hex');
 });
 
+
 MongoClient.connect(url, function(err, db) {
   // var moment = require('moment');
   app.use(bodyParser.json());
   app.use(bodyParser.text());
   app.use(express.static('../client/build'));
   app.use('/mongo_express', mongo_express(mongo_express_config));
+
   if (err)
       console.log(err);
   else {
       console.log("connected to database")
   }
-
-  //import database functions
-  // var database = require('./database.js');
-  // var readDocument = database.readDocument;
-  // var addDocument = database.addDocument;
-  // var writeDocument = database.writeDocument;
 
   //schemas
   var statusUpdateSchema = require('./schemas/statusUpdate.json');

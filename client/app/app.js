@@ -192,6 +192,12 @@ class LandingPage extends React.Component{
         });
         hashHistory.push('/activity');
       }
+      else{
+        this.setState({
+          failedLogin:true,
+          submitted:true
+        });
+      }
     });
 
   }
@@ -335,7 +341,8 @@ ReactDOM.render((
       </Route>
       <Route path="search" component={SearchPage}/>
       <Route path="postactivity" component={PostActivityPage} />
-      </Route>
+      <Route path='*' component={ActivityPage} />
+    </Route>
   </Router>
 
 ),document.getElementById('container'));

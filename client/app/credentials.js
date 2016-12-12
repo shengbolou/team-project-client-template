@@ -1,9 +1,8 @@
 /**
  * Stores authentication credentials.
  */
-
  var user = null;
- var debug = require('react-debug');
+ // var debug = require('react-debug');
 
 /**
  * Get the token of the currently authenticated user.
