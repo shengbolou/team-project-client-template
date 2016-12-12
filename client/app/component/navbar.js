@@ -1,7 +1,16 @@
 import React from 'react';
 import {Link} from 'react-router';
+import {logout} from '../credentials';
+import {hashHistory} from 'react-router'
 
 export default class Navbar extends React.Component{
+
+  handleLogOut(e){
+    e.preventDefault();
+    logout();
+    hashHistory.push('/');
+  }
+
     render(){
       return(
         <div>
@@ -14,7 +23,7 @@ export default class Navbar extends React.Component{
                   <span className="icon-bar"></span>
                   <span className="icon-bar"></span>
                 </button>
-                <Link className="navbar-brand" to="/">
+                <Link className="navbar-brand" to="/activity">
                   <img src="./img/logo/mipmap-xxhdpi/ic_launcher.png" width="50px" height="50px" alt="" />
                 </Link>
               </div>
@@ -23,7 +32,7 @@ export default class Navbar extends React.Component{
               <div className="collapse navbar-collapse" id="navbar">
                 <ul className="nav navbar-nav nav-left">
                   <li className={this.props.activity}>
-                    <Link to={"/"}> Activities </Link>
+                    <Link to={"/activity"}> Activities </Link>
                   </li>
                   <li className={this.props.post}>
                     <Link to={"post"}>Trend</Link>
@@ -44,7 +53,7 @@ export default class Navbar extends React.Component{
                       <li><Link to="settings"><span><i className="fa fa-cog" aria-hidden="true"></i></span>Settings</Link></li>
                       <li><Link to="postactivity"><span><i className="fa fa-pencil" aria-hidden="true"></i></span>Create Activity</Link></li>
                       <li role="separator" className="divider"></li>
-                      <li><a href="#"><span><i className="fa fa-sign-out" aria-hidden="true"></i></span>Log out</a></li>
+                      <li><a href="#" onClick={(e)=>this.handleLogOut(e)}><span><i className="fa fa-sign-out" aria-hidden="true"></i></span>Log out</a></li>
                     </ul>
                   </div>
                     <li className={this.props.search}>

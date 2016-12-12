@@ -12,8 +12,16 @@ var MongoDB = require('mongodb');
 var MongoClient = MongoDB.MongoClient;
 var ObjectID = MongoDB.ObjectID;
 var url = 'mongodb://localhost:27017/Upao';
-app.use(bodyParser.json({limit: '20mb'}));
-app.use(bodyParser.urlencoded({limit: '20mb', extended: true}));
+var bcrypt = require('bcryptjs');
+var jwt = require('jsonwebtoken');
+var secretKey = null;
+
+app.use(bodyParser.json({limit: '10mb'}));
+app.use(bodyParser.urlencoded({limit: '10mb', extended: true}));
+
+require('crypto').randomBytes(256, function(err, buffer) {
+  secretKey = buffer.toString('hex');
+});
 
 MongoClient.connect(url, function(err, db) {
   // var moment = require('moment');
@@ -39,6 +47,8 @@ MongoClient.connect(url, function(err, db) {
   var userInfoSchema = require('./schemas/userInfo.json');
   var emailChangeSchema = require('./schemas/emailChange.json');
   var activitySchema = require('./schemas/activity.json');
+  var userSchema = require('./schemas/user.json');
+  var loginSchema = require('./schemas/login.json');
   var validate = require('express-jsonschema').validate;
 
   //get post feed data
@@ -1075,26 +1085,6 @@ MongoClient.connect(url, function(err, db) {
       } else {
           res.status(401).end();
       }
-
-      //   var message = readDocument('message',id);
-      //   var message = db.collection
-      //   message.messages.push({
-      //     "sender": senderid,
-      //     "target":targetid,
-      //     "date":(new Date()).getTime(),
-      //     "text": text
-      //   });
-      //   writeDocument('message',message);
-      //
-      //   var sessions = readDocument('messageSession',id);
-      //   sessions.lastmessage = text;
-      //   writeDocument('messageSession',sessions)
-      //   res.status(201);
-      //   res.send(getMessage(id).messages);
-      // }
-      // else{
-      //   res.status(401).end();
-      // }
   });
 
   function getMessage(sessionId, cb) {
@@ -1155,27 +1145,28 @@ MongoClient.connect(url, function(err, db) {
    * Get the user ID from a token. Returns -1 (an invalid ID)
    * if it fails.
    */
-  function getUserIdFromToken(authorizationLine) {
-      try {
-          // Cut off "Bearer " from the header value.
-          var token = authorizationLine.slice(7);
-          // Convert the base64 string to a UTF-8 string.
-          var regularString = new Buffer(token, 'base64').toString('utf8');
-          // Convert the UTF-8 string into a JavaScript object.
-          var tokenObj = JSON.parse(regularString);
-          var id = tokenObj['id'];
-          // Check that id is a number.
-          if (typeof id === 'string') {
-              return id;
-          } else {
-              // Not a number. Return -1, an invalid ID.
-              return "";
-          }
-      } catch (e) {
-          // Return an invalid ID.
-          return -1;
-      }
-  }
+   function getUserIdFromToken(authorizationLine) {
+     try {
+       // Cut off "Bearer " from the header value.
+       var token = authorizationLine.slice(7);
+       // Verify the token. Throws if the token is invalid or expired.
+       var tokenObj = jwt.verify(token, secretKey);
+       var id = tokenObj['id'];
+       // Check that id is a string.
+       if (typeof id === 'string') {
+         return id;
+       } else {
+         // Not a string. Return "", an invalid ID.
+         // This should technically be impossible unless
+         // the server accidentally
+         // generates a token with a number for an id!
+         return "";
+       }
+     } catch (e) {
+       // Return an invalid ID.
+       return "";
+     }
+   }
 
   var ResetDatabase = require('./resetdatabase');
   // Reset database.
@@ -1216,7 +1207,7 @@ MongoClient.connect(url, function(err, db) {
   app.get('/search/userid/:userid/querytext/:querytext',function(req,res){
     var fromUser = getUserIdFromToken(req.get('Authorization'));
     var querytext = req.params.querytext.toLowerCase();
-    var userid = parseInt(req.params.userid, 10);
+    var userid = req.params.userid;
     var data={};
     if(userid === fromUser){
       db.collection('users').find({
@@ -1292,7 +1283,118 @@ MongoClient.connect(url, function(err, db) {
     else{
       res.status(401).end();
     }
-  })
+  });
+
+  app.post('/signup',validate({body:userSchema}),function(req,res){
+    var user = req.body;
+    var password = user.password;
+    user.email = user.email.trim().toLowerCase();
+
+    bcrypt.hash(password,10,function(err,hash){
+      if(err)
+        sendDatabaseError(res,err);
+      else{
+        user.password = hash;
+        user.nickname = "";
+        user.avatar = "img/user.png";
+        user.description = "";
+        user.location = null;
+        user.friends = [];
+        user.sessions = [];
+        user.birthday = 147812931;
+
+        db.collection('users').insertOne(user,function(err,result){
+          if(err)
+            sendDatabaseError(res,err);
+          else{
+            var userId = result.insertedId;
+
+            db.collection('postFeeds').insertOne({
+              contents:[]
+            },function(err,result){
+              if(err)
+                sendDatabaseError(res,err);
+              else{
+                var postId = result.insertedId;
+
+                db.collection('notifications').insertOne({
+                  contents:[]
+                },function(err,result){
+                  if(err)
+                    sendDatabaseError(res,err);
+                  else{
+                    var notificationId = result.insertedId;
+
+                    db.collection('activities').insertOne({
+                      contents:[]
+                    },function(err,result){
+                      if(err)
+                        sendDatabaseError(res,err);
+                      else{
+                        var activityId = result.insertedId;
+
+                        db.collection('users').updateOne({_id:userId},{
+                          $set: {
+                            activity:activityId,
+                            notification: notificationId,
+                            post:postId
+                          }
+                        },function(err){
+                          if(err)
+                            sendDatabaseError(res,err);
+                          else{
+                            res.send();
+                          }
+                        });
+                      }
+                    });
+                  }
+                });
+              }
+            });
+          }
+        });
+      }
+    });
+  });
+
+  app.post('/login',validate({body:loginSchema}),function(req,res){
+    var body = req.body;
+    var password = body.password;
+
+    var email = body.email.trim().toLowerCase();
+
+    db.collection('users').findOne({email:email},function(err,user){
+        if(err)
+          res.sendDatabaseError(res,err);
+        else if(user===null){
+          res.status(401).end();
+        }
+        else{
+          bcrypt.compare(password,user.password,function(err,success){
+            if(err){
+              res.status(500).end();
+            }
+            else if(success){
+              jwt.sign({
+                id:user._id
+              },secretKey,{expiresIn:'7 days'},function(token){
+                delete user.password;
+                res.send({
+                  user:user,
+                  token:token
+                })
+              });
+            }
+            else{
+              res.status(401).end();
+            }
+          });
+        }
+    });
+
+  });
+
 
   // Starts the server on port 3000!
   app.listen(3000, function() {

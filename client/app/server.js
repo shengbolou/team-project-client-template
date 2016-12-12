@@ -1,16 +1,17 @@
 import {} from './database.js';
-var token = 'eyJpZCI6IjAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMSJ9';
+// var token = 'eyJpZCI6IjAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMSJ9';
 var moment = require('moment');
+import {updateCredentials,getToken} from './credentials';
 
 
 /**
 * Properly configure+send an XMLHttpRequest with error handling,
 * authorization token, and other needed properties.
 */
-function sendXHR(verb, resource, body, cb) {
+function sendXHR(verb, resource, body, cb, errorCb) {
   var xhr = new XMLHttpRequest();
   xhr.open(verb, resource);
-  xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+  xhr.setRequestHeader('Authorization', 'Bearer ' + getToken());
   // The below comment tells ESLint that AppError is a global.
   // Otherwise, ESLint would complain about it! (See what happens in Atom if
   // you remove the comment...)
@@ -28,6 +29,10 @@ function sendXHR(verb, resource, body, cb) {
       // The server may have included some response text with details concerning
       // the error.
       var responseText = xhr.responseText;
+      if (errorCb) {
+        // We were given a custom error handler.
+        errorCb(statusCode);
+      }
       window.AppError('Could not ' + verb + " " + resource + ": Received " +
       statusCode + " " + statusText + ": " + responseText);
     }
@@ -271,5 +276,29 @@ export function getSessionId(userid,targetid,cb){
 export function searchquery(userid,querytext,cb){
   sendXHR('GET','/search/userid/'+userid+'/querytext/'+querytext, undefined, (xhr) => {
     cb(JSON.parse(xhr.responseText));
+  });
+}
+
+ export function signup(email, username, password, cb) {
+   sendXHR('POST', '/signup', { fullname: username,
+                              email: email,
+                              password: password }, () => {
+     cb(true);
+   }, () => {
+     cb(false);
+   });
+ }
+
+ export function login(email, password, cb) {
+  sendXHR('POST', '/login', { email: email, password: password},
+  (xhr) => {
+    // Success callback: Login succeeded.
+    var authData = JSON.parse(xhr.responseText);
+    // Update credentials and indicate success via the callback!
+    updateCredentials(authData.user, authData.token);
+    cb(true);
+  }, () => {
+    // Error callback: Login failed.
+    cb(false);
   });
 }

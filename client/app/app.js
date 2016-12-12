@@ -11,19 +11,34 @@ import PostActivity from './postactivity/postactivity';
 import Activity_detail from './activity_detail/activity_detail';
 import ErrorBanner from './component/errorbanner';
 import { IndexRoute, Router, Route, hashHistory } from 'react-router';
+import {hideElement} from './util';
+import {signup,login} from './server.js';
+import {getUserId,isUserLoggedIn} from './credentials';
 
 
 
 class ActivityPage extends React.Component{
   render(){
-    return(
-      <Activity user={"000000000000000000000001"}/>
-    );
+    if(isUserLoggedIn()){
+      var userId = getUserId();
+      return(
+        <Activity user={userId}/>
+      );
+    }
+    else{
+      hashHistory.push('/');
+    }
   }
 }
 class ThrendPage extends React.Component{
   render(){
-    return (<Post user={"000000000000000000000001"} />);
+    if(isUserLoggedIn()){
+      var userId = getUserId();
+      return (<Post user={userId} />);
+    }
+    else{
+      hashHistory.push('/');
+    }
   }
 }
 
@@ -44,66 +59,180 @@ class App extends React.Component {
 
 class SettingsPage extends React.Component {
   render() {
-    return (
-      <Settings user={"000000000000000000000001"} />
-    );
+    if(isUserLoggedIn()){
+      var userId = getUserId();
+      return (
+        <Settings user={userId} />
+      );
+    }
+    else{
+      hashHistory.push('/');
+    }
   }
 }
 
 class ChatPage extends React.Component{
   render() {
-    return (
-      <Chat user={"000000000000000000000001"} />
-    );
+    if(isUserLoggedIn()){
+      var userId = getUserId();
+      return (
+        <Chat user={userId} />
+      );
+    }
+    else{
+      hashHistory.push('/');
+    }
   }
 }
 
 class NotificationPage extends React.Component{
   render(){
-    return(
-      <Notification user={"000000000000000000000001"} id={this.props.params.id}/>
-    );
+    if(isUserLoggedIn()){
+      var userId = getUserId();
+      return(
+        <Notification user={userId} id={this.props.params.id}/>
+      );
+    }
+    else{
+      hashHistory.push('/');
+    }
   }
 }
 
 class Activity_detailPage extends React.Component{
   render(){
-    return(
-      <Activity_detail user={"000000000000000000000001"} id={this.props.params.id}/>
-    )
+    if(isUserLoggedIn()){
+      var userId = getUserId();
+      return(
+        <Activity_detail user={userId} id={this.props.params.id}/>
+      )
+    }
+    else{
+      hashHistory.push('/');
+    }
   }
 }
 class SearchPage extends React.Component{
    render(){
-    return(
-      <Search user={"000000000000000000000001"}/>
-    );
+     if(isUserLoggedIn()){
+       var userId = getUserId();
+       return(
+         <Search user={userId}/>
+       );
+     }
+     else{
+       hashHistory.push('/');
+     }
   }
 }
 
 class ProfilePage extends React.Component{
   render(){
-    return(
-      <Profile user={this.props.params.user} currUser={"000000000000000000000001"}/>
-    );
+    if(isUserLoggedIn()){
+      var userId = getUserId();
+      return(
+        <Profile user={this.props.params.user} currUser={userId}/>
+      );
+    }
+    else{
+      hashHistory.push('/');
+    }
   }
 }
 
 class PostActivityPage extends React.Component {
   render() {
-    return (
-      <PostActivity user={"000000000000000000000001"} />
-    );
+    if(isUserLoggedIn()){
+      var userId = getUserId();
+      return (
+        <PostActivity user={userId} />
+      );
+    }
+    else{
+      hashHistory.push('/');
+    }
   }
 }
 
-class LoginPage extends React.Component{
+class LandingPage extends React.Component{
+  constructor(props){
+    super(props);
+    this.state={
+      signInEmail:"",
+      signInPass:"",
+      signUpEmail:"",
+      signUpName:"",
+      signUpPass:"",
+      failedLogin:false,
+      failedSignUp:false,
+      submitted:false
+    }
+  }
+
+  handleChange(field, e) {
+    e.preventDefault();
+    var update = {};
+    update[field] = e.target.value;
+    this.setState(update);
+  }
+
+  hanleSignIn(e){
+    this.setState({
+      submitted:true
+    });
+
+    login(this.state.signInEmail,this.state.signInPass,(success)=>{
+      if(success){
+        this.setState({
+          signInPass:"",
+          signInEmail:"",
+          failedLogin:false,
+          submitted:false
+        });
+        hashHistory.push('/activity');
+      }
+    });
+
+  }
+
+  handleSignUp(e){
+    e.preventDefault();
+    this.setState({
+      submitted:true
+    });
+    signup(this.state.signUpEmail,this.state.signUpName,this.state.signUpPass,(success)=>{
+      if(success){
+        login(this.state.signUpEmail,this.state.signUpPass,(success)=>{
+          if(success){
+            this.setState({
+              signInPass:"",
+              signInEmail:"",
+              signUpEmail:"",
+              signUpPass:"",
+              signUpName:"",
+              failedLogin:false,
+              submitted:false
+            });
+            hashHistory.push('/activity');
+          }
+        });
+      }
+      else{
+        this.setState({
+          failedSignUp:true,
+          submitted:true
+        });
+      }
+    });
+  }
+
   render(){
     return(
-    <div className="container index">
+    <form className="container index heading-text">
       <div className="row">
 
         <div className="col-md-6">
+          <div className={"alert alert-danger " + hideElement(!this.state.failedLogin)} role="alert"><strong>Invalid email address or password.</strong> Please try a different email address or password, and try logging in again.</div>
           <div className="panel panel-primary">
             <div className="panel-heading">
               <h4>Sign in</h4>
@@ -112,13 +241,17 @@ class LoginPage extends React.Component{
               <div className="row">
                 <div className="col-md-7 col-md-offset-2">
                   <div className="md-form">
-                    <input type="text" className="form-control"/>
+                    <input disabled={this.state.submitted} type="text" className="form-control"
+                      pattern="[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-‌​9-]+)*"
+                      onChange={(e)=>this.handleChange("signInEmail",e)} required/>
                     <label>Email</label>
                   </div>
                 </div>
                 <div className="col-md-7 col-md-offset-2">
                   <div className="md-form">
-                    <input type="password" className="form-control"/>
+                    <input disabled={this.state.submitted} type="password" className="form-control"
+                      onChange={(e)=>this.handleChange("signInPass",e)}
+                      required/>
                     <label>Password</label>
                   </div>
                 </div>
@@ -127,7 +260,7 @@ class LoginPage extends React.Component{
             <div className="panel-footer">
               <div className="row">
                 <div className="col-md-12">
-                  <button type="button" className="btn btn-default pull-right">
+                  <button disabled={this.state.submitted} type="submit" className="btn btn-default pull-right" onClick={(e)=>this.hanleSignIn(e)}>
                     Submit
                   </button>
                 </div>
@@ -137,6 +270,7 @@ class LoginPage extends React.Component{
         </div>
 
         <div className="col-md-6">
+          <div className={hideElement(!this.state.failedSignUp) + " alert alert-danger"} role="alert"><strong>Invalid account signup.</strong> It is possible that you already have an account with that particular email address.</div>
           <div className="panel panel-primary">
             <div className="panel-heading">
               <h4>Sign up</h4>
@@ -145,19 +279,19 @@ class LoginPage extends React.Component{
               <div className="row">
                 <div className="col-md-7 col-md-offset-2">
                   <div className="md-form">
-                    <input type="text" className="form-control"/>
+                    <input type="text" disabled={this.state.submitted} className="form-control" onChange={(e)=>this.handleChange("signUpName",e)}/>
                     <label>Username</label>
                   </div>
                 </div>
                 <div className="col-md-7 col-md-offset-2">
                   <div className="md-form">
-                    <input type="email" className="form-control"/>
+                    <input type="email" disabled={this.state.submitted} className="form-control" onChange={(e)=>this.handleChange("signUpEmail",e)}/>
                     <label>Email</label>
                   </div>
                 </div>
                 <div className="col-md-7 col-md-offset-2">
                   <div className="md-form">
-                    <input type="password" className="form-control"/>
+                    <input type="password" disabled={this.state.submitted} className="form-control" onChange={(e)=>this.handleChange("signUpPass",e)}/>
                     <label>Password</label>
                   </div>
                 </div>
@@ -166,7 +300,7 @@ class LoginPage extends React.Component{
             <div className="panel-footer">
               <div className="row">
                 <div className="col-md-12">
-                  <button type="button" className="btn btn-default pull-right">
+                  <button disabled={this.state.submitted} type="button" className="btn btn-default pull-right" onClick={(e)=>this.handleSignUp(e)}>
                     Submit
                   </button>
                 </div>
@@ -175,7 +309,7 @@ class LoginPage extends React.Component{
           </div>
         </div>
       </div>
-    </div>
+    </form>
     );
   }
 }
@@ -184,8 +318,9 @@ class LoginPage extends React.Component{
 ReactDOM.render((
   <Router history={hashHistory}>
     <Route path="/" component={App}>
-      <IndexRoute component={ActivityPage} />
+      <IndexRoute component={LandingPage} />
       <Route path="post" component={ThrendPage} />
+      <Route path="activity" component={ActivityPage} />
       <Route path="settings" component={SettingsPage} />
       <Route path="chat" component={ChatPage} />
       <Route path="notification" component={NotificationPage}>
