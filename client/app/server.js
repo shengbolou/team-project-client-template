@@ -1,4 +1,4 @@
-import {} from './database.js';
+import {} from './component/database.js';
 // var token = 'eyJpZCI6IjAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMSJ9';
 var moment = require('moment');
 import {updateCredentials,getToken} from './credentials';
@@ -218,6 +218,14 @@ export function getPostFeedData(user, cb){
 export function getActivityFeedData(user,cb){
   // We don't need to send a body, so pass in 'undefined' for the body.
   sendXHR('GET', '/user/' + user + '/activity', undefined, (xhr) => {
+    // Call the callback with the data.
+    cb(JSON.parse(xhr.responseText));
+  });
+}
+
+export function getAllActivities(user,cb){
+  // We don't need to send a body, so pass in 'undefined' for the body.
+  sendXHR('GET', '/user/' + user + '/activities', undefined, (xhr) => {
     // Call the callback with the data.
     cb(JSON.parse(xhr.responseText));
   });

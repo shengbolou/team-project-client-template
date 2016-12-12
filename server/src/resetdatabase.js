@@ -124,7 +124,7 @@ var initialData = {
     },
     "2": {
       "_id":new ObjectID("000000000000000000000002"),
-      "type": "Party",
+      "type": "Entertainment",
       "author":new ObjectID("000000000000000000000002"),
       "title": "birthday party",
       "img":"img/Birthday-Party.jpg",
@@ -147,7 +147,7 @@ var initialData = {
     },
     "3": {
       "_id":new ObjectID("000000000000000000000003"),
-      "type": "Party",
+      "type": "Entertainment",
       "author":new ObjectID("000000000000000000000003"),
       "title": "dance party",
       "img":"img/parties.jpg",

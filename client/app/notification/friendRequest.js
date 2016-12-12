@@ -21,7 +21,7 @@ export default class Request extends React.Component{
                       </Link>
                   </div>
                   <div className="media-body">
-                      <h4 className="media-heading">{this.props.data.sender.firstname}{this.props.data.sender.lastname}</h4>
+                      <h4 className="media-heading">{this.props.data.sender.fullname}</h4>
                        sent you a friend request
                   </div>
               </div>

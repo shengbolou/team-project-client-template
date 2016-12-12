@@ -21,7 +21,7 @@ export default class NewsFeed extends React.Component{
                   <div className="media-body">
                       <h4 className="media-heading">
                         <Link to={"profile/"+this.props.data.author._id}>
-                          {this.props.data.author.firstname}{this.props.data.author.lastname}
+                          {this.props.data.author.fullname}
                         </Link>
                       </h4>
                         <Link to={"profile/"+this.props.data.author._id}>posted a new activity</Link>

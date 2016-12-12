@@ -1,6 +1,6 @@
 import React from 'react';
 import ActivityFeedItem from './activityFeedItem';
-import {getActivityFeedData} from '../server';
+import {getAllActivities} from '../server';
 import {Link} from "react-router";
 
 export default class ActivityFeed extends React.Component{
@@ -13,8 +13,10 @@ export default class ActivityFeed extends React.Component{
   }
 
   getData(){
-    getActivityFeedData(this.props.user, (activityFeedData)=>{
-      this.setState(activityFeedData);
+    getAllActivities(this.props.user, (activityFeedData)=>{
+      this.setState({
+        contents:activityFeedData
+      });
     });
   }
 

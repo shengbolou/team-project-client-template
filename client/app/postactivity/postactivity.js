@@ -79,7 +79,7 @@ export default class PostActivity extends React.Component {
         this.state.detail.trim()!==""
     ){
       createActivity(this.state,()=>{
-        hashHistory.push('/');
+        hashHistory.push('/activity');
       });
     }
   }

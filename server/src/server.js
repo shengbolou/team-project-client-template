@@ -319,6 +319,7 @@ MongoClient.connect(url, function(err, db) {
               // (so userMap["4"] will give the user with ID 4)
               var userMap = {};
               users.forEach((user) => {
+                  delete user.password;
                   userMap[user._id] = user;
               });
               callback(null, userMap);
@@ -468,28 +469,88 @@ MongoClient.connect(url, function(err, db) {
           if (err)
               return callback(err);
 
-          var userList = [activityItem.author];
-          activityItem.comments.forEach((comment) => {
-              userList.push(comment.author);
-          });
-          activityItem.likeCounter.map((id) => userList.push(id));
-          activityItem.participants.map((id) => userList.push(id));
-          resolveUserObjects(userList, function(err, userMap) {
-              if (err)
-                  return callback(err);
-
-              activityItem.author = userMap[activityItem.author];
-              activityItem.participants = activityItem.participants.map((id) => userMap[id]);
-              activityItem.likeCounter = activityItem.likeCounter.map((id) => userMap[id]);
-              activityItem.comments.forEach((comment) => {
-                  comment.author = userMap[comment.author];
-              });
-
-              callback(null, activityItem);
-          });
+          resolveActivityItem(activityItem,callback);
 
       });
   }
+
+  function resolveActivityItem(activityItem,callback){
+    var userList = [activityItem.author];
+    activityItem.comments.forEach((comment) => {
+        userList.push(comment.author);
+    });
+    activityItem.likeCounter.map((id) => userList.push(id));
+    activityItem.participants.map((id) => userList.push(id));
+    resolveUserObjects(userList, function(err, userMap) {
+        if (err)
+            return callback(err);
+
+        activityItem.author = userMap[activityItem.author];
+        activityItem.participants = activityItem.participants.map((id) => userMap[id]);
+        activityItem.likeCounter = activityItem.likeCounter.map((id) => userMap[id]);
+        activityItem.comments.forEach((comment) => {
+            comment.author = userMap[comment.author];
+        });
+
+        callback(null, activityItem);
+    });
+  }
+
+  function getAllActivities(callback){
+    db.collection('activityItems').find().toArray(function(err,collection){
+      if(err){
+        return callback(err);
+      }
+      var resolvedActivities = [];
+
+      function processNextFeedItem(i) {
+        // Asynchronously resolve a feed item.
+        resolveActivityItem(collection[i], function(err, activityItem) {
+          if (err) {
+            // Pass an error to the callback.
+            callback(err);
+          } else {
+            // Success!
+            resolvedActivities.push(activityItem);
+            if (resolvedActivities.length === collection.length) {
+              // I am the final feed item; all others are resolved.
+              // Pass the resolved feed document back to the callback.
+              collection = resolvedActivities.reverse();
+              callback(null, collection);
+            } else {
+              // Process the next feed item.
+              processNextFeedItem(i + 1);
+            }
+          }
+        });
+      }
+
+      if (collection.length === 0) {
+        callback(null, collection);
+      } else {
+        processNextFeedItem(0);
+      }
+
+
+    });
+  }
+
+  app.get('/user/:userId/activities',function(req,res){
+    var userId = req.params.userId;
+    var fromUser = getUserIdFromToken(req.get('Authorization'));
+    if(userId === fromUser){
+      getAllActivities(function(err, activityData) {
+        if (err)
+        sendDatabaseError(res, err);
+        else {
+          res.send(activityData);
+        }
+      });
+    }
+    else{
+      res.status(401).end();
+    }
+  });
 
   function getActivityFeedData(userId, callback) {
       db.collection('users').findOne({
@@ -706,10 +767,10 @@ MongoClient.connect(url, function(err, db) {
 
   //like activity
   app.put('/activityItem/:activityId/likelist/:userId', function(req, res) {
-      var fromUser = getUserIdFromToken(req.get('Authorization'));
+      // var fromUser = getUserIdFromToken(req.get('Authorization'));
       var activityId = new ObjectID(req.params.activityId);
       var userId = req.params.userId;
-      if (userId === fromUser) {
+      // if (userId === fromUser) {
           var update = {
               $addToSet: {}
           };
@@ -737,18 +798,18 @@ MongoClient.connect(url, function(err, db) {
                   });
               }
           });
-      } else {
-          // Unauthorized.
-          res.status(401).end();
-      }
+      // } else {
+      //     // Unauthorized.
+      //     res.status(401).end();
+      // }
   });
 
   //unlike activity
   app.delete('/activityItem/:activityId/likelist/:userId', function(req, res) {
-      var fromUser = getUserIdFromToken(req.get('Authorization'));
+      // var fromUser = getUserIdFromToken(req.get('Authorization'));
       var activityId = new ObjectID(req.params.activityId);
       var userId = req.params.userId;
-      if (userId === fromUser) {
+      // if (userId === fromUser) {
           var update = {
               $pull: {}
           };
@@ -776,10 +837,10 @@ MongoClient.connect(url, function(err, db) {
                   });
               }
           });
-      } else {
-          // Unauthorized.
-          res.status(401).end();
-      }
+      // } else {
+      //     // Unauthorized.
+      //     res.status(401).end();
+      // }
   });
 
   //post ADcomments
