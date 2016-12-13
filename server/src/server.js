@@ -55,7 +55,7 @@ MongoClient.connect(url, function(err, db) {
   var loginSchema = require('./schemas/login.json');
   var validate = require('express-jsonschema').validate;
 
-  function getAllPost(callback){
+  function getAllPosts(callback){
     db.collection('postFeedItems').find().toArray(function(err,collection){
       if(err){
         return callback(err);
@@ -719,7 +719,6 @@ MongoClient.connect(url, function(err, db) {
       var userId = req.params.userId;
       var fromUser = getUserIdFromToken(req.get('Authorization'));
       var body = req.body;
-      console.log(fromUser);
       if (fromUser === userId) {
           db.collection('users').updateOne({
               _id: new ObjectID(userId)
