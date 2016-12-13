@@ -1462,15 +1462,8 @@ MongoClient.connect(url, function(err, db) {
   });
 
   app.get('/activityNotification',function(req,res){
-    var length = req.body;
-    console.log(length);
     db.collection('activityItems').count(function(err,count){
-      if(length < count){
-        res.send({result:count});
-      }
-      else{
-        res.send({result:count});
-      }
+      res.send({result:count});
     });
   });
 
