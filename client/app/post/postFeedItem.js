@@ -7,6 +7,7 @@ import {unLikePost} from '../server';
 import {Link} from 'react-router';
 import Lightbox from 'react-images';
 var moment = require('moment');
+var debug = require('react-debug');
 
 export default class PostFeedItem extends React.Component{
 
@@ -20,7 +21,9 @@ export default class PostFeedItem extends React.Component{
 
   handlePostComment(comment){
     postComment(this.state.data._id, this.props.currentUser ,comment, (newFeedItem)=>{
-      this.setState(newFeedItem);
+      this.setState({
+        data:newFeedItem
+      });
     })
   }
 
@@ -42,7 +45,13 @@ export default class PostFeedItem extends React.Component{
 
     if(e.button === 0){
       var cb = (likeCounter) => {
-        this.setState({likeCounter:likeCounter});
+        this.state.data.likeCounter = likeCounter;
+        var newData = this.state.data;
+        this.setState(
+          {
+            data:newData
+          }
+        );
       };
 
       if(!this.didUserLike(this.props.currentUser)){
@@ -62,6 +71,13 @@ export default class PostFeedItem extends React.Component{
         return true;
     }
     return false;
+  }
+
+  componentWillReceiveProps(nextProps){
+    debug("newprops");
+    this.setState({
+      data:nextProps.data
+    })
   }
 
   render(){
