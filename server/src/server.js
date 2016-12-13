@@ -93,6 +93,8 @@ MongoClient.connect(url, function(err, db) {
 
     });
   }
+
+
   //get post feed data
   function getPostFeedItem(feedItemId, callback) {
       db.collection('postFeedItems').findOne({
@@ -593,6 +595,22 @@ MongoClient.connect(url, function(err, db) {
         sendDatabaseError(res, err);
         else {
           res.send(activityData);
+        }
+      });
+    }
+    else{
+      res.status(401).end();
+    }
+  });
+  app.get('/user/:userId/posts',function(req,res){
+    var userId = req.params.userId;
+    var fromUser = getUserIdFromToken(req.get('Authorization'));
+    if(userId === fromUser){
+      getAllPosts(function(err, postDate) {
+        if (err)
+        sendDatabaseError(res, err);
+        else {
+          res.send(postDate);
         }
       });
     }
