@@ -61,7 +61,7 @@ export default class ChatWindow extends React.Component {
 
                                     <div className="media">
                                         <div className="media-left media-body">
-                                            <font size="3">{this.state.targetUser.firstname} {this.state.targetUser.lastname}</font>
+                                            <font size="3">{this.state.targetUser.fullname}</font>
                                         </div>
 
                                     </div>
