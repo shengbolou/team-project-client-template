@@ -309,6 +309,10 @@ export function clearActivityTimeInterval(){
   clearTimeout(activityTime);
 }
 
+export function isActivityNotificationRunning(){
+  return activityTime!==undefined && activityTime!==null;
+}
+
 
 var chatTime;
 
@@ -323,6 +327,10 @@ export function clearChatTime(){
   clearTimeout(chatTime);
 }
 
+export function isChatNotificationRunning(){
+  return chatTime!==undefined && chatTime!==null;
+}
+
 var postTime;
 
 export function postNotification(cb){
@@ -335,6 +343,10 @@ export function postNotification(cb){
 
 export function clearPostTimeInterval(){
   clearTimeout(postTime);
+}
+
+export function isPostNotificationRunning(){
+  return postTime!==undefined && postTime!==null;
 }
 
 

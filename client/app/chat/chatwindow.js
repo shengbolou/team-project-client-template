@@ -1,9 +1,11 @@
 import React from 'React';
+// import ReactDOM from 'react-dom';
 import {getUserData} from '../server';
 import {Link} from 'react-router';
 import ChatEntry from './chatentry';
 import ChatRightBubble from './chatrightbubble';
 import ChatLeftBubble from './chatleftbubble';
+// var debug = require('react-debug');
 
 export default class ChatWindow extends React.Component {
 
@@ -17,6 +19,10 @@ export default class ChatWindow extends React.Component {
 
     componentDidMount() {
         this.getData();
+    }
+
+    componentDidUpdate() {
+      this.refs.chatwindow.scrollTop=this.refs.chatwindow.scrollHeight;
     }
 
     handlePostMessage(text){
@@ -72,7 +78,7 @@ export default class ChatWindow extends React.Component {
                         </div>
                     </div>
 
-                    <div className="panel-body panel-body-chatwindow" style={{'height': '60vh'}}>
+                    <div className="panel-body panel-body-chatwindow" style={{'height': '60vh'}} ref="chatwindow">
 
                       {this.state.message === undefined ? 0: this.state.message.map((msg,i)=>{
                         if(msg.sender._id===this.props.curUser){

@@ -25,11 +25,11 @@ ul.list-group.friends{
   margin-top: 0px;
 }
 .chat-left{
-    width: 27%;
+  width: 27%;
 }
 
 .chat-right .panel .panel-body{
-    height: 30vh;
+  height: 30vh;
 }
 
 
@@ -38,39 +38,39 @@ ul.list-group.friends{
 }
 
 .panel-heading-chat {
-    padding: 0px 0px;
-    border-bottom: 0px solid #FDFDFD;
+  padding: 0px 0px;
+  border-bottom: 0px solid #FDFDFD;
 }
 
 .panel-dafault {
-    box-shadow: 0 10px 28px 0 rgba(137, 157, 197, .12);
-    border: 0px;
-    background: none;
+  box-shadow: 0 10px 28px 0 rgba(137, 157, 197, .12);
+  border: 0px;
+  background: none;
 }
 
 .chat-left .panel .panel-body {
-    padding: 0px;
-    height:81vh;
-    overflow-y:scroll;
-    overflow-x: hidden;
+  padding: 0px;
+  height:81vh;
+  overflow-y:scroll;
+  overflow-x: hidden;
 }
 
 .friends .list-group-item {
-   border-radius: 4px;
-    cursor: pointer;
-    margin-top: 3px;
-    border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 3px;
+  border: none;
 }
 
 .friends .list-group-item-friend {
-   border-radius: 4px;
-    cursor: pointer;
-    margin-top: 3px;
-    border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 3px;
+  border: none;
 }
 
 .panel-heading-chatwindow {
-    background: #fdfdfd;
+  background: #fdfdfd;
 }
 .panel-body-chatwindow{
   background-color:#f7f7f7;
@@ -78,26 +78,16 @@ ul.list-group.friends{
 }
 
 .panel-footer-chatwindow {
-    background: #fdfdfd;
-    border-top: none;
-    height: 23%
+  background: #fdfdfd;
+  border-top: none;
+  height: 23%
 }
 
-/*.panel-body-chatwindow .media .media-body {
-
-    border-radius: 20px;
-    background: #fdfdfd;
-    padding: 10px;
-    width: 100%;
-    height: 100%;
-    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .12);
-}*/
-
 .panel-body-chatwindow .media {
-    padding-top: 5px;
-    padding-right: 5px;
-    padding-bottom: 5px;
-    padding-left: 5px;
+  padding-top: 5px;
+  padding-right: 5px;
+  padding-bottom: 5px;
+  padding-left: 5px;
 }
 .friend-msg .media-body .msg{
   margin-bottom: 5px;
@@ -123,16 +113,16 @@ ul.list-group.friends{
 
 .panel-body-chatwindow .media .media-top {
   padding-bottom:6px;
-    text-align: center;
-    font-size: 12px;
-    color:#b9b9b9;
+  text-align: center;
+  font-size: 12px;
+  color:#b9b9b9;
 }
 
 
 .friends li:hover,
 .friends li:focus,
 .friends li:active{
-    background-color: rgba(232, 231, 231, 0.6);
+  background-color: rgba(232, 231, 231, 0.6);
 }
 
 .msg{
@@ -156,7 +146,7 @@ ul.list-group.friends{
 }
 
 .send{
-margin-top: 50px
+  margin-top: 50px
 }
 
 .text-media{

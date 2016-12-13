@@ -1,7 +1,7 @@
 import React from 'react';
 import PostEntry from './postEntry';
 import PostFeedItem from './postFeedItem';
-import {getAllPosts,postNotification,clearPostTimeInterval,postStatus} from '../server';
+import {getAllPosts,postNotification,postStatus,isPostNotificationRunning} from '../server';
 import {hashHistory} from 'react-router';
 
 
@@ -30,18 +30,20 @@ export default class PostFeed extends React.Component{
   }
 
   getNotification(){
-    postNotification((x)=>{
-      if(x.result > (this.state.contents.length===0?100000:this.state.contents.length)){
-        this.notifyMe(()=>{
-          this.getData();
-        });
-      }
-    });
+    if(!isPostNotificationRunning()){
+      postNotification((x)=>{
+        if(x.result > (this.state.contents.length===0?100000:this.state.contents.length)){
+          this.notifyMe(()=>{
+            this.getData();
+          });
+        }
+      });
+    }
   }
 
-  componentWillUnmount(){
-    clearPostTimeInterval();
-  }
+  // componentWillUnmount(){
+  //   clearPostTimeInterval();
+  // }
 
   notifyMe(cb) {
     if (!Notification) {
