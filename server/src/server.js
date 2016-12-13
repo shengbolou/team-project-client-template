@@ -55,6 +55,44 @@ MongoClient.connect(url, function(err, db) {
   var loginSchema = require('./schemas/login.json');
   var validate = require('express-jsonschema').validate;
 
+  function getAllPost(callback){
+    db.collection('postFeedItems').find().toArray(function(err,collection){
+      if(err){
+        return callback(err);
+      }
+      var resolvedPosts = [];
+
+      function processNextFeedItem(i) {
+        // Asynchronously resolve a feed item.
+        resolvePostItem(collection[i], function(err, postItem) {
+          if (err) {
+            // Pass an error to the callback.
+            callback(err);
+          } else {
+            // Success!
+            resolvedPosts.push(postItem);
+            if (resolvedPosts.length === collection.length) {
+              // I am the final feed item; all others are resolved.
+              // Pass the resolved feed document back to the callback.
+              collection = resolvedPosts.reverse();
+              callback(null, collection);
+            } else {
+              // Process the next feed item.
+              processNextFeedItem(i + 1);
+            }
+          }
+        });
+      }
+
+      if (collection.length === 0) {
+        callback(null, collection);
+      } else {
+        processNextFeedItem(0);
+      }
+
+
+    });
+  }
   //get post feed data
   function getPostFeedItem(feedItemId, callback) {
       db.collection('postFeedItems').findOne({
