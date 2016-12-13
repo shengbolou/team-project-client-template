@@ -1,0 +1,326 @@
+Company Name: Upao
+CS 326
+12/12/2016
+Team Members: Shengbo Lou, Weijie Shi, Yucheng Lu, Siyu Peng, Robert Liu, Wei Xie
+Title:Adding a Database
+
+GET /user/:userId/feed
+  Purpose:
+    Retrieve the trend post feed data from mongoDB
+    Client.server.method:
+      getPostFeedData(user,cb)
+  Server.server:
+    app.get(‘/user/:userId/feed’,cb)
+    getPostFeedData(user,cb)
+    getPostFeedItem(feedItemId,cb)
+  MongoDB:
+  	db.collection(‘users’).findOne()
+  	db.collection(‘postFeeds’).findOne()
+  	db.collection(‘postFeedItems’).findOne()
+  Authorization:
+    The body of the HTTP request contains an ”author" field
+    containing a user ID. The requester must have the same user ID.
+  Contributor:
+
+POST /postItem [postdata], where [postdata] is a JSON object describing a
+trend post item.
+  Purpose:
+    Createa new postItem into mongoDB
+  Client.server.method:
+    postStatus(user,text,cb)
+  Server.server:
+  	app.get(‘/postItem’,{postdata},cb)
+  	postStatus(user,text,location,img,cb)
+  MongoDB:
+  	db.collection(‘postFeedItems’).insertOne()
+  Authorization:
+    The body of the HTTP request contains an ”author" field containing a user ID. The requester must have the same user ID.
+  Contributor:
+
+PUT /postItem/:postItemId/likelist/:userId
+  Purpose:
+  		Add the userId to the likelist of the postItem with postItemId
+  Client.server.method:
+  	likePost(feedItemId, user, cb)
+  Server.server:
+  	app.put(‘/postItem/:postItemId/likelist/:userId’, cb)
+  MongoDB:
+  	db.collection(‘postFeedItems’).updateOne()
+  Authorization:
+    The body of the HTTP request contains an ”author" field containing a user ID. The requester must have the same user ID.
+  Contributor:
+
+DELETE /postItem/:postItemId/likelist/:userId
+  Purpose:
+    Remove the userId from the likelist of the postItem with postItemId
+  Client.server.method:
+  	unLikePost(feedItemId, user, cb)
+  Server.server:
+  	app.delete(‘/postItem/:postItemId/likelist/:userId’,cb)
+  MongoDB:
+  	db.collection(‘postFeedItems’).updateOne()
+  Authorization:
+    The body of the HTTP request contains an ”author" field containing a user ID. The requester must have the same user ID.
+  Contributor:
+
+GET /user/:userId
+  Purpose:
+  	Retrieve the user data
+  Client.server.method:
+  	getUserData(user,cb)
+  Server.server:
+    app.get('/user/:userId',cb)
+    getUserData(userId,cb)
+    resolveUserObjects(userData.friends,cb)
+    resolveSessionObject(userData.sessions,cb)
+  MongoDB:
+    db.collection('users').findOne()
+    db.collection('users').find()
+    db.collection('messageSession').find()
+  Authorization:
+    The body of the HTTP request contains an ”author" field containing a user ID. The requester must have the same user ID.
+  Contributor:
+
+POST /postItem/:postItemId/commentThread/comment comment
+  Purpose:
+    post a new comment to a postitem
+  Client.server.method:
+    adpostComment(activityId, author, comment, cb)
+  Server.server:
+    app.post('/postItem/:postItemId/commentThread/comment',cb)
+    getPostFeedItem(PostItemId,cb)
+  MongoDB:
+    db.collection('postFeedItems').updateOne()
+    db.collection('postFeedItems').findOne()
+  Authorization:
+    The body of the HTTP request contains an ”author" field containing a user ID. The requester must have the same user ID.
+  Contributor:
+
+PUT /settings/user/:userId [userdata] , where [userdata] is a JSON object
+describing a user.
+  Purpose:
+    change user Infomation
+  Client.server.method:
+    changeUserInfo(data, cb)
+  Server.server:
+    app.put('/settings/user/:userId',{userdata},cb)
+    getUserData(userId,cb)
+  MongoDB:
+    db.collection('users').updateOne()
+    db.collection('users').findOne()
+  Authorization:
+    The body of the HTTP request contains an ”author" field containing a user ID. The requester must have the same user ID.
+  Contributor:
+
+PUT /settings/emailChange/user/:userId emailaddress
+  Purpose:
+    change User email address
+  Client.server.method:
+    changeEmail(data,cb)
+  Server.server:
+    app.put('/settings/emailChange/user/:userId emailaddress')
+    getUserData(userId,cb)
+  MongoDB:
+    db.collection('users',cb).updateOne()
+  Authorization:
+    The body of the HTTP request contains an ”author" field containing a user ID. The requester must have the same user ID.
+  Contributor:
+
+
+
+PUT /settings/location/user/:userId location
+  Purpose:
+    update user current location
+  Client.server.method:
+    getlocation(cb)
+      use Google geolocation library
+    setlocation(userId,location)
+  Server.server:
+    app.put('/settings/location/user/:userId',cb)
+  MongoDB:
+    db.collection('users').updateOne()
+  Authorization:
+    The body of the HTTP request contains an ”author" field containing a user ID. The requester must have the same user ID.
+  Contributor:
+
+GET /user/:userid/activity
+  Purpose:
+    Retrieve the activity feed data
+  Client.server.method:
+  Server.server:
+  MongoDB:
+  Authorization: userid===fromUser
+  Contributor:
+
+
+Purpose: Retrieve the activity feed data
+Mock Server Method: getActivityFeedData(user,cb)
+Authorization: All users can access activity feed data of others on the
+profile page of a specific user.
+POST /postActivity [activitydata] , where [activitydata] is a JSON object
+describing an activity post.
+Purpose:
+Client.server.method:
+Server.server:
+MongoDB:
+Authorization: userid===fromUser
+Contributor:
+
+
+Purpose: Create a new /postActivity
+Mock Server Method: createActivity(data,cb)
+Authorization: The body of the HTTP request contains an ”author" field
+containing a user ID. The requester must have the same user ID.
+GET /activityItem/:activityId
+Purpose:
+Client.server.method:
+Server.server:
+MongoDB:
+Authorization: userid===fromUser
+Contributor:
+
+
+Purpose: Retrieve the activity detail data
+Mock Server Method: getActivityDetail(id,cb)
+Authorization: All users can access activity detail data through the link of
+the activity.
+PUT /activityItem/:activityId/likelist/:userId userId
+Purpose:
+Client.server.method:
+Server.server:
+MongoDB:
+Authorization: userid===fromUser
+Contributor:
+
+
+Purpose: Add the userId to the likelist of the activityItem with activityId
+Mock Server Method: likeActivity(activityId, user, cb)
+Authorization: The body of the HTTP request contains an ”author" field
+containing a user ID. The requester must have the same user ID.
+DELETE /activityItem/:activityId/likelist/:userId
+Purpose:
+Client.server.method:
+Server.server:
+MongoDB:
+Authorization: userid===fromUser
+Contributor:
+
+
+Purpose: Remove the userId from the likelist of the activityItem with
+activityId
+Mock Server Method: unLikeActivity(activityId, user, cb)
+Authorization: The body of the HTTP request contains an ”author" field
+containing a user ID. The requester must have the same user ID.
+POST /activityItem/:activityId/commentThread/comment comment
+Purpose:
+Client.server.method:
+Server.server:
+MongoDB:
+Authorization: userid===fromUser
+Contributor:
+
+
+Purpose: Create a new /activityItem/:activityId/commentThread/comment
+Mock Server Method: adpostComment(activityId, author, comment, cb)
+Authorization: The body of the HTTP request contains an ”author" field
+containing a user ID. The requester must have the same user ID.
+GET /user/:userId/notification
+Purpose:
+Client.server.method:
+Server.server:
+MongoDB:
+Authorization: userid===fromUser
+Contributor:
+
+
+Purpose: Retrieve the notification data
+Mock Server Method: getNotificationData(user, cb)
+Authorization: The body of the HTTP request contains an ”author" field
+containing a user ID. The requester must have the same user ID.
+PUT /notification/:notificationId/:userId userId , where the first userId is of the
+Purpose:
+Client.server.method:
+Server.server:
+MongoDB:
+Authorization: userid===fromUser
+Contributor:
+
+
+receiver and the later one is of the sender
+Purpose: Add the later user to the friend list of the former user
+Mock Server Method: acceptRequest(id,user,cb)
+Authorization: The body of the HTTP request contains an ”author" field
+containing a user ID. The requester must have the same user ID.
+DELETE /notification/:notificationId/:userId
+Purpose:
+Client.server.method:
+Server.server:
+MongoDB:
+Authorization: userid===fromUser
+Contributor:
+
+
+Purpose: Remove the notification of notificationId from the notification list
+of the user with userId
+Mock Server Method: deleteNotification(id, user ,cb)
+Authorization: The body of the HTTP request contains an ”author" field
+containing a user ID. The requester must have the same user ID.
+GET /user/:userId/chatsession/:id
+
+Purpose:
+Client.server.method:
+Server.server:
+MongoDB:
+Authorization: userid===fromUser
+Contributor:
+
+Purpose: Retrieve the chat message
+Mock Server Method: getMessages(userid,id,cb)
+Authorization: The body of the HTTP request contains an ”author" field
+containing a user ID. The requester must have the same user ID.
+POST /user/:userid/chatsession/:id [message] , where [message] is is a JSON
+object describing a chat message.
+Purpose:
+Client.server.method:
+Server.server:
+MongoDB:
+Authorization: userid===fromUser
+Contributor:
+
+
+Purpose: Update the chat message between the users with userid and id
+Mock Server Method: postMessage(sessionId,sender,target, text, cb)
+Authorization: The body of the HTTP request contains an ”author" field
+containing a user ID. The requester must have the same user ID.
+
+GET /getsession/:userid/:targetid
+Purpose:
+Client.server.method:
+Server.server:
+MongoDB:
+Authorization: userid===fromUser
+Contributor:
+
+
+Purpose: Retrieve the chat session between users with userid and targetid
+Mock Server Method: getSessionId(userid, targetid, cb)
+Authorization: The body of the HTTP request contains an ”author" field
+containing a user ID. The requester must have the same user ID.
+
+GET /search/userid/:userid/querytext/:querytext
+  Purpose:
+    Search users{ firstname,lastname }  activityItems{description}
+    postFeedItems{text}. Use regular expression to match the query text
+  Client.server.method:
+    searchquery(userid,querytext,cd)
+    Server.server:
+    app.get(‘/search/userid/:userid/querytext/:querytext’,cb)
+  MongoDB:
+    db.collection(‘users’).find()
+    db.collection(‘activityItems’).find()
+    db.collection(‘postFeedItems’).find()
+  Authorization:
+    The body of the HTTP request contains an ”author" field
+    containing a user ID. The requester must have the same user ID.
+  Contributor:
+    Wei Xie, Shengbo Lou
