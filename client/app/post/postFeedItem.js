@@ -5,18 +5,35 @@ import {postComment} from '../server';
 import {likePost} from '../server';
 import {unLikePost} from '../server';
 import {Link} from 'react-router';
+import Lightbox from 'react-images';
 var moment = require('moment');
 
 export default class PostFeedItem extends React.Component{
 
   constructor(props){
     super(props);
-    this.state = props.data;
+    this.state = {
+      data: props.data,
+      isOpen:false
+    };
   }
 
   handlePostComment(comment){
-    postComment(this.state._id, this.props.currentUser ,comment, (newFeedItem)=>{
+    postComment(this.state.data._id, this.props.currentUser ,comment, (newFeedItem)=>{
       this.setState(newFeedItem);
+    })
+  }
+
+  handleImgClick(e){
+    e.preventDefault();
+    this.setState({
+      isOpen:true
+    });
+  }
+  closeLightbox(e){
+    e.preventDefault();
+    this.setState({
+      isOpen:false
     })
   }
 
@@ -29,16 +46,16 @@ export default class PostFeedItem extends React.Component{
       };
 
       if(!this.didUserLike(this.props.currentUser)){
-        likePost(this.state._id,this.props.currentUser,cb);
+        likePost(this.state.data._id,this.props.currentUser,cb);
       }
       else{
-        unLikePost(this.state._id,this.props.currentUser,cb);
+        unLikePost(this.state.data._id,this.props.currentUser,cb);
       }
     }
   }
 
   didUserLike(user) {
-    var likeCounter = this.state.likeCounter;
+    var likeCounter = this.state.data.likeCounter;
 
     for (var i = 0; i < likeCounter.length; i++) {
       if (likeCounter[i]._id === user)
@@ -48,7 +65,7 @@ export default class PostFeedItem extends React.Component{
   }
 
   render(){
-    var data = this.state;
+    var data = this.state.data;
     var contents;
     switch(data.type){
       case "general":
@@ -58,7 +75,7 @@ export default class PostFeedItem extends React.Component{
         throw new Error("Unknown FeedItem: " + data.type);
     }
 
-    var img = <img src={contents.img} width="100%" height="100%" alt="" />;
+    var img = <a onClick={(e)=>this.handleImgClick(e)}><img src={contents.img} width="100%" height="100%" alt="" /></a>;
 
     if(contents.img === null)
       img = null;
@@ -93,6 +110,14 @@ export default class PostFeedItem extends React.Component{
           <p>
             {contents.text}
           </p>
+          {
+            img===null?null:
+            <Lightbox
+              images={[{ src: contents.img, caption: contents.text}]}
+              isOpen={this.state.isOpen}
+              onClose={(e)=>this.closeLightbox(e)}
+              />
+          }
           {img}
         </div>
         <div className="panel-footer">
