@@ -231,7 +231,7 @@ export function getAllActivities(user,cb){
   });
 }
 
-export function getAllPost(user,cb){
+export function getAllPosts(user,cb){
   // We don't need to send a body, so pass in 'undefined' for the body.
   sendXHR('GET', '/user/' + user + '/posts', undefined, (xhr) => {
     // Call the callback with the data.

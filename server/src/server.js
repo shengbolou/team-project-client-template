@@ -606,11 +606,12 @@ MongoClient.connect(url, function(err, db) {
     var userId = req.params.userId;
     var fromUser = getUserIdFromToken(req.get('Authorization'));
     if(userId === fromUser){
-      getAllPosts(function(err, postDate) {
+      getAllPosts(function(err, postData) {
         if (err)
         sendDatabaseError(res, err);
         else {
-          res.send(postDate);
+          console.log(postData);
+          res.send(postData);
         }
       });
     }

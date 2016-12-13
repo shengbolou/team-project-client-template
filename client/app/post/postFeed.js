@@ -1,7 +1,7 @@
 import React from 'react';
 import PostEntry from './postEntry';
 import PostFeedItem from './postFeedItem';
-import {getPostFeedData} from '../server';
+import {getAllPosts} from '../server';
 import {postStatus} from '../server';
 
 
@@ -16,8 +16,10 @@ export default class PostFeed extends React.Component{
 
 
   getData(){
-    getPostFeedData(this.props.userId, (postFeedData)=>{
-      this.setState(postFeedData);
+    getAllPosts(this.props.userId, (postFeedData)=>{
+      this.setState({
+        "contents":postFeedData
+      });
     });
   }
 
