@@ -2,7 +2,7 @@ import React from 'react';
 import ActivityFeedItem from './activityFeedItem';
 import {getAllActivities,activityNotification,clearActivityTimeInterval} from '../server';
 import {Link} from "react-router";
-var debug = require('react-debug');
+
 
 export default class ActivityFeed extends React.Component{
 

@@ -1,8 +1,7 @@
 import React from 'react';
 import PostEntry from './postEntry';
 import PostFeedItem from './postFeedItem';
-import {getAllPosts} from '../server';
-import {postStatus} from '../server';
+import {getAllPosts,postNotification,clearPostTimeInterval,postStatus} from '../server';
 
 
 export default class PostFeed extends React.Component{
@@ -29,6 +28,42 @@ export default class PostFeed extends React.Component{
     });
   }
 
+  getNotification(){
+    postNotification((x)=>{
+      if(x.result > (this.state.contents.length===0?100000:this.state.contents.length)){
+        this.notifyMe(()=>{
+          this.getData();
+        });
+      }
+    });
+  }
+
+  componentWillUnmount(){
+    clearPostTimeInterval();
+  }
+
+  notifyMe(cb) {
+    if (!Notification) {
+      alert('Desktop notifications not available in your browser. Try Chromium.');
+      return;
+    }
+
+    if (Notification.permission !== "granted")
+      Notification.requestPermission();
+    else {
+      var notification = new Notification('WeMeet', {
+        icon: 'http://localhost:3000/img/logo/mipmap-xxhdpi/ic_launcher.png',
+        body: "Hey there! You have new posts"
+      });
+      notification.onclick = (event)=>{
+        event.preventDefault();
+        event.target.close();
+        cb();
+      }
+    }
+  }
+
+
   render(){
     if(this.state.contents.length === 0){
       return(
@@ -52,5 +87,6 @@ export default class PostFeed extends React.Component{
 
   componentDidMount(){
     this.getData();
+    this.getNotification();
   }
 }
