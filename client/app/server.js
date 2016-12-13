@@ -309,6 +309,19 @@ export function clearActivityTimeInterval(){
   clearTimeout(activityTime);
 }
 
+var chatTime;
+
+export function chatNotification(userid,cb){
+  sendXHR('GET','/chatNotification/'+userid,undefined,(xhr)=>{
+    cb(JSON.parse(xhr.responseText));
+  });
+  chatTime = setTimeout(chatNotification.bind(null,userid,cb),1000);
+}
+
+export function clearChatTime(){
+  clearTimeout(chatTime);
+}
+
 
  export function signup(email, username, password, cb) {
    sendXHR('POST', '/signup', { fullname: username,

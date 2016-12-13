@@ -2,7 +2,7 @@ import React from 'react';
 import Navbar from '../component/navbar';
 import NavBody from './navbody';
 import ChatWindow from './chatwindow';
-import {getUserData,getMessages,postMessage,getSessionId} from '../server';
+import {clearChatTime,chatNotification,getUserData,getMessages,postMessage,getSessionId} from '../server';
 
 export default class Chat extends React.Component {
 
@@ -17,6 +17,11 @@ export default class Chat extends React.Component {
     }
     componentDidMount() {
       this.getData();
+      this.getNotification();
+    }
+
+    componentWillUnmount(){
+      clearChatTime();
     }
 
     getData() {
@@ -39,6 +44,20 @@ export default class Chat extends React.Component {
         })
       });
     }
+
+    getNotification(){
+      if(this.props.user!==undefined){
+      chatNotification(this.props.user,(sessions)=>{
+        var currsessions = this.state.user.sessions;
+         for(var i = 0;i<currsessions.length;i++){
+           if(currsessions[i].lastmessage!==sessions[i].lastmessage){
+             this.getData();
+             return;
+           }
+         }
+      })
+    }
+  }
 
     handlePostMessage(message){
       postMessage(this.state.sessionId, this.props.user, this.state.friend ,message, (newMessage)=>{

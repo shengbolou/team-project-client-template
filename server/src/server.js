@@ -416,6 +416,18 @@ MongoClient.connect(url, function(err, db) {
       });
   }
 
+  app.get('/chatNotification/:userid',function(req,res){
+    var userid = req.params.userid;
+    getUserData(new ObjectID(userid),function(err,userdata){
+      if(err)
+      sendDatabaseError(res,err);
+      else {
+
+        res.send(userdata.sessions);
+      }
+    })
+  })
+
   //get user data
   app.get('/user/:userId', function(req, res) {
       var userId = req.params.userId;
