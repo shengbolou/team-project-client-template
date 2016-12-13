@@ -195,11 +195,16 @@ class LandingPage extends React.Component{
       else{
         this.setState({
           failedLogin:true,
-          submitted:true
+          submitted:false
         });
       }
     });
 
+  }
+  componentDidMount(){
+    if(isUserLoggedIn()){
+      hashHistory.push("/activity");
+    }
   }
 
   handleSignUp(e){
@@ -221,6 +226,12 @@ class LandingPage extends React.Component{
               submitted:false
             });
             hashHistory.push('/activity');
+          }
+          else{
+            this.setState({
+              failedLogin:true,
+              submitted:false
+            })
           }
         });
       }

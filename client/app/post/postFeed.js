@@ -2,6 +2,7 @@ import React from 'react';
 import PostEntry from './postEntry';
 import PostFeedItem from './postFeedItem';
 import {getAllPosts,postNotification,clearPostTimeInterval,postStatus} from '../server';
+import {hashHistory} from 'react-router';
 
 
 export default class PostFeed extends React.Component{
@@ -59,6 +60,7 @@ export default class PostFeed extends React.Component{
         event.preventDefault();
         event.target.close();
         cb();
+        hashHistory.push("/post");
       }
     }
   }
