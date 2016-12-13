@@ -287,6 +287,35 @@ export function searchquery(userid,querytext,cb){
   });
 }
 
+export function activityNotification(length,cb){
+  sendXHR('GET','/activityNotification',{length:length},(xhr)=>{
+    cb(JSON.parse(xhr.responseText));
+  });
+
+  // var longPoll = ()=>{
+  //   var debug = require('react-debug');
+  //   debug({length:length});
+  //   var xhr = new XMLHttpRequest();
+  //   xhr.open('GET','/activityNotification');
+  //   xhr.addEventListener('load', function() {
+  //     var statusCode = xhr.status;
+  //     if (statusCode >= 200 && statusCode < 300) {
+  //       cb(JSON.parse(xhr.responseText));
+  //       longPoll();
+  //     }
+  //   });
+  //   xhr.timeout = 2000;
+  //   xhr.addEventListener('timeout', function() {
+  //     longPoll()
+  //   });
+  //   xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+  //   xhr.send(JSON.stringify({length:1}));
+  // }
+  // longPoll();
+  // setTimeout(activityNotification.bind(null,length,cb),5000);
+}
+
+
  export function signup(email, username, password, cb) {
    sendXHR('POST', '/signup', { fullname: username,
                               email: email,

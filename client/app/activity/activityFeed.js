@@ -1,7 +1,8 @@
 import React from 'react';
 import ActivityFeedItem from './activityFeedItem';
-import {getAllActivities} from '../server';
+import {getAllActivities,activityNotification} from '../server';
 import {Link} from "react-router";
+var debug = require('react-debug');
 
 export default class ActivityFeed extends React.Component{
 
@@ -19,6 +20,41 @@ export default class ActivityFeed extends React.Component{
       });
     });
   }
+
+  getNotification(){
+      activityNotification(1,(x)=>{
+        if(x.result > this.state.contents.length){
+          this.notifyMe(()=>{
+            this.getData();
+          });
+        }
+      });
+
+  }
+
+
+  notifyMe(cb) {
+    if (!Notification) {
+      alert('Desktop notifications not available in your browser. Try Chromium.');
+      return;
+    }
+
+    if (Notification.permission !== "granted")
+      Notification.requestPermission();
+    else {
+      var notification = new Notification('WeMeet', {
+        icon: 'http://localhost:3000/img/logo/mipmap-xxhdpi/ic_launcher.png',
+        body: "Hey there! You have new activities"
+      });
+      notification.onclick = (event)=>{
+        event.preventDefault();
+        event.target.close();
+        cb();
+      }
+    }
+  }
+
+
 
   render(){
     if(this.state.contents.length === 0){
@@ -41,5 +77,6 @@ export default class ActivityFeed extends React.Component{
 
   componentDidMount(){
     this.getData();
+    this.getNotification();
   }
 }

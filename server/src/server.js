@@ -14,15 +14,22 @@ var ObjectID = MongoDB.ObjectID;
 var url = 'mongodb://localhost:27017/Upao';
 var bcrypt = require('bcryptjs');
 var jwt = require('jsonwebtoken');
-var secretKey = null;
+var secretKey = `2f862fc1c64e437b86cef1373d3a3f8248ab4675220b3afab1c5ea97e
+fda064351da14375118884b463b47a4c0699f67aed0094f339998f102d99bdfe479dbefae0
+6933592c86abd20c5447a5f9af1b275c909de4108ae2256bcb0285daad0aa890171849fb3c
+a332ca4da03fc80b9228f56cad935b6b9fd33ce6437a4b1f96648546a122a718720452b7cf
+38acc120c64b4a1622399bd6984460e4f4387db1a164c6dd4c80993930c57444905f6b46e7
+a7f1dba60f898302c4865cfee74b82517852e5bd5890a547d59071319b5dfc0faa92ce4f01
+f090e49cab2422031b17ea54a7c4b660bf491d7b47343cdf6042918669d7df54e7d3a1be6e9a571be9aef`;
 
 app.use(bodyParser.json({limit: '10mb'}));
 app.use(bodyParser.urlencoded({limit: '10mb', extended: true}));
 
 //generate secretkey
-require('crypto').randomBytes(256, function(err, buffer) {
-  secretKey = buffer.toString('hex');
-});
+// require('crypto').randomBytes(256, function(err, buffer) {
+//   secretKey = buffer.toString('hex');
+//   console.log(secretKey);
+// });
 
 
 MongoClient.connect(url, function(err, db) {
@@ -667,12 +674,13 @@ MongoClient.connect(url, function(err, db) {
   });
 
   app.put('/settings/location/user/:userId', function(req, res) {
-      var userId = new ObjectID(req.params.userId);
-      var fromUser = new ObjectID(getUserIdFromToken(req.get('Authorization')));
+      var userId = req.params.userId;
+      var fromUser = getUserIdFromToken(req.get('Authorization'));
       var body = req.body;
-      if (fromUser.str === userId.str) {
+      console.log(fromUser);
+      if (fromUser === userId) {
           db.collection('users').updateOne({
-              _id: userId
+              _id: new ObjectID(userId)
           }, {
               $set: {
                   location: body
@@ -1451,6 +1459,19 @@ MongoClient.connect(url, function(err, db) {
         }
     });
 
+  });
+
+  app.get('/activityNotification',function(req,res){
+    var length = req.body;
+    console.log(length);
+    db.collection('activityItems').count(function(err,count){
+      if(length < count){
+        res.send({result:count});
+      }
+      else{
+        res.send({result:count});
+      }
+    });
   });
 
 
