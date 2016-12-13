@@ -65,24 +65,7 @@ MongoClient.connect(url, function(err, db) {
           else if (postFeedItem === null) {
               callback(null, null);
           } else {
-              var userList = [postFeedItem.contents.author];
-              postFeedItem.comments.forEach((comment) => {
-                  userList.push(comment.author);
-              });
-              userList = userList.concat(postFeedItem.likeCounter);
-
-              resolveUserObjects(userList, function(err, userMap) {
-                  if (err)
-                      callback(err);
-                  else {
-                      postFeedItem.likeCounter = postFeedItem.likeCounter.map((id) => userMap[id]);
-                      postFeedItem.contents.author = userMap[postFeedItem.contents.author];
-                      postFeedItem.comments.forEach((comment) => {
-                          comment.author = userMap[comment.author];
-                      });
-                      callback(null, postFeedItem);
-                  }
-              });
+            resolvePostItem(postFeedItem,callback);
           }
       });
   }
@@ -500,6 +483,27 @@ MongoClient.connect(url, function(err, db) {
         });
 
         callback(null, activityItem);
+    });
+  }
+
+  function resolvePostItem(postFeedItem,callback){
+    var userList = [postFeedItem.contents.author];
+    postFeedItem.comments.forEach((comment) => {
+        userList.push(comment.author);
+    });
+    userList = userList.concat(postFeedItem.likeCounter);
+
+    resolveUserObjects(userList, function(err, userMap) {
+        if (err)
+            callback(err);
+        else {
+            postFeedItem.likeCounter = postFeedItem.likeCounter.map((id) => userMap[id]);
+            postFeedItem.contents.author = userMap[postFeedItem.contents.author];
+            postFeedItem.comments.forEach((comment) => {
+                comment.author = userMap[comment.author];
+            });
+            callback(null, postFeedItem);
+        }
     });
   }
 
