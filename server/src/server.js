@@ -610,7 +610,6 @@ MongoClient.connect(url, function(err, db) {
         if (err)
         sendDatabaseError(res, err);
         else {
-          console.log(postData);
           res.send(postData);
         }
       });

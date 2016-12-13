@@ -295,18 +295,18 @@ export function searchquery(userid,querytext,cb){
   });
 }
 
-var time;
+var activityTime;
 
 export function activityNotification(cb){
   sendXHR('GET','/activityNotification',undefined,(xhr)=>{
     cb(JSON.parse(xhr.responseText));
   });
-  time = setTimeout(activityNotification.bind(null,cb),10000);
+  activityTime = setTimeout(activityNotification.bind(null,cb),10000);
 }
 
 
 export function clearTimeInterval(){
-  clearTimeout(time);
+  clearTimeout(activityTime);
 }
 
 
