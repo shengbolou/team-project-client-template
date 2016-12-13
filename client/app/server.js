@@ -305,7 +305,7 @@ export function activityNotification(cb){
 }
 
 
-export function clearTimeInterval(){
+export function clearActivityTimeInterval(){
   clearTimeout(activityTime);
 }
 

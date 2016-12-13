@@ -1,6 +1,6 @@
 import React from 'react';
 import ActivityFeedItem from './activityFeedItem';
-import {getAllActivities,activityNotification,clearTimeInterval} from '../server';
+import {getAllActivities,activityNotification,clearActivityTimeInterval} from '../server';
 import {Link} from "react-router";
 var debug = require('react-debug');
 
@@ -23,7 +23,6 @@ export default class ActivityFeed extends React.Component{
 
   getNotification(){
     activityNotification((x)=>{
-      debug("Content length: "+this.state.contents.length);
       if(x.result > (this.state.contents.length===0?100000:this.state.contents.length)){
         this.notifyMe(()=>{
           this.getData();
@@ -33,7 +32,7 @@ export default class ActivityFeed extends React.Component{
   }
 
   componentWillUnmount(){
-    clearTimeInterval();
+    clearActivityTimeInterval();
   }
 
 
