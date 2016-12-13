@@ -1526,6 +1526,14 @@ MongoClient.connect(url, function(err, db) {
     });
   });
 
+  app.get('/postNotification',function(req,res){
+    db.collection('postFeedItems').count(function(err,count){
+      res.send({result:count});
+    });
+  });
+
+
+
 
   // Starts the server on port 3000!
   app.listen(3000, function() {

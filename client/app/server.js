@@ -309,6 +309,20 @@ export function clearActivityTimeInterval(){
   clearTimeout(activityTime);
 }
 
+var postTime;
+
+export function postNotification(cb){
+  sendXHR('GET','/postNotification',undefined,(xhr)=>{
+    cb(JSON.parse(xhr.responseText));
+  });
+  activityTime = setTimeout(postNotification.bind(null,cb),10000);
+}
+
+
+export function clearPostTimeInterval(){
+  clearTimeout(postTime);
+}
+
 
  export function signup(email, username, password, cb) {
    sendXHR('POST', '/signup', { fullname: username,
