@@ -329,7 +329,7 @@ export function postNotification(cb){
   sendXHR('GET','/postNotification',undefined,(xhr)=>{
     cb(JSON.parse(xhr.responseText));
   });
-  activityTime = setTimeout(postNotification.bind(null,cb),10000);
+  postTime = setTimeout(postNotification.bind(null,cb),10000);
 }
 
 
