@@ -1217,7 +1217,7 @@ MongoClient.connect(url, function(err, db) {
   app.get('/search/userid/:userid/querytext/:querytext',function(req,res){
     var fromUser = getUserIdFromToken(req.get('Authorization'));
     var querytext = req.params.querytext.toLowerCase();
-    var userid = parseInt(req.params.userid, 10);
+    var userid = req.params.userid
     var data={};
     if(userid === fromUser){
       db.collection('users').find({
