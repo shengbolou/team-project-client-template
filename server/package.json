@@ -6,13 +6,14 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "bcryptjs": "^2.3.0",
     "body-parser": "^1.15.0",
     "express": "^4.13.4",
     "express-jsonschema": "^1.1.0",
+    "jsonwebtoken": "^5.7.0",
     "mongo-express": "^0.30.40",
     "mongodb": "^2.1.14",
-    "bcryptjs": "^2.3.0",
-    "jsonwebtoken": "^5.7.0"
+    "socket.io": "^1.7.2"
   },
   "devDependencies": {
     "eslint": "^2.4.0",

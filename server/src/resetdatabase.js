@@ -3,6 +3,20 @@ var ObjectID = require('mongodb').ObjectID;
 var databaseName = "Upao";
 // Put the initial mock objects here.
 var initialData = {
+  "userSocketIds":{
+    "1":{
+      userId:new ObjectID("000000000000000000000001"),
+      socketId:1
+    },
+    "2":{
+      userId:new ObjectID("000000000000000000000002"),
+      socketId:1
+    },
+    "3":{
+      userId:new ObjectID("000000000000000000000003"),
+      socketId:1
+    }
+  },
   //users
   "users":{
     "1":{

@@ -2,6 +2,7 @@
 var express = require('express');
 // Creates an Express server.
 var app = express();
+var http = require('http');
 var bodyParser = require('body-parser');
 // Support receiving JSON in HTTP request bodies
 var mongo_express = require('mongo-express/lib/middleware');
@@ -1181,8 +1182,8 @@ MongoClient.connect(url, function(err, db) {
           }, {
               $push: {
                   messages: {
-                      "sender": senderid,
-                      "target": targetid,
+                      "sender": new ObjectID(senderid),
+                      "target": new ObjectID(targetid),
                       "date": (new Date()).getTime(),
                       "text": text
                   }
@@ -1202,21 +1203,14 @@ MongoClient.connect(url, function(err, db) {
                               $set: {
                                   "lastmessage": text
                               }
-                          }, function(err, res) {
+                          }, function(err) {
                               if (err)
                                   sendDatabaseError(res, err);
-                              else if (res.modifiedCount === 0) {
-                                  // Could not find the specified feed item. Perhaps it does not exist, or
-                                  // is not authored by the user.
-                                  // 400: Bad request.
-                                  return res.status(400).end();
-                              }
 
+                              else res.send(message.messages);
                           });
-                          res.send(message.messages);
                       }
                   });
-
               }
           });
       } else {
@@ -1228,20 +1222,20 @@ MongoClient.connect(url, function(err, db) {
       //var message = readDocument("message",sessionId);
       db.collection('message').findOne({
           _id: sessionId
-      }, function(err, messages) {
+      }, function(err, message) {
           if (err) {
               return cb(err);
           } else {
 
-              var userList = [messages.messages[0].sender, messages.messages[0].target];
+              var userList = [message.messages[0].sender, message.messages[0].target];
               resolveUserObjects(userList, function(err, userMap) {
                   if (err)
                       return cb(err);
-                  messages.messages.forEach((message) => {
+                  message.messages.forEach((message) => {
                       message.target = userMap[message.target];
                       message.sender = userMap[message.sender];
                   });
-                  cb(null, messages);
+                  cb(null, message);
               })
           }
       });
@@ -1545,8 +1539,36 @@ MongoClient.connect(url, function(err, db) {
   });
 
   // Starts the server on port 3000!
-  app.listen(3000, function() {
-      console.log('app listening on port 3000!');
+  // app.listen(3000, function() {
+  //     console.log('app listening on port 3000!');
+  // });
+
+  var server = http.createServer(app);
+
+  var io = require('socket.io')(server);
+  io.on('connection', function(socket){
+    socket.on('user',function(user){
+      db.collection('userSocketIds').updateOne({userId:new ObjectID(user)},{
+        $set:{
+          socketId:socket.id
+        }
+      },{upsert: true});
+    });
+
+    socket.on('chat',function(data){
+      console.log(data);
+      db.collection('userSocketIds').findOne({userId:new ObjectID(data.friend)},function(err,socketData){
+        if(err)
+          io.emit('chat',err);
+        else{
+          io.sockets.connected[socketData.socketId].emit('chat',true);
+        }
+      });
+    });
+
   });
 
+  server.listen(3000, function() {
+      console.log('app listening on port 3000!');
+  });
 });

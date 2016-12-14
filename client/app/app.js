@@ -14,13 +14,15 @@ import { IndexRoute, Router, Route, hashHistory } from 'react-router';
 import {hideElement} from './util';
 import {signup,login} from './server.js';
 import {getUserId,isUserLoggedIn} from './credentials';
-
-
+import io from 'socket.io-client';
+// var debug = require('react-debug');
+var socket = io();
 
 class ActivityPage extends React.Component{
   render(){
     if(isUserLoggedIn()){
       var userId = getUserId();
+      socket.emit('user',userId);
       return(
         <Activity user={userId}/>
       );
@@ -34,6 +36,7 @@ class ThrendPage extends React.Component{
   render(){
     if(isUserLoggedIn()){
       var userId = getUserId();
+      socket.emit('user',userId);
       return (<Post user={userId} />);
     }
     else{
@@ -61,6 +64,7 @@ class SettingsPage extends React.Component {
   render() {
     if(isUserLoggedIn()){
       var userId = getUserId();
+      socket.emit('user',userId);
       return (
         <Settings user={userId} />
       );
@@ -75,8 +79,9 @@ class ChatPage extends React.Component{
   render() {
     if(isUserLoggedIn()){
       var userId = getUserId();
+      socket.emit('user',userId);
       return (
-        <Chat user={userId} />
+        <Chat user={userId} socket={socket}/>
       );
     }
     else{
@@ -89,6 +94,7 @@ class NotificationPage extends React.Component{
   render(){
     if(isUserLoggedIn()){
       var userId = getUserId();
+      socket.emit('user',userId);
       return(
         <Notification user={userId} id={this.props.params.id}/>
       );
@@ -103,6 +109,7 @@ class Activity_detailPage extends React.Component{
   render(){
     if(isUserLoggedIn()){
       var userId = getUserId();
+      socket.emit('user',userId);
       return(
         <Activity_detail user={userId} id={this.props.params.id}/>
       )
@@ -116,6 +123,7 @@ class SearchPage extends React.Component{
    render(){
      if(isUserLoggedIn()){
        var userId = getUserId();
+       socket.emit('user',userId);
        return(
          <Search user={userId}/>
        );
@@ -130,6 +138,7 @@ class ProfilePage extends React.Component{
   render(){
     if(isUserLoggedIn()){
       var userId = getUserId();
+      socket.emit('user',userId);
       return(
         <Profile user={this.props.params.user} currUser={userId}/>
       );
@@ -144,6 +153,7 @@ class PostActivityPage extends React.Component {
   render() {
     if(isUserLoggedIn()){
       var userId = getUserId();
+      socket.emit('user',userId);
       return (
         <PostActivity user={userId} />
       );
