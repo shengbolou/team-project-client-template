@@ -6,6 +6,7 @@ import {hashHistory} from 'react-router';
 import AvatarCropper from "react-avatar-cropper";
 import {hideElement} from '../util';
 // var debug = require('react-debug');
+var socket;
 
 export default class PostActivity extends React.Component {
 
@@ -79,6 +80,7 @@ export default class PostActivity extends React.Component {
         this.state.detail.trim()!==""
     ){
       createActivity(this.state,()=>{
+        socket.emit('newActivity');
         hashHistory.push('/activity');
       });
     }
@@ -86,6 +88,7 @@ export default class PostActivity extends React.Component {
 
   componentDidMount(){
     this.getData();
+    socket = this.props.socket;
   }
 
   handleTitle(e){

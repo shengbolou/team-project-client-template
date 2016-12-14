@@ -24,7 +24,7 @@ class ActivityPage extends React.Component{
       var userId = getUserId();
       socket.emit('user',userId);
       return(
-        <Activity user={userId}/>
+        <Activity user={userId} socket={socket}/>
       );
     }
     else{
@@ -37,7 +37,7 @@ class ThrendPage extends React.Component{
     if(isUserLoggedIn()){
       var userId = getUserId();
       socket.emit('user',userId);
-      return (<Post user={userId} />);
+      return (<Post user={userId} socket={socket}/>);
     }
     else{
       hashHistory.push('/');
@@ -155,7 +155,7 @@ class PostActivityPage extends React.Component {
       var userId = getUserId();
       socket.emit('user',userId);
       return (
-        <PostActivity user={userId} />
+        <PostActivity user={userId} socket={socket}/>
       );
     }
     else{

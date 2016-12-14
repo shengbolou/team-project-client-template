@@ -313,24 +313,6 @@ export function isActivityNotificationRunning(){
   return activityTime!==undefined && activityTime!==null;
 }
 
-var postTime;
-
-export function postNotification(cb){
-  sendXHR('GET','/postNotification',undefined,(xhr)=>{
-    cb(JSON.parse(xhr.responseText));
-  });
-  postTime = setTimeout(postNotification.bind(null,cb),3000);
-}
-
-
-export function clearPostTimeInterval(){
-  clearTimeout(postTime);
-}
-
-export function isPostNotificationRunning(){
-  return postTime!==undefined && postTime!==null;
-}
-
 
  export function signup(email, username, password, cb) {
    sendXHR('POST', '/signup', { fullname: username,

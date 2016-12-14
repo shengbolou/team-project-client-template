@@ -27,7 +27,7 @@ export default class Activity extends React.Component{
           <div className="row">
             <div className="col-md-7 col-md-offset-2">
               <h4><span className="glyphicon glyphicon-flash" style={{'marginBottom':'10'}}></span>Recently Activities</h4>
-              <ActivityFeed user={this.props.user}/>
+              <ActivityFeed user={this.props.user} socket={this.props.socket}/>
             </div>
           </div>
         </div>

@@ -23,7 +23,7 @@ export default class Post extends React.Component{
         <div className="container">
           <div className="row">
             <div className="col-md-8 col-md-offset-2 main-feed">
-              <PostFeed user={this.state} userId={this.props.user}/>
+              <PostFeed user={this.state} userId={this.props.user} socket={this.props.socket}/>
             </div>
           </div>
         </div>

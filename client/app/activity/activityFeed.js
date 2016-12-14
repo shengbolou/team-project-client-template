@@ -1,8 +1,8 @@
 import React from 'react';
 import ActivityFeedItem from './activityFeedItem';
-import {getAllActivities,activityNotification,isActivityNotificationRunning} from '../server';
+import {getAllActivities} from '../server';
 import {Link} from "react-router";
-
+var socket;
 
 export default class ActivityFeed extends React.Component{
 
@@ -20,22 +20,6 @@ export default class ActivityFeed extends React.Component{
       });
     });
   }
-
-  getNotification(){
-    if(!isActivityNotificationRunning()){
-      activityNotification((x)=>{
-        if(x.result > (this.state.contents.length===0?100000:this.state.contents.length)){
-          this.notifyMe(()=>{
-            this.getData();
-          });
-        }
-      });
-    }
-  }
-
-  // componentWillUnmount(){
-  //   clearActivityTimeInterval();
-  // }
 
 
   notifyMe(cb) {
@@ -82,6 +66,11 @@ export default class ActivityFeed extends React.Component{
 
   componentDidMount(){
     this.getData();
-    this.getNotification();
+    socket = this.props.socket;
+    socket.on('newActivity',()=>{
+      this.notifyMe(()=>{
+        this.getData();
+      })
+    })
   }
 }
