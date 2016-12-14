@@ -301,7 +301,7 @@ export function activityNotification(cb){
   sendXHR('GET','/activityNotification',undefined,(xhr)=>{
     cb(JSON.parse(xhr.responseText));
   });
-  activityTime = setTimeout(activityNotification.bind(null,cb),10000);
+  activityTime = setTimeout(activityNotification.bind(null,cb),3000);
 }
 
 
@@ -337,7 +337,7 @@ export function postNotification(cb){
   sendXHR('GET','/postNotification',undefined,(xhr)=>{
     cb(JSON.parse(xhr.responseText));
   });
-  postTime = setTimeout(postNotification.bind(null,cb),10000);
+  postTime = setTimeout(postNotification.bind(null,cb),3000);
 }
 
 

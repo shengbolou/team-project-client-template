@@ -21,7 +21,7 @@ export default class Ad_participates_item extends React.Component{
             </a>
           </div>
           <div className="media-body media-top">
-            {this.state.firstname} {this.state.lastname}<br/>
+            {this.state.fullname}<br/>
             {this.state.ps}
         </div>
         <div className="media-body media-right" style={{textAlign:"right"}} >
