@@ -1533,7 +1533,7 @@ MongoClient.connect(url, function(err, db) {
       res.send({result:count});
     });
   });
-  
+
   var server = http.createServer(app);
 
   var io = require('socket.io')(server);
@@ -1563,18 +1563,23 @@ MongoClient.connect(url, function(err, db) {
       socket.broadcast.emit('online',user);
     });
 
-    socket.on('user',function(user){
-      db.collection('users').updateOne({_id:new ObjectID(user)},{
-        $set:{
-          online:true
-        }
-      });
-      socket.broadcast.emit('online',user);
-      db.collection('userSocketIds').updateOne({userId:new ObjectID(user)},{
-        $set:{
-          socketId:socket.id
-        }
-      },{upsert: true});
+    socket.on('user',function(data){
+      if(data.authorization!==undefined&&data.authorization!==null){
+        var tokenObj = jwt.verify(data.authorization, secretKey);
+        var user = tokenObj['id'];
+        db.collection('users').updateOne({_id:new ObjectID(user)},{
+          $set:{
+            online:true
+          }
+        });
+        socket.broadcast.emit('online',user);
+        db.collection('userSocketIds').updateOne({userId:new ObjectID(user)},{
+          $set:{
+            socketId:socket.id
+          }
+        },{upsert: true});
+      }
+
     });
 
     socket.on('chat',function(data){
@@ -1587,12 +1592,24 @@ MongoClient.connect(url, function(err, db) {
       });
     });
 
-    socket.on('newPost',function(){
-      socket.broadcast.emit('newPost');
+    socket.on('newPost',function(data){
+      if(data.authorization!==undefined&&data.authorization!==null){
+        var tokenObj = jwt.verify(data.authorization, secretKey);
+        var id = tokenObj['id'];
+        if(id===data.user){
+          socket.broadcast.emit('newPost');
+        }
+      }
     });
 
-    socket.on('newActivity',function(){
-      socket.broadcast.emit('newActivity');
+    socket.on('newActivity',function(data){
+      if(data.authorization!==undefined&&data.authorization!==null){
+        var tokenObj = jwt.verify(data.authorization, secretKey);
+        var id = tokenObj['id'];
+        if(id===data.user){
+          socket.broadcast.emit('newActivity');
+        }
+      }
     });
 
   });

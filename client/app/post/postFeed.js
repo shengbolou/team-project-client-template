@@ -3,7 +3,7 @@ import PostEntry from './postEntry';
 import PostFeedItem from './postFeedItem';
 import {getAllPosts,postStatus} from '../server';
 import {hashHistory} from 'react-router';
-import {socket} from '../credentials';
+import {socket,getToken} from '../credentials';
 
 export default class PostFeed extends React.Component{
 
@@ -27,7 +27,7 @@ export default class PostFeed extends React.Component{
 
   onPost(text,img){
     postStatus(this.props.userId, text, img,()=>{
-      socket.emit('newPost');
+      socket.emit('newPost',{authorization:getToken(),user:this.props.userId});
       this.getData();
     });
   }
