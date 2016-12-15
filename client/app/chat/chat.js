@@ -24,7 +24,7 @@ export default class Chat extends React.Component {
     socket.on('chat',()=>{
       this.getData();
     });
-    
+
     socket.on('online',(user)=>{
       if(this.state.user.friends.filter((item) => {if(item._id===user)return true;else return false;}).length>0)
       getUserData(this.props.user, (userData) => {
@@ -60,12 +60,13 @@ export default class Chat extends React.Component {
   handlePostMessage(message){
     socket.emit('chat',{currUser:this.props.user,friend:this.state.friend});
     postMessage(this.state.sessionId, this.props.user, this.state.friend ,message, (newMessage)=>{
-      this.setState({message:newMessage});
-    })
-    getUserData(this.props.user, (userData) => {
-      this.setState({
-        user:userData
-      })
+      this.setState({message:newMessage},()=>{
+        getUserData(this.props.user, (userData) => {
+          this.setState({
+            user:userData
+          })
+        });
+      });
     });
   }
 
