@@ -1547,6 +1547,9 @@ MongoClient.connect(url, function(err, db) {
 
   var io = require('socket.io')(server);
   io.on('connection', function(socket){
+    socket.on('disconnect', function () {
+      db.collection('userSocketIds').remove({socketId:socket.id});
+    });
     console.log("number of clients connected: "+ Object.keys(io.sockets.connected).length);
     socket.on('user',function(user){
       db.collection('userSocketIds').updateOne({userId:new ObjectID(user)},{
@@ -1560,7 +1563,7 @@ MongoClient.connect(url, function(err, db) {
       db.collection('userSocketIds').findOne({userId:new ObjectID(data.friend)},function(err,socketData){
         if(err)
           io.emit('chat',err);
-        else{
+        else if(socketData!==null){
           io.sockets.connected[socketData.socketId].emit('chat',true);
         }
       });
