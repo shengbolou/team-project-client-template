@@ -41,18 +41,18 @@ export default class PostFeed extends React.Component{
     if (Notification.permission !== "granted")
       Notification.requestPermission();
     else {
+      this.setState({
+        notified:true
+      });
       var notification = new Notification('WeMeet', {
         icon: 'http://localhost:3000/img/logo/mipmap-xxhdpi/ic_launcher.png',
         body: "Hey there! You have new posts"
       });
-      this.setState({
-        notified:true
-      })
       notification.onclick = (event)=>{
         event.preventDefault();
         event.target.close();
-        cb();
         hashHistory.push("/post");
+        cb();
       }
     }
   }

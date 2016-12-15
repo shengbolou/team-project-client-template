@@ -3,14 +3,40 @@ import {Link} from 'react-router';
 import {logout} from '../credentials';
 import {hashHistory} from 'react-router'
 import {socket} from '../credentials';
+import {hideElement} from '../util'
 
 export default class Navbar extends React.Component{
+
+  constructor(props){
+    super(props);
+    this.state={
+      activity:false
+    }
+  }
 
   handleLogOut(e){
     e.preventDefault();
     logout();
     hashHistory.push('/');
   }
+
+  componentDidMount(){
+    socket.on('newActivity',()=>{
+      this.setState({
+        activity:true
+      });
+    })
+  }
+
+  goToAcitivity(e){
+    e.preventDefault();
+    this.setState({
+      activity:false
+    });
+    hashHistory.push('/activity');
+  }
+
+
 
     render(){
       return(
@@ -33,7 +59,8 @@ export default class Navbar extends React.Component{
               <div className="collapse navbar-collapse" id="navbar">
                 <ul className="nav navbar-nav nav-left">
                   <li className={this.props.activity}>
-                    <Link to={"/activity"}> Activities </Link>
+                    <a onClick={(e)=>this.goToAcitivity(e)}> Activities <i className={"fa fa-circle "+hideElement(!this.state.activity)} style={{fontSize:12,marginLeft:'2',color:'#EF9A9A'}}aria-hidden="true"></i>
+                    </a>
                   </li>
                   <li className={this.props.post}>
                     <Link to={"post"}>Trend</Link>

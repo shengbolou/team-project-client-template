@@ -3,6 +3,8 @@ import ActivityFeedItem from './activityFeedItem';
 import {getAllActivities} from '../server';
 import {Link} from "react-router";
 import {socket} from '../credentials';
+import {hashHistory} from 'react-router';
+var debug = require('react-debug');
 
 export default class ActivityFeed extends React.Component{
 
@@ -21,6 +23,20 @@ export default class ActivityFeed extends React.Component{
         notified:false
       });
     });
+  }
+
+  componentWillReceiveProps(){
+    this.getData();
+  }
+
+  shouldComponentUpdate(nextProps,nextState){
+    if(nextState.contents===undefined || this.state.contents===undefined){
+      return true;
+    }
+    else if(nextState.contents.length!==this.state.contents.length){
+      return true;
+    }
+    return false;
   }
 
 
@@ -43,6 +59,7 @@ export default class ActivityFeed extends React.Component{
       notification.onclick = (event)=>{
         event.preventDefault();
         event.target.close();
+        hashHistory.push('/activity');
         cb();
       }
     }

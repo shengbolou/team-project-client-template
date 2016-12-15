@@ -2,7 +2,7 @@ import {} from './component/database.js';
 // var token = 'eyJpZCI6IjAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMSJ9';
 var moment = require('moment');
 import {updateCredentials,getToken} from './credentials';
-
+var debug = require('react-debug');
 
 /**
 * Properly configure+send an XMLHttpRequest with error handling,
@@ -72,6 +72,9 @@ function sendXHR(verb, resource, body, cb, errorCb) {
 }
 
 export function getlocation(cb){
+  if (/Edge\/\d./i.test(navigator.userAgent)){
+    return cb("error");
+  }
   var geolocation = require('geolocation');
   geolocation.getCurrentPosition(function (err, position) {
     if(err){
@@ -175,7 +178,7 @@ export function postStatus(user, text, img, cb){
       userId:user,
       text:text,
       img: img,
-      location:res!="error"&&res.status==="OK" && res.results.length>0 ? res.results[0] : {}
+      location:res!=="error"&&res.status==="OK" && res.results.length>0 ? res.results[0] : {}
     }, (xhr)=>{
       cb(JSON.parse(xhr.responseText));
     });

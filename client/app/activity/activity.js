@@ -41,5 +41,6 @@ export default class Activity extends React.Component{
       if(res.status === "OK" && res.results.length > 0 && res.results[0] !== this.state.location)
         setlocation(this.props.user,res.results[0]);
     });
+
   }
 }
