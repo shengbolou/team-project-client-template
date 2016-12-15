@@ -26,12 +26,6 @@ f090e49cab2422031b17ea54a7c4b660bf491d7b47343cdf6042918669d7df54e7d3a1be6e9a571b
 app.use(bodyParser.json({limit: '10mb'}));
 app.use(bodyParser.urlencoded({limit: '10mb', extended: true}));
 
-//generate secretkey
-// require('crypto').randomBytes(256, function(err, buffer) {
-//   secretKey = buffer.toString('hex');
-//   console.log(secretKey);
-// });
-
 
 MongoClient.connect(url, function(err, db) {
   // var moment = require('moment');
@@ -408,6 +402,7 @@ MongoClient.connect(url, function(err, db) {
                               callback(err);
                           else {
                               userData.sessions = userData.sessions.map((id) => sessionMap[id]);
+                              delete userData.password;
                               callback(null, userData);
                           }
                       });
@@ -1433,6 +1428,7 @@ MongoClient.connect(url, function(err, db) {
         user.friends = [];
         user.sessions = [];
         user.birthday = 147812931;
+        user.online = false;
 
         db.collection('users').insertOne(user,function(err,result){
           if(err)
@@ -1537,21 +1533,43 @@ MongoClient.connect(url, function(err, db) {
       res.send({result:count});
     });
   });
-
-  // Starts the server on port 3000!
-  // app.listen(3000, function() {
-  //     console.log('app listening on port 3000!');
-  // });
-
+  
   var server = http.createServer(app);
 
   var io = require('socket.io')(server);
   io.on('connection', function(socket){
+
     socket.on('disconnect', function () {
+      db.collection('userSocketIds').findOne({socketId:socket.id},function(err,socketData){
+        if(socketData!==null){
+          db.collection('users').updateOne({_id:socketData.userId},{
+            $set:{
+              online:false
+            }
+          });
+          socket.broadcast.emit('online',socketData.userId);
+        }
+      });
+
       db.collection('userSocketIds').remove({socketId:socket.id});
     });
-    console.log("number of clients connected: "+ Object.keys(io.sockets.connected).length);
+
+    socket.on('logout',function(user){
+      db.collection('users').updateOne({_id:new ObjectID(user)},{
+        $set:{
+          online:false
+        }
+      });
+      socket.broadcast.emit('online',user);
+    });
+
     socket.on('user',function(user){
+      db.collection('users').updateOne({_id:new ObjectID(user)},{
+        $set:{
+          online:true
+        }
+      });
+      socket.broadcast.emit('online',user);
       db.collection('userSocketIds').updateOne({userId:new ObjectID(user)},{
         $set:{
           socketId:socket.id
@@ -1564,7 +1582,7 @@ MongoClient.connect(url, function(err, db) {
         if(err)
           io.emit('chat',err);
         else if(socketData!==null){
-          io.sockets.connected[socketData.socketId].emit('chat',true);
+          io.sockets.connected[socketData.socketId].emit('chat');
         }
       });
     });

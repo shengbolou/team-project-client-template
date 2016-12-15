@@ -295,24 +295,6 @@ export function searchquery(userid,querytext,cb){
   });
 }
 
-var activityTime;
-
-export function activityNotification(cb){
-  sendXHR('GET','/activityNotification',undefined,(xhr)=>{
-    cb(JSON.parse(xhr.responseText));
-  });
-  activityTime = setTimeout(activityNotification.bind(null,cb),3000);
-}
-
-
-export function clearActivityTimeInterval(){
-  clearTimeout(activityTime);
-}
-
-export function isActivityNotificationRunning(){
-  return activityTime!==undefined && activityTime!==null;
-}
-
 
  export function signup(email, username, password, cb) {
    sendXHR('POST', '/signup', { fullname: username,

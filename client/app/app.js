@@ -14,17 +14,14 @@ import { IndexRoute, Router, Route, hashHistory } from 'react-router';
 import {hideElement} from './util';
 import {signup,login} from './server.js';
 import {getUserId,isUserLoggedIn} from './credentials';
-import io from 'socket.io-client';
-// var debug = require('react-debug');
-var socket = io();
+import {socket} from './credentials';
 
 class ActivityPage extends React.Component{
   render(){
     if(isUserLoggedIn()){
       var userId = getUserId();
-      socket.emit('user',userId);
       return(
-        <Activity user={userId} socket={socket}/>
+        <Activity user={userId}/>
       );
     }
     else{
@@ -36,8 +33,7 @@ class ThrendPage extends React.Component{
   render(){
     if(isUserLoggedIn()){
       var userId = getUserId();
-      socket.emit('user',userId);
-      return (<Post user={userId} socket={socket}/>);
+      return (<Post user={userId}/>);
     }
     else{
       hashHistory.push('/');
@@ -64,7 +60,6 @@ class SettingsPage extends React.Component {
   render() {
     if(isUserLoggedIn()){
       var userId = getUserId();
-      socket.emit('user',userId);
       return (
         <Settings user={userId} />
       );
@@ -79,9 +74,8 @@ class ChatPage extends React.Component{
   render() {
     if(isUserLoggedIn()){
       var userId = getUserId();
-      socket.emit('user',userId);
       return (
-        <Chat user={userId} socket={socket}/>
+        <Chat user={userId}/>
       );
     }
     else{
@@ -94,7 +88,6 @@ class NotificationPage extends React.Component{
   render(){
     if(isUserLoggedIn()){
       var userId = getUserId();
-      socket.emit('user',userId);
       return(
         <Notification user={userId} id={this.props.params.id}/>
       );
@@ -109,7 +102,6 @@ class Activity_detailPage extends React.Component{
   render(){
     if(isUserLoggedIn()){
       var userId = getUserId();
-      socket.emit('user',userId);
       return(
         <Activity_detail user={userId} id={this.props.params.id}/>
       )
@@ -155,7 +147,7 @@ class PostActivityPage extends React.Component {
       var userId = getUserId();
       socket.emit('user',userId);
       return (
-        <PostActivity user={userId} socket={socket}/>
+        <PostActivity user={userId}/>
       );
     }
     else{

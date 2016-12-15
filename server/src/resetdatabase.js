@@ -33,7 +33,8 @@ var initialData = {
       "email": "upao@umass.edu",
       "birthday":147812931,
       "sessions":[new ObjectID("000000000000000000000001"),new ObjectID("000000000000000000000002")],
-      "password":"$2a$10$1BmmDhIqBX7zdb/VlysJzeabojvhOc4yez/LCwwetMmTkzWlMGzMa"
+      "password":"$2a$10$1BmmDhIqBX7zdb/VlysJzeabojvhOc4yez/LCwwetMmTkzWlMGzMa",
+      "online":false
     },
     "2": {
       "_id":new ObjectID("000000000000000000000002"),
@@ -49,7 +50,8 @@ var initialData = {
       "email": "test@umass.edu",
       "birthday":1478129314000,
       "sessions":[new ObjectID("000000000000000000000001")],
-      "password":"$2a$10$1BmmDhIqBX7zdb/VlysJzeabojvhOc4yez/LCwwetMmTkzWlMGzMa"
+      "password":"$2a$10$1BmmDhIqBX7zdb/VlysJzeabojvhOc4yez/LCwwetMmTkzWlMGzMa",
+      "online":false
     },
     "3": {
       "_id":new ObjectID("000000000000000000000003"),
@@ -65,7 +67,8 @@ var initialData = {
       "email": "test2@umass.edu",
       "birthday":1478129314000,
       "sessions":[new ObjectID("000000000000000000000002")],
-      "password":"$2a$10$1BmmDhIqBX7zdb/VlysJzeabojvhOc4yez/LCwwetMmTkzWlMGzMa"
+      "password":"$2a$10$1BmmDhIqBX7zdb/VlysJzeabojvhOc4yez/LCwwetMmTkzWlMGzMa",
+      "online":false
     }
   },
   //notification collections

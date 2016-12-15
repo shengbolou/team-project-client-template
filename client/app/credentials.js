@@ -1,3 +1,6 @@
+import io from 'socket.io-client';
+// var debug = require('react-debug');
+export var socket = io();
 /**
  * Stores authentication credentials.
  */
@@ -19,6 +22,7 @@ export function getToken() {
  */
 export function getUserId() {
   if (isUserLoggedIn()) {
+    socket.emit('user',user._id);
     return user._id;
   }
   return null;
@@ -56,5 +60,6 @@ export function isUserLoggedIn() {
  * You will implement this during the workshop.
  */
  export function logout() {
+   socket.emit('logout',user._id);
    localStorage.clear();
  }

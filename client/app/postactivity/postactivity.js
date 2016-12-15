@@ -6,7 +6,7 @@ import {hashHistory} from 'react-router';
 import AvatarCropper from "react-avatar-cropper";
 import {hideElement} from '../util';
 // var debug = require('react-debug');
-var socket;
+import {socket} from '../credentials';
 
 export default class PostActivity extends React.Component {
 
@@ -88,7 +88,6 @@ export default class PostActivity extends React.Component {
 
   componentDidMount(){
     this.getData();
-    socket = this.props.socket;
   }
 
   handleTitle(e){

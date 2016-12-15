@@ -3,14 +3,15 @@ import PostEntry from './postEntry';
 import PostFeedItem from './postFeedItem';
 import {getAllPosts,postStatus} from '../server';
 import {hashHistory} from 'react-router';
-var socket;
+import {socket} from '../credentials';
 
 export default class PostFeed extends React.Component{
 
   constructor(props){
     super(props);
     this.state = {
-      "contents": []
+      contents: [],
+      notified:false
     }
   }
 
@@ -18,7 +19,8 @@ export default class PostFeed extends React.Component{
   getData(){
     getAllPosts(this.props.userId, (postFeedData)=>{
       this.setState({
-        "contents":postFeedData
+        contents:postFeedData,
+        notified:false
       });
     });
   }
@@ -43,6 +45,9 @@ export default class PostFeed extends React.Component{
         icon: 'http://localhost:3000/img/logo/mipmap-xxhdpi/ic_launcher.png',
         body: "Hey there! You have new posts"
       });
+      this.setState({
+        notified:true
+      })
       notification.onclick = (event)=>{
         event.preventDefault();
         event.target.close();
@@ -76,11 +81,12 @@ export default class PostFeed extends React.Component{
 
   componentDidMount(){
     this.getData();
-    socket = this.props.socket;
     socket.on('newPost',()=>{
-      this.notifyMe(()=>{
-        this.getData();
-      });
+      if(!this.state.notified){
+        this.notifyMe(()=>{
+          this.getData();
+        });
+      }
     })
   }
 }

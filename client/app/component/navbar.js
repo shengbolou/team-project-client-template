@@ -2,16 +2,13 @@ import React from 'react';
 import {Link} from 'react-router';
 import {logout} from '../credentials';
 import {hashHistory} from 'react-router'
-import {clearActivityTimeInterval} from '../server';
+import {socket} from '../credentials';
 
 export default class Navbar extends React.Component{
 
   handleLogOut(e){
     e.preventDefault();
-    //logout
     logout();
-    //clear timeout functions
-    clearActivityTimeInterval();
     hashHistory.push('/');
   }
 

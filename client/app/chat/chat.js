@@ -3,8 +3,8 @@ import Navbar from '../component/navbar';
 import NavBody from './navbody';
 import ChatWindow from './chatwindow';
 import {getUserData,getMessages,postMessage,getSessionId} from '../server';
-var socket;
-var debug = require('react-debug');
+import {socket} from '../credentials';
+// var debug = require('react-debug');
 
 export default class Chat extends React.Component {
 
@@ -20,11 +20,19 @@ export default class Chat extends React.Component {
 
   componentDidMount() {
     this.getData();
-    socket = this.props.socket;
-    socket.on('chat',(msg)=>{
-      debug(msg);
+
+    socket.on('chat',()=>{
       this.getData();
     });
+    
+    socket.on('online',(user)=>{
+      if(this.state.user.friends.filter((item) => {if(item._id===user)return true;else return false;}).length>0)
+      getUserData(this.props.user, (userData) => {
+        this.setState({
+          user:userData
+        });
+      });
+    })
   }
 
   getData() {
@@ -100,7 +108,7 @@ export default class Chat extends React.Component {
             <Navbar chat="active" user={this.state.user}/>
             <div className="container">
               <div className="row">
-                <div className="col-md-4 col-sm-4 col-xs-4 col-md-offset-1 col-sm-offset-1 col-xs-offset-1 chat-left">
+                <div className="col-md-5 col-sm-5 col-xs-5 col-md-offset-1 col-sm-offset-1 col-xs-offset-1 chat-left">
                   <div className="panel panel-dafault">
                     <div className="panel-heading panel-heading-chat" style={{paddingBottom:"3px"}}>
                       <ul className="nav nav-pills nav-justified" >
@@ -109,7 +117,7 @@ export default class Chat extends React.Component {
                         </li>
                       </ul>
                     </div>
-                    <NavBody data={this.state.user}  messages={this.state.message} switchUser={(id)=>this.handleSwitchFriends(id)}/>
+                    <NavBody data={this.state.user}messages={this.state.message} switchUser={(id)=>this.handleSwitchFriends(id)}/>
                   </div>
                 </div>
                 {chatwindow}

@@ -2,21 +2,23 @@ import React from 'react';
 import ActivityFeedItem from './activityFeedItem';
 import {getAllActivities} from '../server';
 import {Link} from "react-router";
-var socket;
+import {socket} from '../credentials';
 
 export default class ActivityFeed extends React.Component{
 
   constructor(props){
     super(props);
     this.state= {
-      contents: []
+      contents: [],
+      notified:false
     }
   }
 
   getData(){
     getAllActivities(this.props.user, (activityFeedData)=>{
       this.setState({
-        contents:activityFeedData
+        contents:activityFeedData,
+        notified:false
       });
     });
   }
@@ -35,6 +37,9 @@ export default class ActivityFeed extends React.Component{
         icon: 'http://localhost:3000/img/logo/mipmap-xxhdpi/ic_launcher.png',
         body: "Hey there! You have new activities"
       });
+      this.setState({
+        notified:true
+      })
       notification.onclick = (event)=>{
         event.preventDefault();
         event.target.close();
@@ -66,11 +71,12 @@ export default class ActivityFeed extends React.Component{
 
   componentDidMount(){
     this.getData();
-    socket = this.props.socket;
     socket.on('newActivity',()=>{
-      this.notifyMe(()=>{
-        this.getData();
-      })
+      if(!this.state.notified){
+        this.notifyMe(()=>{
+          this.getData();
+        });
+      }
     })
   }
 }
