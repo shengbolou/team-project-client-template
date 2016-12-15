@@ -22,7 +22,7 @@ export function getToken() {
  */
 export function getUserId() {
   if (isUserLoggedIn()) {
-    socket.emit('user',{Authorization:getToken(),user:getUserId});
+    socket.emit('user',user._id);
     return user._id;
   }
   return null;

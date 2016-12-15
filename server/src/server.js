@@ -1563,22 +1563,20 @@ MongoClient.connect(url, function(err, db) {
       socket.broadcast.emit('online',user);
     });
 
-    socket.on('user',function(data){
-      if(data.authorization!==undefined&&data.authorization!==null){
-        var tokenObj = jwt.verify(data.authorization, secretKey);
-        var user = tokenObj['id'];
-        db.collection('users').updateOne({_id:new ObjectID(user)},{
-          $set:{
-            online:true
-          }
-        });
-        socket.broadcast.emit('online',user);
-        db.collection('userSocketIds').updateOne({userId:new ObjectID(user)},{
-          $set:{
-            socketId:socket.id
-          }
-        },{upsert: true});
-      }
+    socket.on('user',function(user){
+
+      db.collection('users').updateOne({_id:new ObjectID(user)},{
+        $set:{
+          online:true
+        }
+      });
+      socket.broadcast.emit('online',user);
+      db.collection('userSocketIds').updateOne({userId:new ObjectID(user)},{
+        $set:{
+          socketId:socket.id
+        }
+      },{upsert: true});
+
 
     });
 
