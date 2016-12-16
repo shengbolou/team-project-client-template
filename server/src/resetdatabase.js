@@ -241,13 +241,25 @@ var initialData = {
         "_id":new ObjectID("000000000000000000000001"),
         "users": [new ObjectID("000000000000000000000001"),new ObjectID("000000000000000000000002")],
         "contents": [new ObjectID("000000000000000000000001")],
-        "lastmessage":"cool"
+        "lastmessage":{
+          "sender":new ObjectID("000000000000000000000001"),
+          "target":new ObjectID("000000000000000000000002"),
+          "date" : 1478149540000,
+          "text": "cool",
+          "isread":true
+        }
       },
       "2": {
         "_id":new ObjectID("000000000000000000000002"),
         "users": [new ObjectID("000000000000000000000001"),new ObjectID("000000000000000000000003")],
         "contents": [new ObjectID("000000000000000000000002")],
-        "lastmessage":"Good night!"
+        "lastmessage":{
+          "sender":new ObjectID("000000000000000000000001"),
+          "target":new ObjectID("000000000000000000000003"),
+          "date" : 1478149540000,
+          "text": "Good night!",
+          "isread":true
+        }
       }
     },
     //message table

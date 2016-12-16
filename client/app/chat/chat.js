@@ -19,10 +19,26 @@ export default class Chat extends React.Component {
   }
 
   componentDidMount() {
-    this.getData();
-
+    this.initialSetup();
     socket.on('chat',()=>{
-      this.getData();
+      getUserData(this.props.user, (userData) => {
+        this.setState({
+          user:userData
+        },()=>{
+            getSessionId(this.props.user,this.state.friend,(session)=>{
+              this.setState({
+                sessionId:session._id
+              },
+              ()=>{
+                getMessages(this.props.user,this.state.sessionId,(message)=>{
+                  this.setState({
+                    message:message
+                  })
+                });
+              });
+            });
+          })
+        });
     });
 
     socket.on('online',(user)=>{
@@ -32,10 +48,12 @@ export default class Chat extends React.Component {
           user:userData
         });
       });
-    })
+    });
+
+    
   }
 
-  getData() {
+  initialSetup() {
     getUserData(this.props.user, (userData) => {
       this.setState({
         user:userData
@@ -71,22 +89,25 @@ export default class Chat extends React.Component {
   }
 
   handleSwitchFriends(friendId){
-    this.setState({friend:friendId},
-      ()=>{
-        getSessionId(this.props.user,this.state.friend,(session)=>{
-          this.setState({
-            sessionId:session._id
-          },
-          ()=>{
-            getMessages(this.props.user,this.state.sessionId,(message)=>{
-              this.setState({
-                message:message
-              })
+    getUserData(this.props.user, (userData) => {
+      this.setState({
+        user:userData,
+        friend:friendId
+      },()=>{
+          getSessionId(this.props.user,this.state.friend,(session)=>{
+            this.setState({
+              sessionId:session._id
+            },
+            ()=>{
+              getMessages(this.props.user,this.state.sessionId,(message)=>{
+                this.setState({
+                  message:message
+                })
+              });
             });
           });
-        });
+        })
       });
-
     }
 
     render() {
@@ -118,7 +139,7 @@ export default class Chat extends React.Component {
                         </li>
                       </ul>
                     </div>
-                    <NavBody data={this.state.user}messages={this.state.message} switchUser={(id)=>this.handleSwitchFriends(id)}/>
+                    <NavBody data={this.state.user}messages={this.state.message} activeFriend={this.state.friend} switchUser={(id)=>this.handleSwitchFriends(id)}/>
                   </div>
                 </div>
                 {chatwindow}

@@ -11,7 +11,8 @@ export default class Navbar extends React.Component{
     super(props);
     this.state={
       activity:false,
-      post:false
+      post:false,
+      chat:false
     }
   }
 
@@ -33,6 +34,11 @@ export default class Navbar extends React.Component{
         post:true
       });
     });
+    socket.on('chat',()=>{
+      this.setState({
+        chat:true
+      });
+    });
   }
 
   goToAcitivity(e){
@@ -49,6 +55,13 @@ export default class Navbar extends React.Component{
       post:false
     });
     hashHistory.push('/post');
+  }
+  goToChat(e){
+    e.preventDefault();
+    this.setState({
+      chat:false
+    });
+    hashHistory.push('/chat');
   }
 
 
@@ -81,7 +94,7 @@ export default class Navbar extends React.Component{
                     <Link onClick={(e)=>this.goToPost(e)}>Trend <i className={"fa fa-circle "+hideElement(!this.state.post)} style={{fontSize:12,marginLeft:'2',color:'#EF9A9A'}}aria-hidden="true"></i></Link>
                   </li>
                   <li className={this.props.chat}>
-                    <Link to={"chat"}>Chat</Link>
+                    <Link to={"chat"}>Chat <i className={"fa fa-circle "+hideElement(!this.state.chat||this.props.chat==="active")} style={{fontSize:12,marginLeft:'2',color:'#EF9A9A'}}aria-hidden="true"></i></Link>
                   </li>
                 </ul>
 

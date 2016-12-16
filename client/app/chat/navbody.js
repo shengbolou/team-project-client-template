@@ -30,6 +30,7 @@ export default class NavBody extends React.Component {
                     return <NavChatItem
                       key={friend._id}
                       data={friend}
+                      activeFriend = {this.props.activeFriend}
                       currentUser={this.state.data._id}
                       switchUser={this.props.switchUser}
                       lastmessage={this.state.data.sessions.filter((session) => {

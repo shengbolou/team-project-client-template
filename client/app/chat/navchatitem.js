@@ -1,6 +1,7 @@
 import React from 'React';
 import {Link} from 'react-router';
 var debug = require('react-debug');
+import {hideElement} from '../util'
 
 export default class NavChatItem extends React.Component {
     constructor(props) {
@@ -42,7 +43,10 @@ export default class NavChatItem extends React.Component {
                       </div>
                     </div>
                     <font size="2" color="grey">
-                      {this.props.lastmessage}
+                      {this.props.lastmessage.text}<span className={"label label-danger "+
+                        hideElement(this.props.data._id===this.props.activeFriend || this.props.lastmessage.isread ||
+                          this.props.lastmessage.sender===this.props.currentUser)}
+                      style={{marginLeft:5}}>New</span>
                     </font>
                   </div>
                 </div>

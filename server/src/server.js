@@ -373,6 +373,7 @@ MongoClient.connect(url, function(err, db) {
                   sessionMap[session._id] = session;
               });
               callback(null, sessionMap);
+              db.collection('messageSession').update(query,{$set:{"lastmessage.isread":true}});
           });
       }
   }
@@ -1147,8 +1148,6 @@ MongoClient.connect(url, function(err, db) {
               if (err)
                   sendDatabaseError(res, err);
               else {
-                  //message.contents = message.contents.map(getMessage);
-
                   getMessage(message.contents[0], function(err, data) {
                       if (err)
                           sendDatabaseError(res, err);
@@ -1172,16 +1171,17 @@ MongoClient.connect(url, function(err, db) {
           var senderid = body.sender;
           var targetid = body.target;
           var text = body.text;
+          var lastmessage = {
+            "sender": new ObjectID(senderid),
+            "target": new ObjectID(targetid),
+            "date": (new Date()).getTime(),
+            "text": text
+          }
           db.collection('message').updateOne({
               _id: new ObjectID(id)
           }, {
               $push: {
-                  messages: {
-                      "sender": new ObjectID(senderid),
-                      "target": new ObjectID(targetid),
-                      "date": (new Date()).getTime(),
-                      "text": text
-                  }
+                  messages: lastmessage
               }
           }, function(err) {
               if (err)
@@ -1192,11 +1192,12 @@ MongoClient.connect(url, function(err, db) {
                           sendDatabaseError(res, err);
                       else {
                           //seting lastmessage;
+                          lastmessage.isread = false;
                           db.collection("messageSession").updateOne({
                               _id: new ObjectID(id)
                           }, {
                               $set: {
-                                  "lastmessage": text
+                                  "lastmessage": lastmessage
                               }
                           }, function(err) {
                               if (err)
@@ -1214,14 +1215,12 @@ MongoClient.connect(url, function(err, db) {
   });
 
   function getMessage(sessionId, cb) {
-      //var message = readDocument("message",sessionId);
       db.collection('message').findOne({
           _id: sessionId
       }, function(err, message) {
           if (err) {
               return cb(err);
           } else {
-
               var userList = [message.messages[0].sender, message.messages[0].target];
               resolveUserObjects(userList, function(err, userMap) {
                   if (err)
