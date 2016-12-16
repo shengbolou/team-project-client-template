@@ -248,7 +248,7 @@ export default class Settings extends React.Component{
             <div className="col-md-3 system-settings">
               <div className="list-group">
                 <a className="list-group-item"data-toggle="collapse" data-parent="#accordion" href="#reset-password" aria-expanded="true" aria-controls="reset-password">
-                  Reset Password <span className="pull-right"><i className="fa fa-angle-right" aria-hidden="true"></i></span>
+                  Change Password <span className="pull-right"><i className="fa fa-angle-right" aria-hidden="true"></i></span>
                 </a>
                 <div id="reset-password" className="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
                   <div className="panel-body">

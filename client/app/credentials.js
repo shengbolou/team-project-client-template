@@ -61,5 +61,6 @@ export function isUserLoggedIn() {
  */
  export function logout() {
    socket.emit('logout',user._id);
-   localStorage.clear();
+   localStorage.removeItem('user');
+   localStorage.removeItem('token');
  }
