@@ -21,26 +21,26 @@ export default class Chat extends React.Component {
   componentDidMount() {
     this.getData();
 
-    socket.on('chat',()=>{
-      getUserData(this.props.user, (userData) => {
-        this.setState({
-          user:userData
-        },()=>{
-            getSessionId(this.props.user,this.state.friend,(session)=>{
-              this.setState({
-                sessionId:session._id
-              },
-              ()=>{
-                getMessages(this.props.user,this.state.sessionId,(message)=>{
-                  this.setState({
-                    message:message
-                  })
-                });
-              });
-            });
-          })
-        });
-    });
+    // socket.on('chat',()=>{
+    //   getUserData(this.props.user, (userData) => {
+    //     this.setState({
+    //       user:userData
+    //     },()=>{
+    //       getSessionId(this.props.user,this.state.friend,(session)=>{
+    //         this.setState({
+    //           sessionId:session._id
+    //         },
+    //         ()=>{
+    //           getMessages(this.props.user,this.state.sessionId,(message)=>{
+    //             this.setState({
+    //               message:message
+    //             })
+    //           });
+    //         });
+    //       });
+    //     })
+    //   });
+    // });
 
     socket.on('online',(user)=>{
       if(this.state.user.friends.filter((item) => {if(item._id===user)return true;else return false;}).length>0)
@@ -50,6 +50,33 @@ export default class Chat extends React.Component {
         });
       });
     })
+  }
+
+  componentWillUpdate(){
+    socket.removeAllListeners("chat");
+  }
+
+  componentDidUpdate(){
+    socket.on('chat',()=>{
+      getUserData(this.props.user, (userData) => {
+        this.setState({
+          user:userData
+        },()=>{
+          getSessionId(this.props.user,this.state.friend,(session)=>{
+            this.setState({
+              sessionId:session._id
+            },
+            ()=>{
+              getMessages(this.props.user,this.state.sessionId,(message)=>{
+                this.setState({
+                  message:message
+                })
+              });
+            });
+          });
+        })
+      });
+    });
   }
 
   getData() {
