@@ -49,13 +49,13 @@ export default class ActivityFeed extends React.Component{
     if (Notification.permission !== "granted")
       Notification.requestPermission();
     else {
+      this.setState({
+        notified:true
+      });
       var notification = new Notification('WeMeet', {
         icon: 'http://localhost:3000/img/logo/mipmap-xxhdpi/ic_launcher.png',
         body: "Hey there! You have new activities"
       });
-      this.setState({
-        notified:true
-      })
       notification.onclick = (event)=>{
         event.preventDefault();
         event.target.close();

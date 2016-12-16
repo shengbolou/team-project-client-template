@@ -57,6 +57,20 @@ export default class PostFeed extends React.Component{
     }
   }
 
+  componentWillReceiveProps(){
+    this.getData();
+  }
+
+  // shouldComponentUpdate(nextProps,nextState){
+  //   if(nextState.contents===undefined || this.state.contents===undefined){
+  //     return true;
+  //   }
+  //   else if(nextState.contents.length!==this.state.contents.length){
+  //     return true;
+  //   }
+  //   return false;
+  // }
+
 
   render(){
     if(this.state.contents.length === 0){
@@ -87,6 +101,6 @@ export default class PostFeed extends React.Component{
           this.getData();
         });
       }
-    })
+    });
   }
 }
