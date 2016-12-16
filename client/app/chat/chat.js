@@ -19,7 +19,8 @@ export default class Chat extends React.Component {
   }
 
   componentDidMount() {
-    this.initialSetup();
+    this.getData();
+
     socket.on('chat',()=>{
       getUserData(this.props.user, (userData) => {
         this.setState({
@@ -48,12 +49,10 @@ export default class Chat extends React.Component {
           user:userData
         });
       });
-    });
-
-    
+    })
   }
 
-  initialSetup() {
+  getData() {
     getUserData(this.props.user, (userData) => {
       this.setState({
         user:userData
@@ -89,24 +88,26 @@ export default class Chat extends React.Component {
   }
 
   handleSwitchFriends(friendId){
-    getUserData(this.props.user, (userData) => {
-      this.setState({
-        user:userData,
-        friend:friendId
-      },()=>{
-          getSessionId(this.props.user,this.state.friend,(session)=>{
-            this.setState({
-              sessionId:session._id
-            },
-            ()=>{
-              getMessages(this.props.user,this.state.sessionId,(message)=>{
-                this.setState({
-                  message:message
+    this.setState({friend:friendId},
+      ()=>{
+        getSessionId(this.props.user,this.state.friend,(session)=>{
+          this.setState({
+            sessionId:session._id
+          },
+          ()=>{
+            getMessages(this.props.user,this.state.sessionId,(message)=>{
+              this.setState({
+                message:message
+              },()=>{
+                getUserData(this.props.user, (userData) => {
+                  this.setState({
+                    user:userData
+                  })
                 })
-              });
+              })
             });
           });
-        })
+        });
       });
     }
 

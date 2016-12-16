@@ -1583,7 +1583,7 @@ MongoClient.connect(url, function(err, db) {
       db.collection('userSocketIds').findOne({userId:new ObjectID(data.friend)},function(err,socketData){
         if(err)
           io.emit('chat',err);
-        else if(socketData!==null){
+        else if(socketData!==null && io.sockets.connected[socketData.socketId]!==undefined){
           io.sockets.connected[socketData.socketId].emit('chat');
         }
       });
