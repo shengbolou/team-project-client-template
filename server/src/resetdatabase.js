@@ -89,12 +89,14 @@ var initialData = {
   "notificationItems": {
     "1": {
       "_id":new ObjectID("000000000000000000000001"),
+      "target":new ObjectID("000000000000000000000001"),
       "sender":new ObjectID("000000000000000000000002"),
       "type": "FR"
     },
     "2": {
       "_id":new ObjectID("000000000000000000000002"),
-      "author": new ObjectID("000000000000000000000002"),
+      "target":new ObjectID("000000000000000000000001"),
+      "sender": new ObjectID("000000000000000000000002"),
       "type": "NF"
     }
   },

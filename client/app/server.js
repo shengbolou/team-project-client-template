@@ -322,3 +322,11 @@ export function searchquery(userid,querytext,cb){
     cb(false);
   });
 }
+
+export function addFriend(sender,target,cb){
+  sendXHR('POST','/friendRequest/'+sender+"/"+target,undefined,()=>{
+    cb(true);
+  },()=>{
+    cb(false);
+  })
+}

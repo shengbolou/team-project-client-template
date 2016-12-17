@@ -1,6 +1,7 @@
 import React from 'react';
 import {Link} from 'react-router';
-import {hideElement} from '../util'
+import {hideElement} from '../util';
+import {addFriend} from '../server';
 
 export default class SearchFeedUserFeedItem extends React.Component{
   constructor(props){
@@ -21,6 +22,15 @@ export default class SearchFeedUserFeedItem extends React.Component{
     }).length>0;
   }
 
+  handleAddFriend(e){
+    e.preventDefault();
+    addFriend(this.props.currentUser._id,this.state._id,(success)=>{
+      if(success){
+        
+      }
+    });
+  }
+
   render(){
     return(
       <div className="panel panel-default" style={{padding: '10'}}>
@@ -39,7 +49,7 @@ export default class SearchFeedUserFeedItem extends React.Component{
               <div className="col-md-4">
                 <div className="row">
                   <div className="col-md-12">
-                    <a href=""><i className={"fa fa-user-plus pull-right "+hideElement(this.checkFriendsOfUser()||this.state._id===this.props.currentUser._id)} aria-hidden="true"></i></a>
+                    <a href="#" onClick={(e)=>this.handleAddFriend(e)}><i className={"fa fa-user-plus pull-right "+hideElement(this.checkFriendsOfUser()||this.state._id===this.props.currentUser._id)} aria-hidden="true"></i></a>
                     <i className={"fa fa-check pull-right "+hideElement(!this.checkFriendsOfUser())} style={{color:'green'}} aria-hidden="true"></i>
                   </div>
                 </div>

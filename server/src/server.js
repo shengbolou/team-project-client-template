@@ -963,17 +963,16 @@ MongoClient.connect(url, function(err, db) {
           else if (notification === null)
               return callback(null, null);
           else {
-              if (notification.type === "FR") {
-                  getUserData(new ObjectID(notification.sender), function(err, userData) {
-                      notification.sender = userData;
-                      callback(null, notification);
-                  });
-              } else {
-                  getUserData(new ObjectID(notification.author), function(err, userData) {
-                      notification.author = userData;
-                      callback(null, notification);
-                  });
+            var userList = [notification.sender,notification.target];
+            resolveUserObjects(userList,function(err,userMap){
+              if(err)
+              callback(err);
+              else{
+                notification.sender = userMap[notification.sender];
+                notification.target = userMap[notification.target];
+                callback(null,notification)
               }
+            });
           }
       });
   }
@@ -1030,7 +1029,7 @@ MongoClient.connect(url, function(err, db) {
               else if (userData === null)
                   return res.status(400).end();
               else {
-                  getNotificationData(new ObjectID(userData.notification), function(err, notificationData) {
+                  getNotificationData(userData.notification, function(err, notificationData) {
                       if (err)
                           return sendDatabaseError(res, err);
                       res.send(notificationData);
@@ -1530,6 +1529,38 @@ MongoClient.connect(url, function(err, db) {
     db.collection('postFeedItems').count(function(err,count){
       res.send({result:count});
     });
+  });
+
+  app.post('/friendRequest/:sender/:target',function(req,res){
+    var fromUser = getUserIdFromToken(req.get('Authorization'));
+    var sender = req.params.sender;
+    var target = req.params.target;
+    if(fromUser === sender){
+      db.collection('notificationItems').insertOne({
+        sender: new ObjectID(sender),
+        target: new ObjectID(target),
+        type:"FR"
+      },function(err,result){
+        if(err)
+          sendDatabaseError(res,err);
+        else{
+          db.collection('notifications').updateOne({_id:new ObjectID(target)},{
+            $addToSet:{
+              contents: result.insertedId
+            }
+          },function(err){
+            if(err)
+              sendDatabaseError(res,err);
+            else {
+              res.send();
+            }
+          })
+        }
+      });
+    }
+    else{
+      res.status(401).end();
+    }
   });
 
   var server = http.createServer(app);
