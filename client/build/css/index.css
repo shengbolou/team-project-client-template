@@ -44,9 +44,12 @@
 .LandingPage .panel-heading{
 	color:rgb(92, 92, 92);
 }
+
 .LandingPage{
-	margin-top: 70px
+	margin-top: 50px
 }
+
+
 .bg{
 	display: table;
 	position: relative;

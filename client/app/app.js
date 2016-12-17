@@ -210,6 +210,12 @@ class LandingPage extends React.Component{
     }
   }
 
+  handleClick(e){
+    e.preventDefault();
+    var x = document.getElementsByTagName("body")[0];
+    x.scrollTop=x.scrollHeight
+  }
+
   handleSignUp(e){
     e.preventDefault();
 
@@ -269,16 +275,16 @@ class LandingPage extends React.Component{
       <div>
         <div className="bg">
           <div className="text-vertical-center">
-            <h1 style={{color:'white'}}>WeMeet</h1>
+            <h1 style={{color:'white'}}><span><img src="../img/logo/mipmap-xxxhdpi/ic_launcher.png" width="70px"/></span> WeMeet</h1>
             <h2 style={{color:'white'}}>Join nearby activities and make friends!</h2>
             <br/>
-            <a href="#" className="btn btn-dark btn-lg">Sign up free today</a>
+            <a href="#" onClick={(e)=>this.handleClick(e)} className="btn btn-dark btn-lg">Sign up free today</a>
+            <a href="#" onClick={(e)=>this.handleClick(e)} className="btn btn-dark btn-lg">Sign in</a>
           </div>
         </div>
         <form className="container index LandingPage">
           <div className="row">
-
-            <div className="col-md-6">
+            <div className="col-md-6 signin">
               <div className={"alert alert-danger " + hideElement(!this.state.failedLogin)} role="alert"><strong>Invalid email address or password.</strong> Please try a different email address or password, and try logging in again.</div>
               <div className="panel panel-primary">
                 <div className="panel-heading">
@@ -307,7 +313,7 @@ class LandingPage extends React.Component{
                 <div className="panel-footer">
                   <div className="row">
                     <div className="col-md-12">
-                      <button disabled={this.state.submitted} type="submit" className="btn btn-default pull-right" onClick={(e)=>this.hanleSignIn(e)}>
+                      <button disabled={this.state.submitted} type="submit" className="btn btn-amber pull-right" onClick={(e)=>this.hanleSignIn(e)}>
                         Welcome back!
                       </button>
                     </div>
@@ -360,7 +366,7 @@ class LandingPage extends React.Component{
             <div className="panel-footer">
               <div className="row">
                 <div className="col-md-12">
-                  <button disabled={this.state.submitted} type="button" className="btn btn-default pull-right" onClick={(e)=>this.handleSignUp(e)}>
+                  <button disabled={this.state.submitted} type="button" className="btn btn-info pull-right" onClick={(e)=>this.handleSignUp(e)}>
                     Join Us!
                   </button>
                 </div>
