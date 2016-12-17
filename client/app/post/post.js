@@ -18,7 +18,7 @@ export default class Post extends React.Component{
 
   render(){
     return(
-      <div>
+      <div style={{marginTop:'70'}}>
         <Navbar post="active" user={this.state}/>
         <div className="container">
           <div className="row">

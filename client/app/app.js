@@ -165,6 +165,7 @@ class LandingPage extends React.Component{
       signUpEmail:"",
       signUpName:"",
       signUpPass:"",
+      signUpPass2:"",
       failedLogin:false,
       failedSignUp:false,
       submitted:false
@@ -211,86 +212,119 @@ class LandingPage extends React.Component{
 
   handleSignUp(e){
     e.preventDefault();
-    this.setState({
-      submitted:true
-    });
-    signup(this.state.signUpEmail,this.state.signUpName,this.state.signUpPass,(success)=>{
-      if(success){
-        login(this.state.signUpEmail,this.state.signUpPass,(success)=>{
-          if(success){
-            this.setState({
-              signInPass:"",
-              signInEmail:"",
-              signUpEmail:"",
-              signUpPass:"",
-              signUpName:"",
-              failedLogin:false,
-              submitted:false
-            });
-            hashHistory.push('/activity');
-          }
-          else{
-            this.setState({
-              failedLogin:true,
-              submitted:false
-            })
-          }
-        });
-      }
-      else{
-        this.setState({
-          failedSignUp:true,
-          submitted:true
-        });
-      }
-    });
+
+    if(this.state.signUpName.trim()!==""&&
+    this.state.signUpEmail!==""&&
+    this.state.signUpPass!==""&&
+    this.state.signUpPass===this.state.signUpPass2){
+      this.setState({
+        submitted:true
+      });
+      signup(this.state.signUpEmail,this.state.signUpName,this.state.signUpPass,(success)=>{
+        if(success){
+          login(this.state.signUpEmail,this.state.signUpPass,(success)=>{
+            if(success){
+              this.setState({
+                signInPass:"",
+                signInEmail:"",
+                signUpEmail:"",
+                signUpPass:"",
+                signUpName:"",
+                failedLogin:false,
+                submitted:false,
+                passwordError:false
+              });
+              hashHistory.push('/activity');
+            }
+            else{
+              this.setState({
+                failedLogin:true,
+                submitted:false
+              })
+            }
+          });
+        }
+        else{
+          this.setState({
+            failedSignUp:true,
+            submitted:true
+          });
+        }
+      });
+    }
+    else if(this.state.signUpPass2!==this.state.signUpPass){
+      this.setState({
+        passwordError:true
+      })
+    }
+    else{
+      this.setState({
+        failedSignUp:true
+      })
+    }
   }
 
   render(){
     return(
-    <form className="container index heading-text">
-      <div className="row">
-
-        <div className="col-md-6">
-          <div className={"alert alert-danger " + hideElement(!this.state.failedLogin)} role="alert"><strong>Invalid email address or password.</strong> Please try a different email address or password, and try logging in again.</div>
-          <div className="panel panel-primary">
-            <div className="panel-heading">
-              <h4>Sign in</h4>
-            </div>
-            <div className="panel-body">
-              <div className="row">
-                <div className="col-md-7 col-md-offset-2">
-                  <div className="md-form">
-                    <input disabled={this.state.submitted} type="text" className="form-control"
-                      pattern="[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-‌​9-]+)*"
-                      onChange={(e)=>this.handleChange("signInEmail",e)} required/>
-                    <label>Email</label>
-                  </div>
-                </div>
-                <div className="col-md-7 col-md-offset-2">
-                  <div className="md-form">
-                    <input disabled={this.state.submitted} type="password" className="form-control"
-                      onChange={(e)=>this.handleChange("signInPass",e)}
-                      required/>
-                    <label>Password</label>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="panel-footer">
-              <div className="row">
-                <div className="col-md-12">
-                  <button disabled={this.state.submitted} type="submit" className="btn btn-default pull-right" onClick={(e)=>this.hanleSignIn(e)}>
-                    Submit
-                  </button>
-                </div>
-              </div>
-            </div>
+      <div>
+        <div className="bg">
+          <div className="text-vertical-center">
+            <h1 style={{color:'white'}}>WeMeet</h1>
+            <h2 style={{color:'white'}}>Join nearby activities and make friends!</h2>
+            <br/>
+            <a href="#" className="btn btn-dark btn-lg">Sign up free today</a>
           </div>
         </div>
+        <form className="container index LandingPage">
+          <div className="row">
 
-        <div className="col-md-6">
-          <div className={hideElement(!this.state.failedSignUp) + " alert alert-danger"} role="alert"><strong>Invalid account signup.</strong> It is possible that you already have an account with that particular email address.</div>
+            <div className="col-md-6">
+              <div className={"alert alert-danger " + hideElement(!this.state.failedLogin)} role="alert"><strong>Invalid email address or password.</strong> Please try a different email address or password, and try logging in again.</div>
+              <div className="panel panel-primary">
+                <div className="panel-heading">
+                  <h4>Sign in</h4>
+                </div>
+                <div className="panel-body">
+                  <div className="row">
+                    <div className="col-md-7 col-md-offset-2">
+                      <div className="md-form">
+                        <input disabled={this.state.submitted} type="text" className="form-control validate"
+                          pattern="[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-‌​9-]+)*"
+                          onChange={(e)=>this.handleChange("signInEmail",e)} required/>
+                        <label>Email</label>
+                      </div>
+                    </div>
+                    <div className="col-md-7 col-md-offset-2">
+                      <div className="md-form">
+                        <input disabled={this.state.submitted} type="password" className="form-control"
+                          onChange={(e)=>this.handleChange("signInPass",e)}
+                          required/>
+                        <label>Password</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="panel-footer">
+                  <div className="row">
+                    <div className="col-md-12">
+                      <button disabled={this.state.submitted} type="submit" className="btn btn-default pull-right" onClick={(e)=>this.hanleSignIn(e)}>
+                        Welcome back!
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="col-md-6">
+              <div className={hideElement(!this.state.failedSignUp) + " alert alert-danger"} role="alert"><strong>
+                Invalid account signup.</strong><br/>
+              1.It is possible that you already have an account with that particular email address<br/>
+            2.you didn't fill in all the blanks.
+          </div>
+          <div className={hideElement(!this.state.passwordError) + " alert alert-danger"} role="alert"><strong>
+            Invalid account signup.</strong> two passwords don't match
+          </div>
           <div className="panel panel-primary">
             <div className="panel-heading">
               <h4>Sign up</h4>
@@ -315,21 +349,29 @@ class LandingPage extends React.Component{
                     <label>Password</label>
                   </div>
                 </div>
+                <div className="col-md-7 col-md-offset-2">
+                  <div className="md-form">
+                    <input type="password" disabled={this.state.submitted} className="form-control" onChange={(e)=>this.handleChange("signUpPass2",e)}/>
+                    <label>Repeat password</label>
+                  </div>
+                </div>
               </div>
             </div>
             <div className="panel-footer">
               <div className="row">
                 <div className="col-md-12">
                   <button disabled={this.state.submitted} type="button" className="btn btn-default pull-right" onClick={(e)=>this.handleSignUp(e)}>
-                    Submit
+                    Join Us!
                   </button>
                 </div>
               </div>
             </div>
           </div>
         </div>
+
       </div>
     </form>
+  </div>
     );
   }
 }

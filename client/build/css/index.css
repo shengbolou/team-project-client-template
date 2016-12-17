@@ -21,46 +21,98 @@
 }
 
 .index .panel{
-  box-shadow: 0 10px 28px 0 rgba(137,157,197,.12);
-  border: none;
-  color:rgb(92, 92, 92);
-}
-.index .panel .panel-heading{
-  background-color: #FDFDFD;
-  border-bottom-color: #FDFDFD;
-}
-.heading-text .panel-heading{
+	box-shadow:  0 10px 28px 0 rgba(137,157,197,.12);
+	border: none;
 	color:rgb(92, 92, 92);
 }
+.index .panel .panel-heading{
+	background-color: #FDFDFD;
+	border-bottom-color: #FDFDFD;
+}
+
 .index .panel .panel-heading .badge{
-  background-color: #7e929e;
+	background-color: #7e929e;
 }
 .index .panel .panel-body{
-  background-color: #F7F7F7;
+	background-color: #F7F7F7;
 }
 .index .panel .panel-footer{
-  background-color: #FDFDFD;
-  border-top-color: #FDFDFD
+	background-color: #FDFDFD;
+	border-top-color: #FDFDFD
+}
+
+.LandingPage .panel-heading{
+	color:rgb(92, 92, 92);
+}
+.LandingPage{
+	margin-top: 70px
+}
+.bg{
+	display: table;
+	position: relative;
+	width: 100%;
+	height: 100vh;
+	background: url('../img/bg.jpg') no-repeat center center;
+	background-size: cover;
+}
+
+.text-vertical-center{
+	display: table-cell;
+	text-align: center;
+	vertical-align: middle;
+}
+.text-vertical-center h1{
+	font-size: 4.5em;
+	font-weight: 700;
+}
+
+@font-face {
+	font-family: "Raleway";
+	src: url('/fonts/Raleway-Regular.ttf');
+}
+
+*{
+	font-family: 'Raleway';
+}
+
+body{
+	background-color: #F3F4F7;
+}
+
+input[type=date]:focus:not([readonly]),
+input[type=datetime-local]:focus:not([readonly]),
+input[type=email]:focus:not([readonly]),
+input[type=number]:focus:not([readonly]),
+input[type=password]:focus:not([readonly]),
+input[type=search-md]:focus:not([readonly]),
+input[type=search]:focus:not([readonly]),
+input[type=tel]:focus:not([readonly]),
+input[type=text]:focus:not([readonly]),
+input[type=time]:focus:not([readonly]),
+input[type=url]:focus:not([readonly]),
+textarea.md-textarea:focus:not([readonly]) {
+	border-bottom: 1px solid #61B4E4;
+	box-shadow: 0 1px 0 0 #61B4E4;
 }
 
 .media .media-object{
-  box-shadow: none;
+	box-shadow: none;
 }
 
 input[type="file"] {
-    display: none;
+	display: none;
 }
 
 h4 span,
 h5 span{
-  margin-right: 5px;
+	margin-right: 5px;
 }
 
 .c-btn{
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  border-radius: 50%;
-  padding-top: 12px;
-  padding-bottom: 12px;
+	position: fixed;
+	bottom: 20px;
+	right: 20px;
+	border-radius: 50%;
+	padding-top: 12px;
+	padding-bottom: 12px;
 }

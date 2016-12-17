@@ -18,7 +18,7 @@ export default class Activity extends React.Component{
 
   render(){
     return(
-      <div>
+      <div style={{marginTop:'70'}}>
         <Navbar activity="active" user={this.state}/>
         <div className="container index">
           <Link to="postactivity" className="btn btn-lg btn-blue-grey c-btn" name = "button">

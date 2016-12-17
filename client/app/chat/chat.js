@@ -154,7 +154,7 @@ export default class Chat extends React.Component {
           </div>)
         }
         return (
-          <div>
+          <div style={{marginTop:'70'}}>
             <Navbar chat="active" user={this.state.user}/>
             <div className="container">
               <div className="row">

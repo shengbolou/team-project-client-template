@@ -28,7 +28,7 @@ export default class Notification extends React.Component{
     }
 
     return(
-      <div>
+      <div style={{marginTop:'70'}}>
         <Navbar user={this.state} notification="active"/>
         <div className="container">
           <div className="row notification">

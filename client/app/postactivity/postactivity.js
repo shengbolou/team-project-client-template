@@ -140,7 +140,7 @@ export default class PostActivity extends React.Component {
 
   render() {
     return (
-      <div className='postactivity'>
+      <div className='postactivity' style={{marginTop:'70'}}>
         {this.state.cropperOpen &&
           <AvatarCropper
             onRequestHide={(e)=>this.handleRequestHide(e)}
