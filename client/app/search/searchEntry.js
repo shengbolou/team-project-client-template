@@ -23,7 +23,7 @@ export default class SearchEntry extends React.Component{
     if (e.key === "Enter") {
       var query = this.state.value.trim();
       if (query !== "") {
-        searchquery(this.props.user,query,(searchData)=>
+        searchquery(this.props.user._id,query,(searchData)=>
             this.setState(
               {
                 searchDataResult:searchData,
@@ -53,7 +53,7 @@ export default class SearchEntry extends React.Component{
           {
             this.state.searchDataResult.users=== undefined ? [] : this.state.searchDataResult.users.map((users,i)=>{
               return (
-                <SearchFeedUserFeedItem key={i} data={users}/>
+                <SearchFeedUserFeedItem key={i} data={users} currentUser={this.props.user}/>
               )
             })
           }
@@ -68,7 +68,7 @@ export default class SearchEntry extends React.Component{
           {
             this.state.searchDataResult.posts === undefined ? [] : this.state.searchDataResult.posts.map((post,i)=>{
               return (
-                <PostFeedItem key={i} data={post} currentUser={this.props.user}/>
+                <PostFeedItem key={i} data={post} currentUser={this.props.user._id}/>
               )
             })
           }

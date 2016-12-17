@@ -1338,8 +1338,7 @@ MongoClient.connect(url, function(err, db) {
       db.collection('users').find({
         $or:
           [
-            {lastname:{$regex:querytext,$options:'i'}},
-            {firstname:{$regex:querytext,$options:'i'}}
+            {fullname:{$regex:querytext,$options:'i'}}
           ]
       }).toArray(function(err, items) {
         if (err) {
