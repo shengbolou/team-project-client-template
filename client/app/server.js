@@ -2,7 +2,6 @@ import {} from './component/database.js';
 // var token = 'eyJpZCI6IjAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMSJ9';
 var moment = require('moment');
 import {updateCredentials,getToken} from './credentials';
-var debug = require('react-debug');
 
 /**
 * Properly configure+send an XMLHttpRequest with error handling,

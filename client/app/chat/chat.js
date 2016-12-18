@@ -14,7 +14,7 @@ export default class Chat extends React.Component {
       user: {},
       message :[],
       friend: "",
-      sessionId:"000000000000000000000001"
+      sessionId:{}
     };
   }
 
