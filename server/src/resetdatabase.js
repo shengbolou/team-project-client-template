@@ -242,7 +242,7 @@ var initialData = {
       "1": {
         "_id":new ObjectID("000000000000000000000001"),
         "users": [new ObjectID("000000000000000000000001"),new ObjectID("000000000000000000000002")],
-        "contents": new ObjectID("000000000000000000000001"),
+        "contents": new ObjectID("00000000000000000000000A"),
         "lastmessage":{
           "sender":new ObjectID("000000000000000000000001"),
           "target":new ObjectID("000000000000000000000002"),
@@ -254,7 +254,7 @@ var initialData = {
       "2": {
         "_id":new ObjectID("000000000000000000000002"),
         "users": [new ObjectID("000000000000000000000001"),new ObjectID("000000000000000000000003")],
-        "contents": new ObjectID("000000000000000000000002"),
+        "contents": new ObjectID("00000000000000000000000B"),
         "lastmessage":{
           "sender":new ObjectID("000000000000000000000001"),
           "target":new ObjectID("000000000000000000000003"),
@@ -267,7 +267,7 @@ var initialData = {
     //message table
     "message": {
       "1": {
-        "_id":new ObjectID("000000000000000000000001"),
+        "_id":new ObjectID("00000000000000000000000A"),
         "messages": [
           {
             "sender":new ObjectID("000000000000000000000001"),
@@ -292,7 +292,7 @@ var initialData = {
         ]
       },
       "2": {
-          "_id":new ObjectID("000000000000000000000002"),
+          "_id":new ObjectID("00000000000000000000000B"),
           "messages": [
             {
               "sender":new ObjectID("000000000000000000000001"),
