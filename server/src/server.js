@@ -345,6 +345,11 @@ MongoClient.connect(url, function(err, db) {
               var userMap = {};
               users.forEach((user) => {
                   delete user.password;
+                  delete user.sessions;
+                  delete user.friends;
+                  delete user.post;
+                  delete user.notification;
+                  delete user.activity;
                   userMap[user._id] = user;
               });
               callback(null, userMap);
@@ -404,6 +409,7 @@ MongoClient.connect(url, function(err, db) {
                           else {
                               userData.sessions = userData.sessions.map((id) => sessionMap[id]);
                               delete userData.password;
+                              delete userData.sessions;
                               callback(null, userData);
                           }
                       });
