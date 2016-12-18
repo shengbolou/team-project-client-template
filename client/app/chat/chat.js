@@ -14,7 +14,7 @@ export default class Chat extends React.Component {
       user: {},
       message :[],
       friend: "",
-      sessionId:{}
+      sessionId:""
     };
   }
 
@@ -167,7 +167,7 @@ export default class Chat extends React.Component {
                         </li>
                       </ul>
                     </div>
-                    <NavBody data={this.state.user}messages={this.state.message} activeFriend={this.state.friend} switchUser={(id)=>this.handleSwitchFriends(id)}/>
+                    <NavBody data={this.state.user} messages={this.state.message} activeFriend={this.state.friend} switchUser={(id)=>this.handleSwitchFriends(id)}/>
                   </div>
                 </div>
                 {chatwindow}

@@ -89,12 +89,14 @@ var initialData = {
   "notificationItems": {
     "1": {
       "_id":new ObjectID("000000000000000000000001"),
+      "target":new ObjectID("000000000000000000000001"),
       "sender":new ObjectID("000000000000000000000002"),
       "type": "FR"
     },
     "2": {
       "_id":new ObjectID("000000000000000000000002"),
-      "author": new ObjectID("000000000000000000000002"),
+      "target":new ObjectID("000000000000000000000001"),
+      "sender": new ObjectID("000000000000000000000002"),
       "type": "NF"
     }
   },
@@ -240,7 +242,7 @@ var initialData = {
       "1": {
         "_id":new ObjectID("000000000000000000000001"),
         "users": [new ObjectID("000000000000000000000001"),new ObjectID("000000000000000000000002")],
-        "contents": new ObjectID("00000000000000000000000A"),
+        "contents": new ObjectID("000000000000000000000001"),
         "lastmessage":{
           "sender":new ObjectID("000000000000000000000001"),
           "target":new ObjectID("000000000000000000000002"),
@@ -252,7 +254,7 @@ var initialData = {
       "2": {
         "_id":new ObjectID("000000000000000000000002"),
         "users": [new ObjectID("000000000000000000000001"),new ObjectID("000000000000000000000003")],
-        "contents": new ObjectID("00000000000000000000000B"),
+        "contents": new ObjectID("000000000000000000000002"),
         "lastmessage":{
           "sender":new ObjectID("000000000000000000000001"),
           "target":new ObjectID("000000000000000000000003"),
@@ -265,7 +267,7 @@ var initialData = {
     //message table
     "message": {
       "1": {
-        "_id":new ObjectID("00000000000000000000000A"),
+        "_id":new ObjectID("000000000000000000000001"),
         "messages": [
           {
             "sender":new ObjectID("000000000000000000000001"),
@@ -290,7 +292,7 @@ var initialData = {
         ]
       },
       "2": {
-          "_id":new ObjectID("00000000000000000000000B"),
+          "_id":new ObjectID("000000000000000000000002"),
           "messages": [
             {
               "sender":new ObjectID("000000000000000000000001"),
