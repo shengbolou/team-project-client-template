@@ -12,6 +12,23 @@ export default class NavBody extends React.Component {
       this.setState(newProps);
     }
 
+    getLastmessage(friendId){
+      var filterResult = this.state.data.sessions.filter((session) => {
+        if(session.users.indexOf(friendId)!==-1){
+          return true;
+        }
+        return false;
+      });
+
+      if(filterResult.length===0){
+        return undefined;
+      }
+      else{
+        return filterResult[0].lastmessage;
+      }
+
+    }
+
     render() {
       var alert =
       (<div className="alert alert-info" role="alert">
@@ -25,7 +42,7 @@ export default class NavBody extends React.Component {
                     'marginTop': '-1'
                 }}>
                 {
-                  this.state.data.fullname === undefined ? null:
+                  this.state.data === undefined ? null:
                   (this.state.data.friends.length===0 ? alert : this.state.data.friends.map((friend)=>{
                     return <NavChatItem
                       key={friend._id}
@@ -33,12 +50,7 @@ export default class NavBody extends React.Component {
                       activeFriend = {this.props.activeFriend}
                       currentUser={this.state.data._id}
                       switchUser={this.props.switchUser}
-                      lastmessage={this.state.data.sessions.filter((session) => {
-                        if(session.users.indexOf(friend._id)!==-1){
-                          return true;
-                        }
-                        return false;
-                      })[0].lastmessage}/>
+                      lastmessage={this.getLastmessage(friend._id)}/>
                     }))
                   }
                 </ul>
