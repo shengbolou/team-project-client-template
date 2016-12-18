@@ -33,7 +33,7 @@ export default class NavBody extends React.Component {
                       activeFriend = {this.props.activeFriend}
                       currentUser={this.state.data._id}
                       switchUser={this.props.switchUser}
-                      lastmessage={this.state.data.sessions.filter((session) => {
+                      lastmessage={this.state.data.sessionId.filter((session) => {
                         if(session.users.indexOf(friend._id)!==-1){
                           return true;
                         }
