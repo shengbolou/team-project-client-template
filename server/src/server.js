@@ -409,7 +409,6 @@ MongoClient.connect(url, function(err, db) {
                           else {
                               userData.sessions = userData.sessions.map((id) => sessionMap[id]);
                               delete userData.password;
-                              delete userData.sessions;
                               callback(null, userData);
                           }
                       });
