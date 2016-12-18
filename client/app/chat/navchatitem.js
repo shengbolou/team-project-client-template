@@ -45,7 +45,7 @@ export default class NavChatItem extends React.Component {
                     <font size="2" color="grey">
                       {this.props.lastmessage===undefined?"":this.props.lastmessage.text}
                       <span className={"label label-danger "+
-                        hideElement(this.props.lastmessage!==undefined||
+                        hideElement(this.props.lastmessage===undefined|| Object.keys(this.props.lastmessage).length===0||
                           this.props.data._id===this.props.activeFriend || this.props.lastmessage.isread ||
                           this.props.lastmessage.sender===this.props.currentUser)}
                       style={{marginLeft:5}}>New</span>
