@@ -1152,7 +1152,7 @@ MongoClient.connect(url, function(err, db) {
               if (err)
                   sendDatabaseError(res, err);
               else {
-                  getMessage(message.contents[0], function(err, data) {
+                  getMessage(message.contents, function(err, data) {
                       if (err)
                           sendDatabaseError(res, err);
                       else {
@@ -1167,66 +1167,77 @@ MongoClient.connect(url, function(err, db) {
 
   //post message
   app.post('/user/:userid/chatsession/:id', function(req, res) {
-      var fromUser = getUserIdFromToken(req.get('Authorization'));
-      var id = req.params.id;
-      var userid = req.params.userid;
-      var body = req.body;
-      if (userid == fromUser) {
-          var senderid = body.sender;
-          var targetid = body.target;
-          var text = body.text;
-          var lastmessage = {
+    var fromUser = getUserIdFromToken(req.get('Authorization'));
+    var id = req.params.id;
+    var userid = req.params.userid;
+    var body = req.body;
+    if (userid === fromUser) {
+        var senderid = body.sender;
+        var targetid = body.target;
+        var text = body.text;
+        var lastmessage = {
             "sender": new ObjectID(senderid),
             "target": new ObjectID(targetid),
             "date": (new Date()).getTime(),
             "text": text
-          }
-          db.collection('message').updateOne({
-              _id: new ObjectID(id)
-          }, {
-              $push: {
-                  messages: lastmessage
-              }
-          }, function(err) {
-              if (err)
-                  sendDatabaseError(res.err);
-              else {
-                  getMessage(new ObjectID(id), function(err, message) {
-                      if (err)
-                          sendDatabaseError(res, err);
-                      else {
-                          //seting lastmessage;
-                          lastmessage.isread = false;
-                          db.collection("messageSession").updateOne({
-                              _id: new ObjectID(id)
-                          }, {
-                              $set: {
-                                  "lastmessage": lastmessage
-                              }
-                          }, function(err) {
-                              if (err)
-                                  sendDatabaseError(res, err);
+        }
+        getSessionContentsID(new ObjectID(id), function(err, contentsid) {
+            if (err)
+                sendDatabaseError(res, err);
+            else {
+                db.collection('message').updateOne({
+                    _id: new ObjectID(contentsid)
+                }, {
+                    $push: {
+                        messages: lastmessage
+                    }
+                }, function(err) {
+                    if (err)
+                        sendDatabaseError(res.err);
+                    else {
+                        getMessage(contentsid, function(err, message) {
+                            if (err)
+                                sendDatabaseError(res, err);
+                            else {
+                                //seting lastmessage;
+                                lastmessage.isread = false;
+                                db.collection("messageSession").updateOne({
+                                    _id: new ObjectID(id)
+                                }, {
+                                    $set: {
+                                        "lastmessage": lastmessage
+                                    }
+                                }, function(err) {
+                                    if (err)
+                                        sendDatabaseError(res, err);
 
-                              else res.send(message.messages);
-                          });
-                      }
-                  });
-              }
-          });
-      } else {
-          res.status(401).end();
-      }
-  });
+                                    else res.send(message.messages);
+                                });
+                            }
+                        });
+                    }
+                })
 
-  function getMessage(sessionId, cb) {
-      db.collection('message').findOne({
-          _id: sessionId
-      }, function(err, message) {
-          if (err) {
-              return cb(err);
-          } else {
-              var userList = [message.messages[0].sender, message.messages[0].target];
-              resolveUserObjects(userList, function(err, userMap) {
+            }
+        });
+    } else {
+        res.status(401).end();
+    }
+});
+
+function getMessage(sessionId, cb) {
+    db.collection('message').findOne({
+        _id: sessionId
+    }, function(err, message) {
+        if (err) {
+            return cb(err);
+        } else {
+                if(message.messages.length===0){
+                  cb(null,message);
+                }
+                else{
+                  var userList = [message.messages[0].sender, message.messages[0].target];
+                  resolveUserObjects(userList, function(err, userMap) {
                   if (err)
                       return cb(err);
                   message.messages.forEach((message) => {
@@ -1234,19 +1245,30 @@ MongoClient.connect(url, function(err, db) {
                       message.sender = userMap[message.sender];
                   });
                   cb(null, message);
-              })
+                })
+              }
+            }
           }
-      });
-  }
+        )}
 
   app.get('/getsession/:userid/:targetid', function(req, res) {
       var fromUser = getUserIdFromToken(req.get('Authorization'));
       var userid = req.params.userid;
       if (userid == fromUser) {
           var targetid = req.params.targetid;
-          getSessionId(new ObjectID(userid), new ObjectID(targetid), function(err, session) {
+          getSession(new ObjectID(userid), new ObjectID(targetid), function(err, session) {
               if (err)
                   sendDatabaseError(res, err);
+              else if(session===null){
+                createSession(new ObjectID(userid), new ObjectID(targetid),function(err,session){
+                  if(err)
+                  sendDatabaseError(res,err);
+                  else{
+                    res.status(201);
+                    res.send(session);
+                  }
+                })
+              }
               else {
                   res.status(201);
                   //console.log(session);
@@ -1258,7 +1280,7 @@ MongoClient.connect(url, function(err, db) {
       }
   });
 
-  function getSessionId(userid, targetid, cb) {
+  function getSession(userid, targetid, cb) {
       db.collection("messageSession").findOne({
           users: {
               $all: [userid, targetid]
@@ -1268,6 +1290,54 @@ MongoClient.connect(url, function(err, db) {
               return cb(err);
           cb(null, session);
       })
+  }
+
+  function getSessionContentsID(sessionid, cb) {
+
+      db.collection("messageSession").findOne({
+              _id: sessionid
+      }, function(err, session) {
+
+          if (err){
+              return cb(err);
+            }
+          cb(null, session.contents);
+      })
+  }
+
+  function createSession(userid, targetid, cb){
+    db.collection("message").insertOne({
+      messages:[]
+    },function(err,message){
+      if(err)
+        cb(err);
+      else{
+        db.collection("messageSession").insertOne({
+          users : [new ObjectID(userid), new ObjectID(targetid)],
+          contents: message.insertedId,
+          lastmessage : {}
+        },function(err,messageSession){
+          if(err)
+            cb(err)
+          else{
+            db.collection("users").update({
+              $or:[
+                {_id:new ObjectID(userid)},
+                {_id:new ObjectID(targetid)}
+              ]
+            },{$addToSet:{
+              sessions: messageSession.insertedId
+            }},function(err){
+              if(err)
+                cb(err)
+              else{
+                cb(null,messageSession);
+              }
+            })
+          }
+        })
+      }
+    })
   }
 
   /**

@@ -43,7 +43,7 @@ export default class NavBody extends React.Component {
                 }}>
                 {
                   this.state.data === undefined ? null:
-                  (this.state.data.friends.length===0 ? alert : this.state.data.friends.map((friend)=>{
+                  (this.state.data.friends===undefined || this.state.data.friends.length===0 ? alert : this.state.data.friends.map((friend)=>{
                     return <NavChatItem
                       key={friend._id}
                       data={friend}

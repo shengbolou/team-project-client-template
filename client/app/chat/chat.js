@@ -122,7 +122,7 @@ export default class Chat extends React.Component {
           message={this.state.message}>
         </ChatWindow>
       );
-      if(this.state.user.friends.length === 0){
+      if(this.state.user.friends === undefined ? true :this.state.user.friends.length === 0){
         chatwindow = (
           <div className="col-md-7 col-sm-7 col-xs-7">
             <div className="alert alert-info" role="alert">
