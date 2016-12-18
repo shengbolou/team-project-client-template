@@ -4,6 +4,7 @@ import {logout} from '../credentials';
 import {hashHistory} from 'react-router'
 import {socket} from '../credentials';
 import {hideElement} from '../util'
+var debug = require('react-debug');
 
 export default class Navbar extends React.Component{
 
@@ -12,7 +13,8 @@ export default class Navbar extends React.Component{
     this.state={
       activity:false,
       post:false,
-      chat:false
+      chat:false,
+      notifiction:false
     }
   }
 
@@ -39,6 +41,12 @@ export default class Navbar extends React.Component{
         chat:true
       });
     });
+    socket.on('notification',()=>{
+      debug("here")
+      this.setState({
+        notification: true
+      });
+    });
   }
 
   goToAcitivity(e){
@@ -56,12 +64,21 @@ export default class Navbar extends React.Component{
     });
     hashHistory.push('/post');
   }
+
   goToChat(e){
     e.preventDefault();
     this.setState({
       chat:false
     });
     hashHistory.push('/chat');
+  }
+
+  goToNotification(e){
+    e.preventDefault();
+    this.setState({
+      notification:false
+    });
+    hashHistory.push('/notification/1');
   }
 
 
@@ -116,7 +133,7 @@ export default class Navbar extends React.Component{
                       <Link to={"search"}><i className="fa fa-search" aria-hidden="true"/></Link>
                     </li>
                     <li className={this.props.notification}>
-                      <Link to={"notification/"+1}><i className="fa fa-bell-o" aria-hidden="true"></i></Link>
+                      <Link to={"notification/"+1}><i className="fa fa-bell-o" aria-hidden="true"></i> <i className={"fa fa-circle "+hideElement(!this.state.notification)} style={{fontSize:12,marginLeft:'2',color:'#EF9A9A'}}aria-hidden="true"></i></Link>
                     </li>
                 </ul>
               </div>

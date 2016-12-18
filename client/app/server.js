@@ -328,5 +328,5 @@ export function addFriend(sender,target,cb){
     cb(true);
   },()=>{
     cb(false);
-  })
+  });
 }

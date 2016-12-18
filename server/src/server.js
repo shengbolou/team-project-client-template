@@ -1095,7 +1095,7 @@ MongoClient.connect(url, function(err, db) {
                       _id: userId
                   }, {
                       $addToSet: {
-                          friends: notification.sender
+                          friends: notification.sender._id
                       }
                   }, function(err) {
                       if (err)
@@ -1544,17 +1544,24 @@ MongoClient.connect(url, function(err, db) {
         if(err)
           sendDatabaseError(res,err);
         else{
-          db.collection('notifications').updateOne({_id:new ObjectID(target)},{
-            $addToSet:{
-              contents: result.insertedId
-            }
-          },function(err){
+          getUserData(new ObjectID(target),function(err,userData){
             if(err)
               sendDatabaseError(res,err);
-            else {
-              res.send();
+            else{
+              db.collection('notifications').updateOne({_id:userData.notification},{
+                $addToSet:{
+                  contents: result.insertedId
+                }
+              },function(err){
+                if(err)
+                sendDatabaseError(res,err);
+                else {
+                  res.send();
+                }
+              });
             }
-          })
+          });
+
         }
       });
     }
@@ -1635,6 +1642,22 @@ MongoClient.connect(url, function(err, db) {
         var id = tokenObj['id'];
         if(id===data.user){
           socket.broadcast.emit('newActivity');
+        }
+      }
+    });
+
+    socket.on('notification',function(data){
+      if(data.authorization!==undefined&&data.authorization!==null){
+        var tokenObj = jwt.verify(data.authorization, secretKey);
+        var id = tokenObj['id'];
+        if(id===data.sender){
+          db.collection('userSocketIds').findOne({userId:new ObjectID(data.target)},function(err,socketData){
+            if(err)
+              io.emit('notification',err);
+            else if(socketData!==null && io.sockets.connected[socketData.socketId]!==undefined){
+              io.sockets.connected[socketData.socketId].emit('notification');
+            }
+          });
         }
       }
     });
