@@ -1162,7 +1162,8 @@ MongoClient.connect(url, function(err, db) {
               if (err)
                   sendDatabaseError(res, err);
               else {
-                if(message.lastmessage===undefined?false:(message.lastmessage.target.str===userid.str)){
+                if(message.lastmessage===undefined?false:
+                  (message.lastmessage.target===undefined?"":message.lastmessage.target.str===userid.str)){
                   db.collection('messageSession').updateOne({_id:new ObjectID(id)},{
                     $set:{
                       "lastmessage.isread":true
