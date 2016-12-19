@@ -1162,14 +1162,33 @@ MongoClient.connect(url, function(err, db) {
               if (err)
                   sendDatabaseError(res, err);
               else {
-                  getMessage(message.contents, function(err, data) {
-                      if (err)
-                          sendDatabaseError(res, err);
-                      else {
+                if(message.lastmessage===undefined?false:(message.lastmessage.target.str===userid.str)){
+                  db.collection('messageSession').updateOne({_id:new ObjectID(id)},{
+                    $set:{
+                      "lastmessage.isread":true
+                    }
+                  },function(err){
+                    if(err)
+                      return sendDatabaseError(res,err);
+                      getMessage(message.contents, function(err, data) {
+                        if (err)
+                        sendDatabaseError(res, err);
+                        else {
                           res.status(201);
                           res.send(data.messages);
-                      }
+                        }
+                      });
                   })
+                }
+                else getMessage(message.contents, function(err, data) {
+                  if (err)
+                  sendDatabaseError(res, err);
+                  else {
+                    res.status(201);
+                    res.send(data.messages);
+                  }
+                });
+
               }
           })
       }

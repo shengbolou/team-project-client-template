@@ -35,21 +35,21 @@ export default class Chat extends React.Component {
 
   componentDidUpdate(){
     socket.on('chat',()=>{
-      getUserData(this.props.user, (userData) => {
+      getSessionId(this.props.user,this.state.friend,(session)=>{
         this.setState({
-          user:userData
-        },()=>{
-          getSessionId(this.props.user,this.state.friend,(session)=>{
+          sessionId:session._id
+        },
+        ()=>{
+          getMessages(this.props.user,this.state.sessionId,(message)=>{
             this.setState({
-              sessionId:session._id
-            },
-            ()=>{
-              getMessages(this.props.user,this.state.sessionId,(message)=>{
+              message:message
+            },()=>{
+              getUserData(this.props.user, (userData) => {
                 this.setState({
-                  message:message
-                })
+                  user:userData
+                });
               });
-            });
+            })
           });
         })
       });
