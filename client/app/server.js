@@ -82,7 +82,7 @@ export function getlocation(cb){
     else{
       var xhr = new XMLHttpRequest();
       xhr.open('GET',
-      'http://maps.googleapis.com/maps/api/geocode/json?latlng='+position.coords.latitude+","+position.coords.longitude+'&sensor=true');
+      'https://maps.googleapis.com/maps/api/geocode/json?latlng='+position.coords.latitude+","+position.coords.longitude+'&sensor=true');
       xhr.onload = function() {
         cb(JSON.parse(xhr.responseText));
       }

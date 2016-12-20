@@ -55,6 +55,8 @@ MongoClient.connect(url, function(err, db) {
       if(err){
         return callback(err);
       }
+      collection.sort(function(a,b){return a.contents.postDate - b.contents.postDate});
+
       var resolvedPosts = [];
 
       function processNextFeedItem(i) {
@@ -64,12 +66,19 @@ MongoClient.connect(url, function(err, db) {
             // Pass an error to the callback.
             callback(err);
           } else {
+            //console.log(collection[i]._id);
             // Success!
             resolvedPosts.push(postItem);
             if (resolvedPosts.length === collection.length) {
               // I am the final feed item; all others are resolved.
               // Pass the resolved feed document back to the callback.
+
               collection = resolvedPosts.reverse();
+              // resolvedPosts.sort(function(a, b){
+              //   return a.contents.postDate-b.age.contents.postDate
+              //     })
+
+
               callback(null, collection);
             } else {
               // Process the next feed item.
@@ -149,6 +158,7 @@ MongoClient.connect(url, function(err, db) {
                               // I am the final feed item; all others are resolved.
                               // Pass the resolved feed document back to the callback.
                               feedData.contents = resolvedContents;
+
                               callback(null, feedData);
                           } else {
                               // Process the next feed item.
@@ -210,7 +220,9 @@ MongoClient.connect(url, function(err, db) {
           },
           "comments": []
       };
-      db.collection('postFeedItems').insertOne(post, function(err, result) {
+      db.collection('postFeedItems').insertOne(post, {
+        ordered: true
+      },function(err, result) {
           if (err)
               callback(err);
           else {
