@@ -51,11 +51,11 @@ MongoClient.connect(url, function(err, db) {
   var validate = require('express-jsonschema').validate;
 
   function getAllPosts(callback){
-    db.collection('postFeedItems').find().toArray(function(err,collection){
+    db.collection('postFeedItems').find().sort({"contents.postDate":1}).toArray(function(err,collection){
       if(err){
         return callback(err);
       }
-      collection.sort(function(a,b){return a.contents.postDate - b.contents.postDate});
+    
 
       var resolvedPosts = [];
 
