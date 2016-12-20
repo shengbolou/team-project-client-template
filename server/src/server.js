@@ -66,7 +66,6 @@ MongoClient.connect(url, function(err, db) {
             // Pass an error to the callback.
             callback(err);
           } else {
-            //console.log(collection[i]._id);
             // Success!
             resolvedPosts.push(postItem);
             if (resolvedPosts.length === collection.length) {
@@ -74,9 +73,6 @@ MongoClient.connect(url, function(err, db) {
               // Pass the resolved feed document back to the callback.
 
               collection = resolvedPosts.reverse();
-              // resolvedPosts.sort(function(a, b){
-              //   return a.contents.postDate-b.age.contents.postDate
-              //     })
 
 
               callback(null, collection);
