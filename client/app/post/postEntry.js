@@ -8,7 +8,9 @@ export default class PostEntry extends React.Component{
     super(props);
     this.state = {
       text: "",
-      img: null
+      img: null,
+      fileTooLarge:false,
+      fileWrongType:false
     }
   }
 
@@ -38,9 +40,21 @@ export default class PostEntry extends React.Component{
     var reader = new FileReader();
     var file = e.target.files[0];
     // Called once the browser finishes loading the image.
+    if(file.size > 150000){
+      return this.setState({
+        fileTooLarge:true
+      })
+    }
+    else if(!file.type.match('image.*')){
+      return this.setState({
+        fileWrongType:true
+      })
+    }
     reader.onload = (upload) => {
       this.setState({
-        img: upload.target.result
+        img: upload.target.result,
+        fileTooLarge:false,
+        fileWrongType:false
       });
     };
 
@@ -70,6 +84,12 @@ export default class PostEntry extends React.Component{
               <button type="button" className="btn btn-blue-grey pull-right" name="button" onClick={(e)=>this.handlePost(e)}>Submit</button>
             </div>
             <div className="media-footer">
+              <div className={"alert alert-warning alert-dismissible "+hideElement(!this.state.fileWrongType)} role="alert">
+                <strong>File is not a image file</strong>
+              </div>
+              <div className={"alert alert-warning alert-dismissible "+hideElement(!this.state.fileTooLarge)} role="alert">
+                <strong>File is too large</strong>
+              </div>
               <img className={hideElement(this.state.img === null)} src={this.state.img} style={{width: "100%"}} />
             </div>
           </div>
