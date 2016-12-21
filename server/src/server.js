@@ -23,8 +23,8 @@ a332ca4da03fc80b9228f56cad935b6b9fd33ce6437a4b1f96648546a122a718720452b7cf
 a7f1dba60f898302c4865cfee74b82517852e5bd5890a547d59071319b5dfc0faa92ce4f01
 f090e49cab2422031b17ea54a7c4b660bf491d7b47343cdf6042918669d7df54e7d3a1be6e9a571be9aef`;
 
-app.use(bodyParser.json({limit: '10mb'}));
-app.use(bodyParser.urlencoded({limit: '10mb', extended: true}));
+app.use(bodyParser.json({limit: '2mb'}));
+app.use(bodyParser.urlencoded({limit: '2mb', extended: true}));
 
 
 MongoClient.connect(url, function(err, db) {
@@ -55,7 +55,7 @@ MongoClient.connect(url, function(err, db) {
       if(err){
         return callback(err);
       }
-    
+
 
       var resolvedPosts = [];
 

@@ -21,7 +21,9 @@ export default class Settings extends React.Component{
       oldEmail:"",
       newEmail:"",
       img: null,
-      cropperOpen: false
+      cropperOpen: false,
+      changeInfoFailed:false,
+      fileTooLarge:false
     }
   }
 
@@ -32,10 +34,16 @@ export default class Settings extends React.Component{
     var reader = new FileReader();
     var file = e.target.files[0];
     // Called once the browser finishes loading the image.
+    if(file.size > 1000){
+      return this.setState({
+        fileTooLarge:true
+      })
+    }
     reader.onload = (upload) => {
       this.setState({
         img: upload.target.result,
-        cropperOpen:true
+        cropperOpen:true,
+        fileTooLarge:false
       });
     };
 
@@ -71,7 +79,7 @@ export default class Settings extends React.Component{
 
   handleChangeUserInfo(e){
     e.preventDefault();
-    if(this.state.fullname!==""&&
+    if(this.state.username!==""&&
         this.state.nickname!==""&&
         this.state.description!==""){
           changeUserInfo({
@@ -81,16 +89,20 @@ export default class Settings extends React.Component{
             description: this.state.description,
             birthday:this.state.birthday
           },(userData)=>{
-            alert = (<div className="alert alert-success alert-dismissible" role="alert">
-                          <strong>Change info succeed!</strong>
-                        </div>);
-          this.setState({userData: userData});
+            alert = <div className={"alert alert-success alert-dismissible"} role="alert">
+              <strong>Change info succeed!</strong>
+            </div>
+            this.setState({
+              userData: userData,
+              changeInfoFailed:false
+            });
           });
         }
         else{
-          alert = (<div className="alert alert-warning alert-dismissible" role="alert">
-                        <strong>Please fill in blanks</strong>
-                      </div>);
+          alert = null;
+          this.setState({
+            changeInfoFailed:true
+          });
         }
 
   }
@@ -160,7 +172,7 @@ export default class Settings extends React.Component{
       }
       else{
         emailAlert = (<div className="alert alert-warning" role="alert">
-                      <strong>fill in blanks</strong>
+                      <strong>Please fill in blanks</strong>
                     </div>);
       }
 
@@ -196,6 +208,9 @@ export default class Settings extends React.Component{
                       <h4>Personal Info</h4>
                       <div>
                         {alert}
+                        <div className={"alert alert-warning alert-dismissible "+hideElement(!this.state.changeInfoFailed)} role="alert">
+                          <strong>Please fill in blanks</strong>
+                        </div>
                       </div>
                       <div className="row">
                         <div className="col-md-12">
@@ -291,6 +306,9 @@ export default class Settings extends React.Component{
 
                 <div id="change-avatar" className="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
                   <div className="panel-body">
+                    <div className={"alert alert-warning alert-dismissible "+hideElement(!this.state.fileTooLarge)} role="alert">
+                      <strong>File is too large</strong>
+                    </div>
                     <div className="row">
                       <div className="col-md-8 col-md-offset-3">
                         <div className="btn-group" role="group">
