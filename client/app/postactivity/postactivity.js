@@ -22,7 +22,9 @@ export default class PostActivity extends React.Component {
       endTime: '',
       description: "",
       location: "",
-      detail:""
+      detail:"",
+      alert:false,
+      sizealert:false
     }
   }
 
@@ -32,15 +34,19 @@ export default class PostActivity extends React.Component {
     // files, we ignore the others).
     var reader = new FileReader();
     var file = e.target.files[0];
-    // Called once the browser finishes loading the image.
-    reader.onload = (upload) => {
-      this.setState({
-        img: upload.target.result,
-        cropperOpen:true
-      });
-    };
-
-    reader.readAsDataURL(file);
+    if(file.size<150000 && file.type.match('image.*')){
+      // Called once the browser finishes loading the image.
+      reader.onload = (upload) => {
+        this.setState({
+          img: upload.target.result,
+          cropperOpen:true
+        });
+      };
+      reader.readAsDataURL(file);
+    }
+    else{
+      this.setState({sizealert:true});
+    }
   }
 
   handleFileClick(e){
@@ -83,6 +89,9 @@ export default class PostActivity extends React.Component {
         socket.emit('newActivity',{authorization:getToken(),user:this.props.user});
         hashHistory.push('/activity');
       });
+    }
+    else{
+      this.setState({alert:true})
     }
   }
 
@@ -167,6 +176,16 @@ export default class PostActivity extends React.Component {
                   <div className="row">
                     <div className="col-md-12">
                       <h4>Activity Info</h4>
+                        <div className={hideElement(!this.state.alert)}>
+                         <div className="alert alert-warning alert-dismissible" role="alert">
+                                        <strong>Please fill in blanks</strong>
+                                      </div>
+                        </div>
+                        <div className={hideElement(!this.state.sizealert)}>
+                         <div className="alert alert-warning alert-dismissible" role="alert">
+                                        <strong>File is too large</strong>
+                                      </div>
+                        </div>
                       <div className="row">
                         <div className="col-md-12">
                           <div className="md-form">
