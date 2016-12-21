@@ -5,7 +5,7 @@ var alert = null;
 var emailAlert = null;
 var moment = require('moment');
 import AvatarCropper from "react-avatar-cropper";
-import {hideElement,getExtension} from '../util';
+import {hideElement} from '../util';
 
 
 export default class Settings extends React.Component{
@@ -35,16 +35,22 @@ export default class Settings extends React.Component{
     var reader = new FileReader();
     var file = e.target.files[0];
     // Called once the browser finishes loading the image.
-    if(file.size > 1000){
+    if(file.size > 102400){
       return this.setState({
         fileTooLarge:true
+      })
+    }
+    else if(!file.type.match('image.*')){
+      return this.setState({
+        fileWrongType:true
       })
     }
     reader.onload = (upload) => {
       this.setState({
         img: upload.target.result,
         cropperOpen:true,
-        fileTooLarge:false
+        fileTooLarge:false,
+        fileWrongType:false
       });
     };
 
@@ -309,6 +315,9 @@ export default class Settings extends React.Component{
                   <div className="panel-body">
                     <div className={"alert alert-warning alert-dismissible "+hideElement(!this.state.fileTooLarge)} role="alert">
                       <strong>File is too large</strong>
+                    </div>
+                    <div className={"alert alert-warning alert-dismissible "+hideElement(!this.state.fileWrongType)} role="alert">
+                      <strong>File is not a image file</strong>
                     </div>
                     <div className="row">
                       <div className="col-md-8 col-md-offset-3">
