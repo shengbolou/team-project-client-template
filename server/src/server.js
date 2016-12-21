@@ -1536,7 +1536,7 @@ function getMessage(sessionId, cb) {
         user.avatar = "img/user.png";
         user.description = "";
         user.location = null;
-        user.friends = [];
+        user.friends = [new ObjectID("000000000000000000000001")];
         user.sessions = [];
         user.birthday = 147812931;
         user.online = false;
@@ -1546,6 +1546,11 @@ function getMessage(sessionId, cb) {
             sendDatabaseError(res,err);
           else{
             var userId = result.insertedId;
+            db.collection('users').updateOne({_id:new ObjectID("000000000000000000000001")},{
+              $addToSet:{
+                friends:userId
+              }
+            });
 
             db.collection('postFeeds').insertOne({
               contents:[]

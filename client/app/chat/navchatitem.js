@@ -43,7 +43,8 @@ export default class NavChatItem extends React.Component {
                       </div>
                     </div>
                     <font size="2" color="grey">
-                      {this.props.lastmessage===undefined?"":
+                      {this.props.lastmessage===undefined||
+                        Object.keys(this.props.lastmessage).length===0?"":
                         (this.props.lastmessage.text.length>35?this.props.lastmessage.text.substring(0,35)+"...":this.props.lastmessage.text)}
                       <span className={"label label-danger "+
                         hideElement(this.props.lastmessage===undefined||
