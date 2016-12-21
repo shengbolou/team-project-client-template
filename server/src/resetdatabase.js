@@ -21,17 +21,17 @@ var initialData = {
   "users":{
     "1":{
       "_id":new ObjectID("000000000000000000000001"),
-      "fullname":"Vincent Lou",
-      "nickname": "crown",
-      "avatar": "img/user.png",
-      "description": "Hello everyone, I'm a mock user",
+      "fullname":"WeMeet",
+      "nickname": "make your life better",
+      "avatar": "img/logo/mipmap-xxhdpi/ic_launcher.png",
+      "description": "Welcome to Wemeet! If there are any questions, ask me!",
       "location":{},
       "friends":[new ObjectID("000000000000000000000002"),new ObjectID("000000000000000000000003")],
       "post":new ObjectID("000000000000000000000001"),
       "activity":new ObjectID("000000000000000000000001"),
       "notification":new ObjectID("000000000000000000000001"),
       "email": "upao@umass.edu",
-      "birthday":147812931,
+      "birthday":1476057600000,
       "sessions":[new ObjectID("000000000000000000000001"),new ObjectID("000000000000000000000002")],
       "password":"$2a$10$1BmmDhIqBX7zdb/VlysJzeabojvhOc4yez/LCwwetMmTkzWlMGzMa",
       "online":false
