@@ -16,7 +16,7 @@ export default class FriendItem extends React.Component{
           </Link>
         </div>
         <div className="media-body media-top">
-          {this.props.data.firstname} {this.props.data.lastname}<br/>
+          {this.props.data.fullname}<br/>
         <font color="grey">{this.props.data.description}</font>
       </div>
       <div className="media-body media-right" align="right" style={{"paddingRight":'20'}}>

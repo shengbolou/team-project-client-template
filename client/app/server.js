@@ -18,7 +18,7 @@ function sendXHR(verb, resource, body, cb, errorCb) {
   // Response received from server. It could be a failure, though!
   xhr.addEventListener('load', function() {
     var statusCode = xhr.status;
-    var statusText = xhr.statusText;
+    // var statusText = xhr.statusText;
     if (statusCode >= 200 && statusCode < 300) {
       // Success: Status code is in the [200, 300) range.
       // Call the callback with the final XHR object.
@@ -27,23 +27,23 @@ function sendXHR(verb, resource, body, cb, errorCb) {
       // Client or server error.
       // The server may have included some response text with details concerning
       // the error.
-      var responseText = xhr.responseText;
+      // var responseText = xhr.responseText;
       if (errorCb) {
         // We were given a custom error handler.
         errorCb(statusCode);
       }
-      window.AppError('Could not ' + verb + " " + resource + ": Received " +
-      statusCode + " " + statusText + ": " + responseText);
+      // window.AppError('Could not ' + verb + " " + resource + ": Received " +
+      // statusCode + " " + statusText + ": " + responseText);
     }
   });
   // Time out the request if it takes longer than 10,000
   // milliseconds (10 seconds)
   xhr.timeout = 10000;
   // Network failure: Could not connect to server.
-  xhr.addEventListener('error', function() {
-    window.AppError('Could not ' + verb + " " + resource +
-    ": Could not connect to the server.");
-  });
+  // xhr.addEventListener('error', function() {
+  //   window.AppError('Could not ' + verb + " " + resource +
+  //   ": Could not connect to the server.");
+  // });
   // Network failure: request took too long to complete.
   xhr.addEventListener('timeout', function() {
     window.AppError('Could not ' + verb + " " + resource +

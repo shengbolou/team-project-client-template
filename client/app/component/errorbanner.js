@@ -26,7 +26,10 @@ export default class ErrorBanner extends React.Component {
   render() {
     // Don't display the error banner unless 'this.state.active' is true.
     return (
-      <div className={"alert alert-warning " + hideElement(!this.state.active)} role="alert">
+      <div className={"alert alert-warning " + hideElement(!this.state.active)} role="alert" style={{
+          position:'absolute',
+          zIndex:'100'
+        }}>
       WeMeet was unable to complete a recent
       request: {this.state.error}<br />
       Please <a onClick={() => window.location.reload()}>
