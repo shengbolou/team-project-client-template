@@ -5,7 +5,7 @@ var alert = null;
 var emailAlert = null;
 var moment = require('moment');
 import AvatarCropper from "react-avatar-cropper";
-import {hideElement} from '../util';
+import {hideElement,getExtension} from '../util';
 
 
 export default class Settings extends React.Component{
@@ -23,7 +23,8 @@ export default class Settings extends React.Component{
       img: null,
       cropperOpen: false,
       changeInfoFailed:false,
-      fileTooLarge:false
+      fileTooLarge:false,
+      fileWrongType:false
     }
   }
 
