@@ -4,6 +4,7 @@ import PostFeedItem from './postFeedItem';
 import {getAllPosts,postStatus} from '../server';
 import {hashHistory} from 'react-router';
 import {socket,getToken} from '../credentials';
+import {disabledElement} from '../util';
 
 export default class PostFeed extends React.Component{
 
@@ -11,15 +12,34 @@ export default class PostFeed extends React.Component{
     super(props);
     this.state = {
       contents: [],
-      notified:false
+      notified:false,
+      loadBtnText:"load more"
     }
   }
 
 
   getData(){
-    getAllPosts(this.props.userId, (postFeedData)=>{
+    getAllPosts((new Date()).getTime(), this.props.userId, (postFeedData)=>{
       this.setState({
         contents:postFeedData,
+        notified:false
+      });
+    });
+  }
+
+  handleLoadMore(e){
+    e.preventDefault();
+    var date = this.state.contents.length===0?(new Date()).getTime():
+    this.state.contents[this.state.contents.length-1].contents.postDate;
+    getAllPosts(date, this.props.userId, (postFeedData)=>{
+      if(postFeedData.length===0){
+        return this.setState({
+          loadBtnText:"nothing more to load"
+        })
+      }
+      var newPostData = this.state.contents.concat(postFeedData);
+      this.setState({
+        contents:newPostData,
         notified:false
       });
     });
@@ -61,15 +81,15 @@ export default class PostFeed extends React.Component{
     this.getData();
   }
 
-  // shouldComponentUpdate(nextProps,nextState){
-  //   if(nextState.contents===undefined || this.state.contents===undefined){
-  //     return true;
-  //   }
-  //   else if(nextState.contents.length!==this.state.contents.length){
-  //     return true;
-  //   }
-  //   return false;
-  // }
+  shouldComponentUpdate(nextProps,nextState){
+    if(nextState.contents===undefined || this.state.contents===undefined){
+      return true;
+    }
+    else if(nextState.contents.length!==this.state.contents.length){
+      return true;
+    }
+    return false;
+  }
 
 
   render(){
@@ -86,9 +106,16 @@ export default class PostFeed extends React.Component{
     return (
       <div>
         <PostEntry userData={this.props.user} onPost={(text,img)=>this.onPost(text,img)}/>
-        {this.state.contents.map((postFeedItem)=>{
-          return <PostFeedItem key={postFeedItem._id} data={postFeedItem} currentUser={this.props.user._id}/>
+        {this.state.contents.map((postFeedItem,i)=>{
+          return <PostFeedItem key={i} data={postFeedItem} currentUser={this.props.user._id}/>
         })}
+        <div className="btn-group btn-group-justified" role="group" aria-label="...">
+          <div className="btn-group" role="group">
+            <button className={"btn btn-default loadbtn "+disabledElement(this.state.loadBtnText==="nothing more to load")} onClick={(e)=>this.handleLoadMore(e)}>
+              {this.state.loadBtnText}
+            </button>
+          </div>
+        </div>
       </div>
     );
   }

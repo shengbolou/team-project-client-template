@@ -50,13 +50,15 @@ MongoClient.connect(url, function(err, db) {
   var loginSchema = require('./schemas/login.json');
   var validate = require('express-jsonschema').validate;
 
-  function getAllPosts(callback){
-    db.collection('postFeedItems').find().sort({"contents.postDate":1}).toArray(function(err,collection){
+  function getAllPosts(time,callback){
+    db.collection('postFeedItems').find({
+        "contents.postDate":{
+          $lt:time
+        }
+    }).limit(5).sort({"contents.postDate":-1}).toArray(function(err,collection){
       if(err){
         return callback(err);
       }
-
-
       var resolvedPosts = [];
 
       function processNextFeedItem(i) {
@@ -69,12 +71,7 @@ MongoClient.connect(url, function(err, db) {
             // Success!
             resolvedPosts.push(postItem);
             if (resolvedPosts.length === collection.length) {
-              // I am the final feed item; all others are resolved.
-              // Pass the resolved feed document back to the callback.
-
-              collection = resolvedPosts.reverse();
-
-
+              collection = resolvedPosts;
               callback(null, collection);
             } else {
               // Process the next feed item.
@@ -623,13 +620,14 @@ MongoClient.connect(url, function(err, db) {
       res.status(401).end();
     }
   });
-  app.get('/user/:userId/posts',function(req,res){
+  app.get('/user/:userId/posts/:time',function(req,res){
     var userId = req.params.userId;
+    var time = parseInt(req.params.time);
     var fromUser = getUserIdFromToken(req.get('Authorization'));
     if(userId === fromUser){
-      getAllPosts(function(err, postData) {
+      getAllPosts(time,function(err, postData) {
         if (err)
-        sendDatabaseError(res, err);
+          sendDatabaseError(res, err);
         else {
           res.send(postData);
         }

@@ -64,3 +64,15 @@
 .glyphicon-map-marker::before{
   margin-right: 2px !important;
 }
+
+.btn-group .loadbtn{
+  margin-bottom: 15px;
+  border: 0px solid #000000;
+  color:black !important;
+  background-color: #F3F4F7
+}
+.loadbtn:hover,
+.loadbtn:active,
+.loadbtn:focus{
+  background-color: #FDFDFD !important
+}

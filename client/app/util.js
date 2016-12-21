@@ -8,3 +8,10 @@ export function hideElement(shouldHide) {
     return '';
   }
 }
+export function disabledElement(shouldHide) {
+  if (shouldHide) {
+    return 'disabled';
+  } else {
+    return '';
+  }
+}

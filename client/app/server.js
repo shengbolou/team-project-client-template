@@ -186,8 +186,6 @@ export function postStatus(user, text, img, cb){
 
 
 export function createActivity(data,cb){
-  var debug = require('react-debug');
-  debug(data);
     sendXHR('POST','/postActivity',{
          "type": data.type,
          "author":data.userData._id,
@@ -233,9 +231,9 @@ export function getAllActivities(user,cb){
   });
 }
 
-export function getAllPosts(user,cb){
+export function getAllPosts(time,user,cb){
   // We don't need to send a body, so pass in 'undefined' for the body.
-  sendXHR('GET', '/user/' + user + '/posts', undefined, (xhr) => {
+  sendXHR('GET', '/user/' + user + '/posts/'+time, undefined, (xhr) => {
     // Call the callback with the data.
     cb(JSON.parse(xhr.responseText));
   });
