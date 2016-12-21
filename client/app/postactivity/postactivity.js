@@ -24,7 +24,8 @@ export default class PostActivity extends React.Component {
       location: "",
       detail:"",
       alert:false,
-      sizealert:false
+      sizealert:false,
+      fileWrongType:false
     }
   }
 
@@ -34,7 +35,10 @@ export default class PostActivity extends React.Component {
     // files, we ignore the others).
     var reader = new FileReader();
     var file = e.target.files[0];
-    if(file.size<150000 && file.type.match('image.*')){
+    if(!file.type.match('image.*')){
+      this.setState({fileWrongType:true});
+    }
+    else if(file.size<150000){
       // Called once the browser finishes loading the image.
       reader.onload = (upload) => {
         this.setState({
@@ -43,6 +47,8 @@ export default class PostActivity extends React.Component {
         });
       };
       reader.readAsDataURL(file);
+      this.setState({sizealert:false});
+        this.setState({fileWrongType:false});
     }
     else{
       this.setState({sizealert:true});
@@ -185,6 +191,9 @@ export default class PostActivity extends React.Component {
                          <div className="alert alert-warning alert-dismissible" role="alert">
                                         <strong>File is too large</strong>
                                       </div>
+                        </div>
+                        <div className={"alert alert-warning alert-dismissible "+hideElement(!this.state.fileWrongType)} role="alert">
+                          <strong>File is not a image file</strong>
                         </div>
                       <div className="row">
                         <div className="col-md-12">
