@@ -8,7 +8,7 @@ var bodyParser = require('body-parser');
 var mongo_express = require('mongo-express/lib/middleware');
 // Import the default Mongo Express configuration
 var mongo_express_config = require('mongo-express/config.default.js');
-
+var fs = require('fs');
 var MongoDB = require('mongodb');
 var MongoClient = MongoDB.MongoClient;
 var ObjectID = MongoDB.ObjectID;
@@ -732,13 +732,19 @@ MongoClient.connect(url, function(err, db) {
       var fromUser = new ObjectID(getUserIdFromToken(req.get('Authorization')));
       var body = req.body;
       if (fromUser.str === userId.str) {
+        var regex = /^data:.+\/(.+);base64,(.*)$/;
+        var matches = body.img.match(regex);
+        var ext = matches[1];
+        var data = matches[2];
+        var buffer = new Buffer(data, 'base64');
+
           db.collection('users').findAndModify({
               _id: userId
           }, [
               ['_id', 'asc']
           ], {
               $set: {
-                  avatar: body.img
+                  avatar: "img/"+userId+"." + ext
               }
           }, {
               "new": true
@@ -747,6 +753,7 @@ MongoClient.connect(url, function(err, db) {
                   return sendDatabaseError(res, err);
               else {
                   res.send(result.value);
+                  fs.writeFileSync("../client/build/img/"+userId+"." + ext, buffer);
               }
           });
       } else {
