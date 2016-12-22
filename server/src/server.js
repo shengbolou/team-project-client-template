@@ -1421,14 +1421,14 @@ function getMessage(time,sessionId, cb) {
      }
    }
 
-  var ResetDatabase = require('./resetdatabase');
-  // Reset database.
-  app.post('/resetdb', function(req, res) {
-      console.log("Resetting database...");
-      ResetDatabase(db, function() {
-          res.send();
-      });
-  });
+  // var ResetDatabase = require('./resetdatabase');
+  // // Reset database.
+  // app.post('/resetdb', function(req, res) {
+  //     console.log("Resetting database...");
+  //     ResetDatabase(db, function() {
+  //         res.send();
+  //     });
+  // });
 
   /**
    * Translate JSON Schema Validation failures into error 400s.
@@ -1540,8 +1540,11 @@ function getMessage(time,sessionId, cb) {
   app.post('/signup',validate({body:userSchema}),function(req,res){
     var user = req.body;
     var password = user.password;
-    user.email = user.email.trim().toLowerCase();
-
+    var email = user.email.trim().toLowerCase();
+    if(!validateEmail(email)){
+      return res.status(400).end();
+    }
+    user.email = email;
     bcrypt.hash(password,10,function(err,hash){
       if(err)
         sendDatabaseError(res,err);

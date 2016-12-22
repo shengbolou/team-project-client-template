@@ -339,10 +339,7 @@ function resetCollection(db, name, cb) {
  * Adds any desired indexes to the database.
  */
 function addIndexes(db, cb) {
-  db.collection('postFeedItems').createIndex({ "contents.text": "text" });
-  db.collection('activityItems').createIndex({ description: "text" });
-  db.collection('users').createIndex({ lastname: "text",
-  firstname: "text"},null,cb);
+  db.collection('users').createIndex({email:1},{unique:true},cb);
 }
 
 /**

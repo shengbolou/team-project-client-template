@@ -15,6 +15,8 @@ import {hideElement} from './util';
 import {signup,login} from './server.js';
 import {getUserId,isUserLoggedIn} from './credentials';
 import {socket} from './credentials';
+var zxcvbn = require('zxcvbn');
+// var debug = require('react-debug');
 
 class ActivityPage extends React.Component{
   render(){
@@ -26,6 +28,7 @@ class ActivityPage extends React.Component{
     }
     else{
       hashHistory.push('/');
+      location.reload();
     }
   }
 }
@@ -37,6 +40,7 @@ class ThrendPage extends React.Component{
     }
     else{
       hashHistory.push('/');
+      location.reload();
     }
   }
 }
@@ -66,6 +70,7 @@ class SettingsPage extends React.Component {
     }
     else{
       hashHistory.push('/');
+      location.reload();
     }
   }
 }
@@ -80,6 +85,7 @@ class ChatPage extends React.Component{
     }
     else{
       hashHistory.push('/');
+      location.reload();
     }
   }
 }
@@ -94,6 +100,7 @@ class NotificationPage extends React.Component{
     }
     else{
       hashHistory.push('/');
+      location.reload();
     }
   }
 }
@@ -108,6 +115,7 @@ class Activity_detailPage extends React.Component{
     }
     else{
       hashHistory.push('/');
+      location.reload();
     }
   }
 }
@@ -122,6 +130,7 @@ class SearchPage extends React.Component{
      }
      else{
        hashHistory.push('/');
+       location.reload();
      }
   }
 }
@@ -137,6 +146,7 @@ class ProfilePage extends React.Component{
     }
     else{
       hashHistory.push('/');
+      location.reload();
     }
   }
 }
@@ -152,6 +162,7 @@ class PostActivityPage extends React.Component {
     }
     else{
       hashHistory.push('/');
+      location.reload();
     }
   }
 }
@@ -168,12 +179,64 @@ class LandingPage extends React.Component{
       signUpPass2:"",
       failedLogin:false,
       failedSignUp:false,
-      submitted:false
+      submitted:false,
+      passwordStrength:0,
+      passwordClass:"progress-bar-danger",
+      passwordTooSimple:false
     }
   }
 
   handleChange(field, e) {
     e.preventDefault();
+    if(field==="signUpPass"){
+      this.setState({
+        passwordTooSimple:false
+      });
+      var strength = zxcvbn(e.target.value);
+      switch (strength.score) {
+        case 0:{
+          this.setState({
+            passwordStrength:20
+          })
+        }
+          break;
+        case 1:{
+          this.setState({
+            passwordStrength:40
+          })
+        }
+          break;
+        case 2:{
+          this.setState({
+            passwordStrength:60,
+            passwordClass:"progress-bar-warning"
+          })
+        }
+          break;
+        case 3:{
+          this.setState({
+            passwordStrength:80,
+            passwordClass:"progress-bar-success"
+          })
+        }
+          break;
+        case 4:{
+          this.setState({
+            passwordStrength:100,
+            passwordClass:"progress-bar-success",
+            passwordTooSimple:false
+          })
+        }
+          break;
+        default:
+      }
+      if(e.target.value===""){
+        this.setState({
+          passwordStrength:0,
+          passwordClass:"progress-bar-danger"
+        })
+      }
+    }
     var update = {};
     update[field] = e.target.value;
     this.setState(update);
@@ -218,10 +281,15 @@ class LandingPage extends React.Component{
 
   handleSignUp(e){
     e.preventDefault();
-
+    // if(this.state.passwordStrength!==4){
+    //    return this.setState({
+    //     passwordTooSimple:true
+    //   })
+    // }
     if(this.state.signUpName.trim()!==""&&
     this.state.signUpEmail!==""&&
     this.state.signUpPass!==""&&
+    this.state.passwordStrength>=80&&
     this.state.signUpPass===this.state.signUpPass2){
       this.setState({
         submitted:true
@@ -253,19 +321,27 @@ class LandingPage extends React.Component{
         else{
           this.setState({
             failedSignUp:true,
-            submitted:true
+            submitted:false
           });
         }
       });
     }
+    else if(this.state.passwordStrength<80 && this.state.signUpPass!==""){
+      this.setState({
+        passwordTooSimple:true,
+        submitted:false
+      })
+    }
     else if(this.state.signUpPass2!==this.state.signUpPass){
       this.setState({
-        passwordError:true
+        passwordError:true,
+        submitted:false
       })
     }
     else{
       this.setState({
-        failedSignUp:true
+        failedSignUp:true,
+        submitted:false
       })
     }
   }
@@ -294,8 +370,7 @@ class LandingPage extends React.Component{
                   <div className="row">
                     <div className="col-md-7 col-md-offset-2">
                       <div className="md-form">
-                        <input disabled={this.state.submitted} type="text" className="form-control validate"
-                          pattern="[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-‌​9-]+)*"
+                        <input disabled={this.state.submitted} type="text" className="form-control"
                           onChange={(e)=>this.handleChange("signInEmail",e)} required/>
                         <label>Email</label>
                       </div>
@@ -326,10 +401,14 @@ class LandingPage extends React.Component{
               <div className={hideElement(!this.state.failedSignUp) + " alert alert-danger"} role="alert"><strong>
                 Invalid account signup.</strong><br/>
               1.It is possible that you already have an account with that particular email address<br/>
-            2.you didn't fill in all the blanks.
+              2.you didn't fill in all the blanks.<br/>
+              3.email format is not correct
           </div>
           <div className={hideElement(!this.state.passwordError) + " alert alert-danger"} role="alert"><strong>
             Invalid account signup.</strong> two passwords don't match
+          </div>
+          <div className={hideElement(!this.state.passwordTooSimple) + " alert alert-danger"} role="alert"><strong>
+            Password is too simple</strong>
           </div>
           <div className="panel panel-primary">
             <div className="panel-heading">
@@ -353,6 +432,14 @@ class LandingPage extends React.Component{
                   <div className="md-form">
                     <input type="password" disabled={this.state.submitted} className="form-control" onChange={(e)=>this.handleChange("signUpPass",e)}/>
                     <label>Password</label>
+                  </div>
+                  <div className="progress" style={{height:'6', marginTop:'-15',borderRadius:'0'}}>
+                    <div className={"progress-bar "+this.state.passwordClass}
+                      role="progressbar"
+                      aria-valuemin="0"
+                      aria-valuemax="100"
+                      style={{width:this.state.passwordStrength+"%"}}>
+                    </div>
                   </div>
                 </div>
                 <div className="col-md-7 col-md-offset-2">

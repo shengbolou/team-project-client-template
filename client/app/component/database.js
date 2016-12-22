@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+// import ReactDOM from 'react-dom';
 
 /**
 * Reset database button.
@@ -20,7 +20,7 @@ export class ResetDatabase extends React.Component {
     }
   }
 
-ReactDOM.render(
-  <ResetDatabase />,
-  document.getElementById('db-reset')
-);
+// ReactDOM.render(
+//   <ResetDatabase />,
+//   document.getElementById('db-reset')
+// );

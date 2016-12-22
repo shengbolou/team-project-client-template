@@ -45,10 +45,10 @@ function sendXHR(verb, resource, body, cb, errorCb) {
   //   ": Could not connect to the server.");
   // });
   // Network failure: request took too long to complete.
-  xhr.addEventListener('timeout', function() {
-    window.AppError('Could not ' + verb + " " + resource +
-    ": Request timed out.");
-  });
+  // xhr.addEventListener('timeout', function() {
+  //   window.AppError('Could not ' + verb + " " + resource +
+  //   ": Request timed out.");
+  // });
   switch (typeof(body)) {
     case 'undefined':
       // No body to send.
@@ -74,21 +74,22 @@ export function getlocation(cb){
   if (/Edge\/\d./i.test(navigator.userAgent)){
     return cb("error");
   }
-  var geolocation = require('geolocation');
-  geolocation.getCurrentPosition(function (err, position) {
-    if(err){
-      cb("error");
-    }
-    else{
-      var xhr = new XMLHttpRequest();
-      xhr.open('GET',
-      'https://maps.googleapis.com/maps/api/geocode/json?latlng='+position.coords.latitude+","+position.coords.longitude+'&sensor=true');
-      xhr.onload = function() {
-        cb(JSON.parse(xhr.responseText));
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(function (err, position) {
+      if(err){
+        cb("error");
       }
-      xhr.send();
-    }
-  });
+      else{
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET',
+        'https://maps.googleapis.com/maps/api/geocode/json?latlng='+position.coords.latitude+","+position.coords.longitude+'&sensor=true');
+        xhr.onload = function() {
+          cb(JSON.parse(xhr.responseText));
+        }
+        xhr.send();
+      }
+    });
+  }
 }
 
 export function setlocation(userId,location){
