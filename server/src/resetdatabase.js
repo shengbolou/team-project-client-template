@@ -123,8 +123,8 @@ var initialData = {
       "author":new ObjectID("000000000000000000000001"),
       "title": "Hack UMass",
       "img":"./img/HackUMass.jpg",
-      "startTime": 1478129314000,
-      "endTime": 1479940314000,
+      "startTime": 1478129314,
+      "endTime": 1479940314,
       "description": "Hack Umass",
       "location": "University of Massachusetts Amherst",
       "participants": [new ObjectID("000000000000000000000002"),new ObjectID("000000000000000000000003")],
@@ -133,7 +133,7 @@ var initialData = {
       "comments":[
         {
           "author":new ObjectID("000000000000000000000001"),
-          "postDate": 1478129314000,
+          "postDate": 1478129314,
           "text": "iufihishf"
         }
       ],
@@ -147,8 +147,8 @@ var initialData = {
       "author":new ObjectID("000000000000000000000002"),
       "title": "birthday party",
       "img":"img/Birthday-Party.jpg",
-      "startTime": 1478129314000,
-      "endTime": 1479940314000,
+      "startTime": 1478129314,
+      "endTime": 1479940314,
       "description": "Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis.",
       "location": "University of Massachusetts Amherst",
       "participants": [],
@@ -156,7 +156,7 @@ var initialData = {
       "comments":[
         {
           "author":new ObjectID("000000000000000000000001"),
-          "postDate": 1478129314000,
+          "postDate": 1478129314,
           "text": "iufihishf"
         }
       ],
@@ -170,8 +170,8 @@ var initialData = {
       "author":new ObjectID("000000000000000000000003"),
       "title": "dance party",
       "img":"img/parties.jpg",
-      "startTime": 1478129314000,
-      "endTime": 1479940314000,
+      "startTime": 1478129314,
+      "endTime": 1479940314,
       "description": "Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis.",
       "location": "University of Massachusetts Amherst",
       "participants": [new ObjectID("000000000000000000000002")],
@@ -180,7 +180,7 @@ var initialData = {
       "comments":[
         {
           "author":new ObjectID("000000000000000000000001"),
-          "postDate": 1478129314000,
+          "postDate": 1478129314,
           "text": "iufihishf"
         }
       ],
@@ -218,7 +218,7 @@ var initialData = {
         "author":new ObjectID("000000000000000000000001"),
         "location":{},
         //unix time
-        "postDate": 1478129314000,
+        "postDate": 1478129314,
         "text": "What's up there",
         "img": "img/tmp.jpg"
       },
@@ -226,12 +226,12 @@ var initialData = {
         {
           "author":new ObjectID("000000000000000000000002"),
           "text": "what's up",
-          "postDate": 1478149440000
+          "postDate": 1478149440
         },
         {
           "author":new ObjectID("000000000000000000000003"),
           "text": "Hello",
-          "postDate": 1478149540000
+          "postDate": 1478149540
         }
       ]
     }
@@ -246,7 +246,7 @@ var initialData = {
         "lastmessage":{
           "sender":new ObjectID("000000000000000000000001"),
           "target":new ObjectID("000000000000000000000002"),
-          "date" : 1478149540000,
+          "date" : 1478149540,
           "text": "cool",
           "isread":true
         }
@@ -258,7 +258,7 @@ var initialData = {
         "lastmessage":{
           "sender":new ObjectID("000000000000000000000001"),
           "target":new ObjectID("000000000000000000000003"),
-          "date" : 1478149540000,
+          "date" : 1478149540,
           "text": "Good night!",
           "isread":true
         }
@@ -272,13 +272,13 @@ var initialData = {
           {
             "sender":new ObjectID("000000000000000000000001"),
             "target":new ObjectID("000000000000000000000002"),
-            "date" : 1478149540000,
+            "date" : 1478149540,
             "text": "what's up"
           },
           {
             "sender":new ObjectID("000000000000000000000002"),
             "target":new ObjectID("000000000000000000000001"),
-            "date" : 1478149540000,
+            "date" : 1478149540,
             "text": `
   Mr Trump tweeted that the process of selecting his new cabinet and other positions was "very organised".`
 
@@ -286,7 +286,7 @@ var initialData = {
           {
             "sender":new ObjectID("000000000000000000000001"),
             "target":new ObjectID("000000000000000000000002"),
-            "date" : 1478149540000,
+            "date" : 1478149540,
             "text": "cool"
           }
         ]
@@ -297,20 +297,20 @@ var initialData = {
             {
               "sender":new ObjectID("000000000000000000000001"),
               "target":new ObjectID("000000000000000000000003"),
-              "date" : 1478149540000,
+              "date" : 1478149540,
               "text": "yo"
             },
             {
               "sender":new ObjectID("000000000000000000000003"),
               "target":new ObjectID("000000000000000000000001"),
-              "date" : 1478149540000,
+              "date" : 1478149540,
               "text": `Good Night!.`
 
             },
             {
               "sender":new ObjectID("000000000000000000000001"),
               "target":new ObjectID("000000000000000000000003"),
-              "date" : 1478149540000,
+              "date" : 1478149540,
               "text": "Good night!"
             }
           ]

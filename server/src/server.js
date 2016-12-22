@@ -1164,10 +1164,11 @@ MongoClient.connect(url, function(err, db) {
   });
 
   //getMessage
-  app.get('/user/:userId/chatsession/:id', function(req, res) {
+  app.get('/user/:userId/chatsession/:id/:time', function(req, res) {
       var fromUser = getUserIdFromToken(req.get('Authorization'));
       var id = req.params.id;
       var userid = req.params.userId;
+      var time = req.params.time;
       if (userid == fromUser) {
           db.collection('messageSession').findOne({
               _id: new ObjectID(id)
@@ -1184,22 +1185,22 @@ MongoClient.connect(url, function(err, db) {
                   },function(err){
                     if(err)
                       return sendDatabaseError(res,err);
-                      getMessage(message.contents, function(err, data) {
+                      getMessage(time, message.contents, function(err, messages) {
                         if (err)
-                        sendDatabaseError(res, err);
+                          sendDatabaseError(res, err);
                         else {
                           res.status(201);
-                          res.send(data.messages);
+                          res.send(messages);
                         }
                       });
                   })
                 }
-                else getMessage(message.contents, function(err, data) {
+                else getMessage(time,message.contents, function(err, messages) {
                   if (err)
                   sendDatabaseError(res, err);
                   else {
                     res.status(201);
-                    res.send(data.messages);
+                    res.send(messages);
                   }
                 });
 
@@ -1214,6 +1215,7 @@ MongoClient.connect(url, function(err, db) {
     var id = req.params.id;
     var userid = req.params.userid;
     var body = req.body;
+    var time = (new Date()).getTime();
     if (userid === fromUser) {
         var senderid = body.sender;
         var targetid = body.target;
@@ -1221,7 +1223,7 @@ MongoClient.connect(url, function(err, db) {
         var lastmessage = {
             "sender": new ObjectID(senderid),
             "target": new ObjectID(targetid),
-            "date": (new Date()).getTime(),
+            "date": time,
             "text": text
         }
         getSessionContentsID(new ObjectID(id), function(err, contentsid) {
@@ -1238,7 +1240,7 @@ MongoClient.connect(url, function(err, db) {
                     if (err)
                         sendDatabaseError(res.err);
                     else {
-                        getMessage(contentsid, function(err, message) {
+                        getMessage(time+1,contentsid, function(err, messages) {
                             if (err)
                                 sendDatabaseError(res, err);
                             else {
@@ -1254,7 +1256,7 @@ MongoClient.connect(url, function(err, db) {
                                     if (err)
                                         sendDatabaseError(res, err);
 
-                                    else res.send(message.messages);
+                                    else res.send(messages);
                                 });
                             }
                         });
@@ -1268,31 +1270,39 @@ MongoClient.connect(url, function(err, db) {
     }
 });
 
-function getMessage(sessionId, cb) {
-  db.collection('message').findOne({
-    _id: sessionId
-  }, function(err, message) {
+function getMessage(time,sessionId, cb) {
+  db.collection('message').aggregate([
+    {$match: { _id: sessionId}},
+    {$unwind: "$messages"},
+    {$match:{"messages.date":{$lt:parseInt(time)}}},
+    {$sort:{"messages.date":-1}},
+    {$limit:10}
+  ],function(err,messages){
     if (err) {
       return cb(err);
     } else {
-      if(message.messages.length===0){
-        cb(null,message);
+      if(messages.length===0){
+        cb(null,messages);
       }
       else{
-        var userList = [message.messages[0].sender, message.messages[0].target];
+        var resultMsgs = messages.map((message)=>{
+          return message.messages;
+        })
+        resultMsgs = resultMsgs.reverse();
+        var userList = [resultMsgs[0].sender, resultMsgs[0].target];
         resolveUserObjects(userList, function(err, userMap) {
           if (err)
           return cb(err);
-          message.messages.forEach((message) => {
+          resultMsgs.forEach((message) => {
             message.target = userMap[message.target];
             message.sender = userMap[message.sender];
           });
-          cb(null, message);
+          cb(null, resultMsgs);
         })
       }
     }
-  }
-)}
+  });
+}
 
   app.get('/getsession/:userid/:targetid', function(req, res) {
       var fromUser = getUserIdFromToken(req.get('Authorization'));

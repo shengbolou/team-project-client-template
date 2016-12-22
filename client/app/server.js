@@ -260,13 +260,8 @@ export function adpostComment(activityId, author, comment, cb){
   })
 }
 
-export function getMessages(userid,id,cb){
-  // var message = readDocument('messageSession',sessionid);
-  // message.contents = message.contents.map(getMessageSync);
-  //
-  // emulateServerReturn(getMessageSync(sessionid).messages,cb);
-
-  sendXHR('GET','/user/'+userid+'/chatsession/'+id, undefined, (xhr) => {
+export function getMessages(time,userid,id,cb){
+  sendXHR('GET','/user/'+userid+'/chatsession/'+id+"/"+time, undefined, (xhr) => {
     cb(JSON.parse(xhr.responseText));
   });
 }

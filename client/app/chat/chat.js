@@ -13,7 +13,8 @@ export default class Chat extends React.Component {
       user: {},
       message :[],
       friend: "",
-      sessionId:""
+      sessionId:"",
+      btnText:"load earier messages"
     };
   }
 
@@ -40,13 +41,14 @@ export default class Chat extends React.Component {
           sessionId:session._id
         },
         ()=>{
-          getMessages(this.props.user,this.state.sessionId,(message)=>{
+          getMessages((new Date().getTime()),this.props.user,this.state.sessionId,(message)=>{
             this.setState({
               message:message
             },()=>{
               getUserData(this.props.user, (userData) => {
                 this.setState({
-                  user:userData
+                  user:userData,
+                  btnText:"load earier messages"
                 });
               });
             })
@@ -67,9 +69,10 @@ export default class Chat extends React.Component {
               sessionId:session._id
             },
             ()=>{
-              getMessages(this.props.user,this.state.sessionId,(message)=>{
+              getMessages((new Date().getTime()),this.props.user,this.state.sessionId,(message)=>{
                 this.setState({
-                  message:message
+                  message:message,
+                  btnText:"load earier messages"
                 })
               });
             });
@@ -84,7 +87,8 @@ export default class Chat extends React.Component {
       this.setState({message:newMessage},()=>{
         getUserData(this.props.user, (userData) => {
           this.setState({
-            user:userData
+            user:userData,
+            btnText:"load earier messages"
           })
         });
       });
@@ -99,13 +103,14 @@ export default class Chat extends React.Component {
             sessionId:session._id
           },
           ()=>{
-            getMessages(this.props.user,this.state.sessionId,(message)=>{
+            getMessages((new Date().getTime()),this.props.user,this.state.sessionId,(message)=>{
               this.setState({
                 message:message
               },()=>{
                 getUserData(this.props.user, (userData) => {
                   this.setState({
-                    user:userData
+                    user:userData,
+                    btnText:"load earier messages"
                   })
                 })
               })
@@ -114,12 +119,30 @@ export default class Chat extends React.Component {
         });
       });
     }
+    handleLoadMessage(e){
+      e.preventDefault();
+      var time = this.state.message.length===0?(new Date().getTime()):this.state.message[0].date;
+      getMessages(time,this.props.user,this.state.sessionId,(messages)=>{
+        if(messages.length===0){
+          return this.setState({
+            btnText: "no new messages"
+          })
+        }
+        var newMessages = messages.concat(this.state.message);
+        this.setState({
+          message:newMessages
+        });
+      });
+    }
 
     render() {
       var chatwindow =
       (
-        <ChatWindow target={this.state.friend} curUser={this.props.user}onPost={(message)=>this.handlePostMessage(message)}
-          message={this.state.message}>
+        <ChatWindow target={this.state.friend} curUser={this.props.user}
+          onPost={(message)=>this.handlePostMessage(message)}
+          message={this.state.message}
+          onLoad={(e)=>this.handleLoadMessage(e)}
+          btnText={this.state.btnText}>
         </ChatWindow>
       );
       if(this.state.user.friends === undefined? true: this.state.user.friends.length === 0){
