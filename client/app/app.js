@@ -14,7 +14,6 @@ import { IndexRoute, Router, Route, hashHistory } from 'react-router';
 import {hideElement} from './util';
 import {signup,login} from './server.js';
 import {getUserId,isUserLoggedIn} from './credentials';
-import {socket} from './credentials';
 var zxcvbn = require('zxcvbn');
 // var debug = require('react-debug');
 
@@ -123,7 +122,6 @@ class SearchPage extends React.Component{
    render(){
      if(isUserLoggedIn()){
        var userId = getUserId();
-       socket.emit('user',userId);
        return(
          <Search user={userId}/>
        );
@@ -139,7 +137,6 @@ class ProfilePage extends React.Component{
   render(){
     if(isUserLoggedIn()){
       var userId = getUserId();
-      socket.emit('user',userId);
       return(
         <Profile user={this.props.params.user} currUser={userId}/>
       );
@@ -155,7 +152,6 @@ class PostActivityPage extends React.Component {
   render() {
     if(isUserLoggedIn()){
       var userId = getUserId();
-      socket.emit('user',userId);
       return (
         <PostActivity user={userId}/>
       );
