@@ -9,11 +9,10 @@ import Search from './search/search';
 import Profile from './profile/profile';
 import PostActivity from './postactivity/postactivity';
 import Activity_detail from './activity_detail/activity_detail';
-import ErrorBanner from './component/errorbanner';
 import { IndexRoute, Router, Route, hashHistory } from 'react-router';
 import {hideElement} from './util';
 import {signup,login} from './server.js';
-import {getUserId,isUserLoggedIn} from './credentials';
+import {getUserId,isUserLoggedIn,socket} from './credentials';
 var zxcvbn = require('zxcvbn');
 // var debug = require('react-debug');
 
@@ -21,6 +20,9 @@ class ActivityPage extends React.Component{
   render(){
     if(isUserLoggedIn()){
       var userId = getUserId();
+      window.onload = ()=>{
+        socket.emit('user',userId);
+      }
       return(
         <Activity user={userId}/>
       );
@@ -35,6 +37,9 @@ class ThrendPage extends React.Component{
   render(){
     if(isUserLoggedIn()){
       var userId = getUserId();
+      window.onload = ()=>{
+        socket.emit('user',userId);
+      }
       return (<Post user={userId}/>);
     }
     else{
@@ -48,11 +53,6 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <div className="row">
-          <div className="col-md-8 col-md-offset-2">
-            <ErrorBanner />
-          </div>
-        </div>
         {this.props.children}
       </div>
     );
@@ -63,6 +63,9 @@ class SettingsPage extends React.Component {
   render() {
     if(isUserLoggedIn()){
       var userId = getUserId();
+      window.onload = ()=>{
+        socket.emit('user',userId);
+      }
       return (
         <Settings user={userId} />
       );
@@ -78,6 +81,9 @@ class ChatPage extends React.Component{
   render() {
     if(isUserLoggedIn()){
       var userId = getUserId();
+      window.onload = ()=>{
+        socket.emit('user',userId);
+      }
       return (
         <Chat user={userId}/>
       );
@@ -93,6 +99,9 @@ class NotificationPage extends React.Component{
   render(){
     if(isUserLoggedIn()){
       var userId = getUserId();
+      window.onload = ()=>{
+        socket.emit('user',userId);
+      }
       return(
         <Notification user={userId} id={this.props.params.id}/>
       );
@@ -108,6 +117,9 @@ class Activity_detailPage extends React.Component{
   render(){
     if(isUserLoggedIn()){
       var userId = getUserId();
+      window.onload = ()=>{
+        socket.emit('user',userId);
+      }
       return(
         <Activity_detail user={userId} id={this.props.params.id}/>
       )
@@ -122,6 +134,9 @@ class SearchPage extends React.Component{
    render(){
      if(isUserLoggedIn()){
        var userId = getUserId();
+       window.onload = ()=>{
+         socket.emit('user',userId);
+       }
        return(
          <Search user={userId}/>
        );
@@ -137,6 +152,9 @@ class ProfilePage extends React.Component{
   render(){
     if(isUserLoggedIn()){
       var userId = getUserId();
+      window.onload = ()=>{
+        socket.emit('user',userId);
+      }
       return(
         <Profile user={this.props.params.user} currUser={userId}/>
       );
@@ -152,6 +170,9 @@ class PostActivityPage extends React.Component {
   render() {
     if(isUserLoggedIn()){
       var userId = getUserId();
+      window.onload = ()=>{
+        socket.emit('user',userId);
+      }
       return (
         <PostActivity user={userId}/>
       );
